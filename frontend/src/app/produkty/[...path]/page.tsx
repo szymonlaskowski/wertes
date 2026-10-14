@@ -53,13 +53,7 @@ export default async function CategoryPage(props: PageProps<"/produkty/[...path]
         ))}
       </ul>
 
-      <nav className="mt-8 flex gap-4 text-sm">
-        {page > 1 && <Link href={categoryPagePath(categoryPath, page - 1)}>Poprzednia</Link>}
-        <span>
-          Strona {page} z {totalPages}
-        </span>
-        {page < totalPages && <Link href={categoryPagePath(categoryPath, page + 1)}>Następna</Link>}
-      </nav>
+      <Pagination categoryPath={categoryPath} page={page} totalPages={totalPages} />
     </main>
   );
 }
@@ -94,6 +88,29 @@ async function loadCategoryPage(path: string[]) {
 
   const subcategories = categories.filter((candidate) => candidate.parent === category.id);
   return { category, subcategories, products, page: location.page, totalPages };
+}
+
+function Pagination({
+  categoryPath,
+  page,
+  totalPages,
+}: {
+  categoryPath: string;
+  page: number;
+  totalPages: number;
+}) {
+  const hasPreviousPage = page > 1;
+  const hasNextPage = page < totalPages;
+
+  return (
+    <nav className="mt-8 flex gap-4 text-sm">
+      {hasPreviousPage && <Link href={categoryPagePath(categoryPath, page - 1)}>Poprzednia</Link>}
+      <span>
+        Strona {page} z {totalPages}
+      </span>
+      {hasNextPage && <Link href={categoryPagePath(categoryPath, page + 1)}>Następna</Link>}
+    </nav>
+  );
 }
 
 function ProductCard({ product }: { product: ProductSummary }) {

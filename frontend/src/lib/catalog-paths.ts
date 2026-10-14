@@ -9,7 +9,8 @@ export function routeSegments(wordpressPermalink: string) {
   const segments = toLocalPath(wordpressPermalink)
     .split("/")
     .filter((segment) => segment !== "");
-  return segments.slice(1);
+  const segmentsAfterRouteName = segments.slice(1);
+  return segmentsAfterRouteName;
 }
 
 export function parseCategorySegments(segments: string[]) {

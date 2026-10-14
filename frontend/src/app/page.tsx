@@ -14,7 +14,7 @@ export default async function HomePage() {
         <CategorySection
           key={topLevelCategory.id}
           category={topLevelCategory}
-          subcategories={categories.filter((category) => category.parent === topLevelCategory.id)}
+          allCategories={categories}
         />
       ))}
     </main>
@@ -23,11 +23,13 @@ export default async function HomePage() {
 
 function CategorySection({
   category,
-  subcategories,
+  allCategories,
 }: {
   category: Category;
-  subcategories: Category[];
+  allCategories: Category[];
 }) {
+  const subcategories = allCategories.filter((candidate) => candidate.parent === category.id);
+
   return (
     <section className="mb-6">
       <h2 className="font-medium">
