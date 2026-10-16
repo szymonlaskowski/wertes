@@ -6,6 +6,7 @@ if (!wordpressUrl) {
 }
 
 const nextConfig: NextConfig = {
+  devIndicators: false,
   trailingSlash: true,
   images: {
     remotePatterns: [new URL(`${wordpressUrl}/wp-content/uploads/**`)],
