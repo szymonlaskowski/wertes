@@ -5,15 +5,15 @@
 ## 1. Design
 
 - [x] Kierunek wybrany z trzech pokazanych na jednej stronie (`start.md`, krok 2):
-      kolory starej strony, krój z logo, unowocześnione (`design/kierunki.html`)
+      kolory starej strony, krój z logo, unowocześnione (makiety skasowane po decyzjach)
 - [x] Tablica decyzji rozstrzygnięta (`start.md`, krok 3): 1A 2A 3A 4B 5C 6A 7A 8A 9A
-      10A (`design/tablica.html`, `design/ruch.html`)
+      10A (makiety skasowane po decyzjach)
 - [ ] Tokeny w `@theme`, domyślne skale wyzerowane, więc klasa spoza tokenów nie da stylu.
       Istniejący UI: zeruj dopiero po przepięciu sekcji na tokeny, bo Tailwind po cichu
       pomija nieznane klasy i strona rozsypie się bez żadnego błędu
 - [x] Sekcja Wygląd w `AGENTS.md` wypełniona, `start.md` usunięty
-- [ ] Podgląd na postplan.dev (czarne tło, spis treści, numerowane sekcje): tokeny,
-      kontrasty, przycisk w każdym stanie i motyw, renderowany z kodu, zaakceptowany
+- [-] Podgląd na postplan.dev: strona `/podglad` i makiety usunięte na życzenie,
+      w repo zostają tylko tokeny w `@theme` i reguły w `AGENTS.md`
 - [x] Przycisk jako jeden komponent z dokładnie dwoma wariantami
       (`src/components/button.tsx`)
 - [ ] Podstrony po jednej: zbudowana albo przepięta na tokeny, zrzut,

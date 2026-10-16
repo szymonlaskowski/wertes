@@ -1,6 +1,6 @@
 import { expect, test } from "bun:test";
 import type { Category } from "@/lib/store-api";
-import { firstParagraph, listBrands, listDepartments, productCountLabel } from "./home-catalog";
+import { firstParagraph, listBrands, listDepartments, productCountLabel } from "./catalog";
 
 function category(id: number, slug: string, parent: number, count: number): Category {
   return { id, name: slug, slug, parent, count, permalink: `https://x/produkty/${slug}/` };

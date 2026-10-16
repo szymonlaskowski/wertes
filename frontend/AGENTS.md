@@ -81,7 +81,7 @@ koszyka, aktywna kategoria.
 
 ### Sekcje
 
-Strona główna, układ C „Rozdziały” (`design/strona-glowna.html`):
+Strona główna, układ C „Rozdziały”:
 
 1. Pasek - logo, telefon, ikony konta i koszyka, na podstronach szukanie - jeden
    rząd; bez menu linków, bez przyklejania, bez rozmytego tła - od razu żółty pas.

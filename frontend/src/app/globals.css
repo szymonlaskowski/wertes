@@ -28,8 +28,12 @@
 
   --spacing: 8px;
 
-  --radius-none: 0;
-  --shadow-none: none;
+  --tracking-label: 0.08em;
+
+  --radius-*: initial;
+  --shadow-*: initial;
+  --inset-shadow-*: initial;
+  --drop-shadow-*: initial;
 
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --duration-reveal: 150ms;
