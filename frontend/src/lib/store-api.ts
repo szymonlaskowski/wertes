@@ -50,7 +50,7 @@ export type Product = typeof product.infer;
 const categoryDescription = type({ description: "string" });
 
 export async function getCategoryDescription(categoryId: number) {
-  "use cache";
+  "use cache: remote";
   cacheLife("default");
 
   const response = await getFromStoreApi(`/products/categories/${categoryId}?_fields=description`);
@@ -58,7 +58,7 @@ export async function getCategoryDescription(categoryId: number) {
 }
 
 export async function listCategories() {
-  "use cache";
+  "use cache: remote";
   cacheLife("default");
 
   const fields = "id,name,slug,parent,count,permalink";
