@@ -46,7 +46,7 @@ export async function listArticles(page: number, perPage = ARTICLES_PER_PAGE) {
 }
 
 export async function searchArticles(query: string, count: number) {
-  "use cache";
+  "use cache: remote";
   cacheLife("default");
 
   const params = new URLSearchParams({ search: query, per_page: String(count), _embed: "wp:featuredmedia", _fields: SUMMARY_FIELDS });

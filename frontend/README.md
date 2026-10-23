@@ -18,7 +18,7 @@ bun test
 
 `WP_URL` in `.env` points at the WordPress instance (staging by default, or a local DDEV site).
 
-The cache lives in the server's memory, so it is empty after every deploy or restart, and WordPress lets through about two requests a second. Warm every category after a deploy, so no customer waits for the first render (about 10 minutes, roughly 1.5 s per category):
+Category results and search use `"use cache: remote"`, so on Vercel every function instance shares one cache. Every cache is empty after a deploy, and WordPress lets through about two requests a second. Warm every category after a deploy, so no customer waits for the first render (about 10 minutes, roughly 1.5 s per category):
 
 ```sh
 bun run warm-cache https://<shop address>

@@ -76,7 +76,7 @@ export async function listProductsInCategory(
   sort: ProductSort,
   page: number,
 ) {
-  "use cache";
+  "use cache: remote";
   cacheLife("default");
 
   const params = new URLSearchParams({
@@ -111,7 +111,7 @@ const attributeCounts = type({
 export type AttributeTermCount = (typeof attributeCounts.infer)["attribute_counts"][number];
 
 export async function countAttributeTermsInCategory(categoryId: number, taxonomies: string[]) {
-  "use cache";
+  "use cache: remote";
   cacheLife("default");
 
   const params = new URLSearchParams({ category: String(categoryId) });
@@ -138,7 +138,7 @@ async function listAttributes() {
 }
 
 export async function listAttributeTerms(taxonomy: string) {
-  "use cache";
+  "use cache: remote";
   cacheLife("default");
 
   const attributes = await listAttributes();
@@ -172,7 +172,7 @@ export async function listBestsellersInStock(categoryId: number, count: number) 
 }
 
 export async function searchProducts(query: string, categoryId: number | undefined, page: number) {
-  "use cache";
+  "use cache: remote";
   cacheLife("default");
 
   let path = `/products?search=${encodeURIComponent(query)}&page=${page}&per_page=${PRODUCTS_PER_PAGE}&_fields=${PRODUCT_SUMMARY_FIELDS}`;
@@ -191,7 +191,7 @@ const searchCategoryCounts = type({
 export type SearchCategoryCount = (typeof searchCategoryCounts.infer)["taxonomy_counts"][number];
 
 export async function countSearchResultsByCategory(query: string) {
-  "use cache";
+  "use cache: remote";
   cacheLife("default");
 
   const response = await getFromStoreApi(
