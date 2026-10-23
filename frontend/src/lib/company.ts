@@ -7,4 +7,8 @@ export const company = {
   email: "biuro@wertes.pl",
   emailHref: "mailto:biuro@wertes.pl",
   freeShippingFrom: "500 zł",
+  bulkDiscounts: [
+    { from: "1500 zł", percent: "4%", code: "DUZ4ZAM" },
+    { from: "8000 zł", percent: "7%", code: "DUZ7ZAM" },
+  ],
 };

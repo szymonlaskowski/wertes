@@ -1,43 +1,41 @@
 import Image from "next/image";
 import Link from "next/link";
-import { StockDot } from "@/components/stock-dot";
+import { Button } from "@/components/button";
+import { priceClassName } from "@/components/price";
+import { StockStatus } from "@/components/stock-dot";
 import { toLocalPath } from "@/lib/catalog-paths";
 import type { ProductSummary } from "@/lib/store-api";
 import { wordpressUrl } from "@/lib/store-api";
-
-const priceClassName =
-  "mt-1 tabular-nums [&_.amount]:block [&_.amount]:text-small [&_.amount]:text-mute [&_.amount--netto]:text-body [&_.amount--netto]:font-semibold [&_.amount--netto]:text-ink [&_br]:hidden [&_small]:[font-size:inherit]";
-
-const revealClassName =
-  "absolute inset-x-0 bottom-0 bg-accent p-1 text-center text-small font-semibold text-ink hover:bg-ink hover:text-accent focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ink mouse:translate-y-[calc(100%+1px)] mouse:transition-transform mouse:duration-(--duration-hide) mouse:ease-out mouse:group-hover:translate-y-0 mouse:group-hover:duration-(--duration-reveal) mouse:group-focus-within:translate-y-0 motion-reduce:transition-none";
+import { bindSingleLetterWords } from "@/lib/typography";
 
 export function ProductTile({ product }: { product: ProductSummary }) {
   const mainImage = product.images.at(0);
   const productPath = toLocalPath(product.permalink);
 
   return (
-    <li className="group">
-      <div className="relative aspect-square overflow-hidden bg-paper">
-        <Link href={productPath} tabIndex={-1} aria-hidden className="relative block size-full">
-          {mainImage && (
-            <Image
-              src={mainImage.src}
-              alt={mainImage.alt}
-              fill
-              sizes="(min-width: 768px) 20vw, 50vw"
-              className="object-contain"
-            />
-          )}
-        </Link>
-        <span className="absolute top-1 left-1 flex">
-          <StockDot inStock={product.is_in_stock} />
-        </span>
-        {product.is_in_stock && <CartAction product={product} productPath={productPath} />}
-      </div>
-      <Link href={productPath} className="mt-1 line-clamp-3 min-h-[3lh]">
-        <span className="link-line">{product.name}</span>
+    <li className="group flex flex-col">
+      <Link href={productPath} tabIndex={-1} aria-hidden className="relative block aspect-square rounded-box bg-surface">
+        {mainImage && (
+          <Image
+            src={mainImage.src}
+            alt={mainImage.alt}
+            fill
+            sizes="(min-width: 768px) 20vw, 50vw"
+            className="object-contain p-2 mix-blend-multiply"
+          />
+        )}
       </Link>
-      <div className={priceClassName} dangerouslySetInnerHTML={{ __html: product.price_html }} />
+      <StockStatus inStock={product.is_in_stock} />
+      <Link href={productPath} className="mt-0.5 line-clamp-3 min-h-[3lh] hyphens-auto">
+        <span className="link-line">{bindSingleLetterWords(product.name)}</span>
+      </Link>
+      {product.sku && <p className="truncate text-small text-mute">Kod {product.sku}</p>}
+      <div className={`mt-1 mb-2 ${priceClassName}`} dangerouslySetInnerHTML={{ __html: product.price_html }} />
+      {product.is_in_stock && (
+        <p className="mt-auto">
+          <CartAction product={product} productPath={productPath} />
+        </p>
+      )}
     </li>
   );
 }
@@ -45,15 +43,15 @@ export function ProductTile({ product }: { product: ProductSummary }) {
 function CartAction({ product, productPath }: { product: ProductSummary; productPath: string }) {
   if (product.type === "simple") {
     return (
-      <a href={wordpressUrl(`/koszyk/?add-to-cart=${product.id}`)} className={revealClassName}>
+      <Button variant="primary" href={wordpressUrl(`/koszyk/?add-to-cart=${product.id}`)}>
         Dodaj do koszyka<span className="sr-only">: {product.name}</span>
-      </a>
+      </Button>
     );
   }
 
   return (
-    <Link href={productPath} className={revealClassName}>
+    <Button variant="primary" href={productPath}>
       Wybierz rozmiar<span className="sr-only">: {product.name}</span>
-    </Link>
+    </Button>
   );
 }

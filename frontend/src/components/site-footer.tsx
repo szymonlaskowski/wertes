@@ -13,7 +13,7 @@ const helpPages = [
 
 export function SiteFooter() {
   return (
-    <footer className="mt-auto grid gap-1 px-2 pt-16 pb-4 text-small md:px-5">
+    <footer className="page-width order-last mt-auto grid gap-1 pt-16 pb-4 text-small">
       <p>
         <span className="mr-1 font-semibold">{company.name}</span>
         {company.address}. NIP {company.taxId}.{" "}

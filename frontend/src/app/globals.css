@@ -2,61 +2,147 @@
 
 @custom-variant mouse (@media (hover: hover) and (pointer: fine));
 
+@layer base {
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
 @theme inline {
+  --font-*: initial;
   --font-sans: var(--font-montserrat);
 }
 
 @theme {
+  --color-*: initial;
+  --text-*: initial;
+  --spacing-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --inset-shadow-*: initial;
+  --drop-shadow-*: initial;
+
+  --radius-box: 4px;
+
   --color-ink: #313131;
   --color-mute: #5f5f5f;
   --color-paper: #ffffff;
+  --color-surface: #f3f3f1;
   --color-accent: #fece00;
   --color-in-stock: #2e9e44;
 
-  --text-display: 200px;
-  --text-display--line-height: 0.92;
-  --text-display--letter-spacing: -0.04em;
-  --text-display--font-weight: 300;
-  --text-title: 40px;
-  --text-title--line-height: 1.05;
+  --text-display: 88px;
+  --text-display--line-height: 0.95;
+  --text-display--letter-spacing: -0.025em;
+  --text-display--font-weight: 700;
+  --text-title: 44px;
+  --text-title--line-height: 1.02;
   --text-title--letter-spacing: -0.02em;
-  --text-title--font-weight: 400;
+  --text-title--font-weight: 700;
   --text-body: 16px;
   --text-body--line-height: 1.5;
-  --text-small: 14px;
+  --text-small: 13px;
   --text-small--line-height: 1.45;
 
   --spacing: 8px;
 
   --tracking-label: 0.08em;
 
-  --radius-*: initial;
-  --shadow-*: initial;
-  --inset-shadow-*: initial;
-  --drop-shadow-*: initial;
-
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --duration-reveal: 150ms;
   --duration-hide: 120ms;
+}
+
+@theme static {
+  --duration-panel: 220ms;
+}
+
+@utility page-width {
+  width: 100%;
+  max-width: calc(var(--spacing) * 180);
+  margin-inline: auto;
+  padding-inline: calc(var(--spacing) * 2);
+
+  @variant md {
+    padding-inline: calc(var(--spacing) * 5);
+  }
 }
 
 @utility link-line {
   background-image: linear-gradient(currentColor, currentColor);
   background-repeat: no-repeat;
   background-position: 0 100%;
-  background-size: 0% 1px;
+  background-size: 0% 2px;
   transition: background-size var(--duration-hide) var(--ease-out);
 
   &:hover,
   &:focus-visible,
   a:hover &,
-  a:focus-visible & {
-    background-size: 100% 1px;
+  a:focus-visible &,
+  .group:hover & {
+    background-size: 100% 2px;
     transition-duration: var(--duration-reveal);
   }
 
   @media (prefers-reduced-motion: reduce) {
     transition: none;
+  }
+}
+
+@utility placeholder {
+  background-color: color-mix(in srgb, var(--color-mute) 10%, transparent);
+}
+
+@utility article-body {
+  max-width: 68ch;
+
+  & :where(p, ul, ol, figure) {
+    margin-bottom: calc(var(--spacing) * 2);
+  }
+  & :where(h2) {
+    margin: calc(var(--spacing) * 6) 0 calc(var(--spacing) * 2);
+    font-size: var(--text-title);
+    line-height: var(--text-title--line-height);
+    letter-spacing: var(--text-title--letter-spacing);
+  }
+  & :where(h3, h4) {
+    margin: calc(var(--spacing) * 4) 0 var(--spacing);
+    font-weight: 600;
+  }
+  & :where(ul) {
+    padding-left: calc(var(--spacing) * 3);
+    list-style: disc;
+  }
+  & :where(ol) {
+    padding-left: calc(var(--spacing) * 3);
+    list-style: decimal;
+  }
+  & :where(strong) {
+    font-weight: 600;
+  }
+  & :where(mark) {
+    background: none;
+    color: inherit;
+  }
+  & :where(a) {
+    background: linear-gradient(currentColor, currentColor) 0 100% / 100% 2px no-repeat;
+  }
+  & :where(img) {
+    max-width: 100%;
+    height: auto;
+  }
+  & :where(figcaption) {
+    margin-top: var(--spacing);
+    color: var(--color-mute);
+    font-size: var(--text-small);
+  }
+  & :where(.wp-block-gallery) {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: calc(var(--spacing) * 2);
+  }
+  & :where(hr, .wp-block-spacer) {
+    display: none;
   }
 }
 

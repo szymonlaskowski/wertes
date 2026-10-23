@@ -1,16 +1,18 @@
 import Link from "next/link";
 import { toLocalPath } from "@/lib/catalog-paths";
 import type { Category } from "@/lib/store-api";
-import { formatCount } from "./catalog";
+import { formatCount } from "@/lib/catalog";
 
 export function CountedLink({ category }: { category: Category }) {
   return (
     <Link
       href={toLocalPath(category.permalink)}
-      className="group/row relative flex justify-between gap-1 link-line"
+      className="group/row relative flex justify-between gap-1"
     >
       <HoverDot />
-      <span>{category.name}</span>
+      <span>
+        <span className="link-line">{category.name}</span>
+      </span>
       <span className="text-mute tabular-nums">{formatCount(category.count)}</span>
     </Link>
   );

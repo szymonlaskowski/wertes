@@ -1,68 +1,56 @@
 import { listLatestArticles } from "@/lib/articles";
-import {
-  countProducts,
-  getDepartmentProfile,
-  listBestsellersInStock,
-  listCategories,
-} from "@/lib/store-api";
-import { BrandBand } from "./home/brand-band";
+import { BRANDS_SLUG, findBySlug, listBrands, listDepartments } from "@/lib/catalog";
+import { type Category, countProducts, listBestsellersInStock, listCategories } from "@/lib/store-api";
 import { BrandsIndex } from "./home/brands-index";
-import { findBySlug, listBrands, listDepartments } from "./home/catalog";
-import { Chapter } from "./home/chapter";
-import { chapters } from "./home/chapters";
-import { DepartmentProfiles } from "./home/department-profiles";
+import { Hero } from "./home/hero";
 import { LatestArticles } from "./home/latest-articles";
-import { OtherDepartments } from "./home/other-departments";
+import { MostChosen, OwnBrand } from "./home/product-sections";
 import { WholesaleBand } from "./home/wholesale-band";
+import { WorkerDepartments, zones } from "./home/worker-departments";
 
-const LATEST_ARTICLES = 6;
-const HERO_IMAGE_CATEGORY = 2062;
-const DEPARTMENT_PROFILE_IDS = [2039, 2036];
+const LATEST_ARTICLES = 4;
+const OWN_BRAND_PRODUCTS = 3;
+const OWN_BRAND_SLUG = "wertes-safe";
+const FOOTWEAR_SLUG = "buty-ochronne-i-robocze";
 
 export default async function HomePage() {
-  const [categories, totalProducts, articles, heroProducts, departmentProfiles] =
-    await Promise.all([
-      listCategories(),
-      countProducts(),
-      listLatestArticles(LATEST_ARTICLES),
-      listBestsellersInStock(HERO_IMAGE_CATEGORY, 1),
-      Promise.all(DEPARTMENT_PROFILE_IDS.map(getDepartmentProfile)),
-    ]);
+  const categories = await listCategories();
+  const zoneCategories = zones.map((zone) => findBySlug(categories, zone.slug));
+  const ownBrand = findBySlug(categories, OWN_BRAND_SLUG);
   const brands = listBrands(categories);
-  const chapterSlugs = chapters.map((chapter) => chapter.slug);
-  const otherDepartments = listDepartments(categories).filter(
-    (department) => !chapterSlugs.includes(department.slug),
-  );
+
+  const [totalProducts, articles, ownBrandProducts, mostChosen] = await Promise.all([
+    countProducts(),
+    listLatestArticles(LATEST_ARTICLES),
+    listBestsellersInStock(ownBrand.id, OWN_BRAND_PRODUCTS),
+    listTopProductOfEach(zoneCategories),
+  ]);
 
   return (
     <main className="w-full">
-      <BrandBand
-        categories={categories}
+      <Hero
         totalProducts={totalProducts}
         brandCount={brands.length}
-        heroImage={heroProducts.at(0)?.images.at(0)}
+        footwear={findBySlug(categories, FOOTWEAR_SLUG)}
+        ownBrandProduct={ownBrandProducts.at(0)}
       />
-
-      <div className="mx-auto max-w-180 px-2 md:px-5">
-        {chapters.map((chapter) => (
-          <Chapter
-            key={chapter.slug}
-            title={chapter.title}
-            category={findBySlug(categories, chapter.slug)}
-            categories={categories}
-          />
-        ))}
-
-        <OtherDepartments departments={otherDepartments} />
-
-        <DepartmentProfiles profiles={departmentProfiles} />
-
-        <LatestArticles articles={articles} />
-
-        <BrandsIndex brands={brands} />
-      </div>
-
+      <WorkerDepartments categories={categories} others={listOtherDepartments(categories, zoneCategories)} />
+      <MostChosen products={mostChosen} />
+      <OwnBrand brand={ownBrand} products={ownBrandProducts} />
+      <LatestArticles articles={articles} />
       <WholesaleBand />
+      <BrandsIndex brands={brands} allBrands={findBySlug(categories, BRANDS_SLUG)} />
     </main>
+  );
+}
+
+async function listTopProductOfEach(departments: Category[]) {
+  const topProducts = await Promise.all(departments.map((department) => listBestsellersInStock(department.id, 1)));
+  return topProducts.flat();
+}
+
+function listOtherDepartments(categories: Category[], zoneCategories: Category[]) {
+  return listDepartments(categories).filter(
+    (department) => department.count > 0 && !zoneCategories.includes(department),
   );
 }
