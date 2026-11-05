@@ -7,7 +7,7 @@ import {
   listDepartments,
   listSuggestibleCategories,
   productCountLabel,
-  splitCategoryDescription,
+  readableCategoryDescription,
   splitSearchCounts,
 } from "./catalog";
 
@@ -67,22 +67,18 @@ test("product count uses the Polish plural form", () => {
   expect(productCountLabel(10532)).toBe("10\u00a0532 produkty");
 });
 
-test("description with markup keeps headings and lists, the first paragraph becomes the intro", () => {
-  const html = `<div class="x"><h2 style="a"><strong>Nagłówek</strong></h2>\n<p data-x="1">Rękawice <em>ochronne</em> &#8211; i&nbsp;nie tylko.</p><ul><li onclick="x()">Nitryl</li></ul><script>alert(1)</script></div>`;
-  expect(splitCategoryDescription(html)).toEqual({
-    intro: "Rękawice ochronne – i\u00a0nie tylko.",
-    restHtml: "<h2><strong>Nagłówek</strong></h2>\n<ul><li>Nitryl</li></ul>alert(1)",
-  });
+test("description with markup keeps only headings, paragraphs, lists and bold text", () => {
+  const html = `<div class="x"><h2 style="a"><strong>Nagłówek</strong></h2>\n<p data-x="1">Rękawice <em>ochronne</em>.</p><ul><li onclick="x()">Nitryl</li></ul><script>alert(1)</script></div>`;
+  expect(readableCategoryDescription(html)).toBe(
+    "<h2><strong>Nagłówek</strong></h2>\n<p>Rękawice ochronne.</p><ul><li>Nitryl</li></ul>alert(1)",
+  );
 });
 
 test("plain text description splits into paragraphs on blank lines", () => {
-  const text = `<div class="prose">\r\n\r\nPierwszy akapit.\r\n\r\nDrugi akapit.\r\n\r\nTrzeci.</div>`;
-  expect(splitCategoryDescription(text)).toEqual({
-    intro: "Pierwszy akapit.",
-    restHtml: "<p>Drugi akapit.</p>\n<p>Trzeci.</p>",
-  });
+  const text = `<div class="prose">\r\n\r\nPierwszy akapit.\r\n\r\nDrugi akapit.</div>`;
+  expect(readableCategoryDescription(text)).toBe("<p>Pierwszy akapit.</p>\n<p>Drugi akapit.</p>");
 });
 
-test("empty description gives no intro and no text", () => {
-  expect(splitCategoryDescription("")).toEqual({ intro: "", restHtml: "" });
+test("empty description gives no text", () => {
+  expect(readableCategoryDescription("")).toBe("");
 });

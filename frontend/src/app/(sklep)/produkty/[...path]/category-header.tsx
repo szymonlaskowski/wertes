@@ -1,52 +1,32 @@
-import Image from "next/image";
 import Link from "next/link";
-import { Suspense } from "react";
 import { Breadcrumb } from "@/components/breadcrumb";
 import { MoreSummary } from "@/components/more-summary";
 import { BRANDS_SLUG, childrenOf, formatCount, productCountLabel } from "@/lib/catalog";
 import { toLocalPath } from "@/lib/catalog-paths";
-import { DEFAULT_SORT } from "@/lib/category-filters";
-import { type Category, listProductsInCategory } from "@/lib/store-api";
+import type { Category } from "@/lib/store-api";
 
 const SHELF_TILES = 8;
+const PHONE_SHELF_TILES = 4;
 
 type CategoryHeaderProps = {
   category: Category;
   categories: Category[];
   ancestors: Category[];
-  intro: string;
 };
 
-export function CategoryHeader({ category, categories, ancestors, intro }: CategoryHeaderProps) {
+export function CategoryHeader({ category, categories, ancestors }: CategoryHeaderProps) {
   const shelves = shelvesNextTo(categories, category);
 
   return (
     <header>
-      <div className="grid gap-4 md:grid-cols-3">
-        <div className="md:col-span-2">
-          <Breadcrumb trail={ancestors} />
-          <h1 className="mt-3 text-title hyphens-auto">{category.name}</h1>
-          <p className="mt-1 text-mute">{productCountLabel(category.count)}</p>
-          {intro && <p className="mt-2 max-w-prose">{intro}</p>}
-        </div>
-        <div className="relative aspect-square w-full max-w-35 justify-self-end max-md:hidden">
-          <Suspense>
-            <BestsellerPhoto category={category} />
-          </Suspense>
-        </div>
+      <Breadcrumb trail={ancestors} />
+      <div className="mt-3 flex flex-wrap items-baseline gap-x-2">
+        <h1 className="text-title hyphens-auto">{category.name}</h1>
+        <p className="text-mute tabular-nums">{productCountLabel(category.count)}</p>
       </div>
       {shelves.length > 0 && <Shelves shelves={shelves} current={category} />}
     </header>
   );
-}
-
-async function BestsellerPhoto({ category }: { category: Category }) {
-  const unfilteredFirstPage = await listProductsInCategory(category.id, [], false, DEFAULT_SORT.sort, 1);
-  const photo = unfilteredFirstPage.products.at(0)?.images.at(0);
-  if (!photo) {
-    return null;
-  }
-  return <Image src={photo.src} alt="" fill priority sizes="280px" className="object-contain" />;
 }
 
 function shelvesNextTo(categories: Category[], category: Category) {
@@ -67,24 +47,25 @@ function nonEmptyShelves(categories: Category[]) {
 
 function Shelves({ shelves, current }: { shelves: Category[]; current: Category }) {
   const tileShelves = shelves.slice(0, SHELF_TILES);
-  const remainingShelves = shelves.slice(SHELF_TILES);
-  const currentShelfIsRemaining = remainingShelves.includes(current);
+  const remainingOnPhone = shelves.slice(PHONE_SHELF_TILES);
+  const currentShelfIsRemaining = remainingOnPhone.includes(current);
+  const hasRemainingOnDesktop = shelves.length > SHELF_TILES;
 
   return (
-    <nav aria-label="Półki" className="mt-5">
-      <ul className="grid gap-1 sm:grid-cols-2 lg:grid-cols-4">
-        {tileShelves.map((shelf) => (
-          <li key={shelf.id}>
+    <nav aria-label="Półki" className="mt-3">
+      <ul className="grid grid-cols-2 gap-1 lg:grid-cols-4">
+        {tileShelves.map((shelf, index) => (
+          <li key={shelf.id} className={index < PHONE_SHELF_TILES ? "" : "max-lg:hidden"}>
             <ShelfTile shelf={shelf} isCurrent={shelf === current} />
           </li>
         ))}
       </ul>
-      {remainingShelves.length > 0 && (
-        <details open={currentShelfIsRemaining} className="mt-1">
-          <MoreSummary label={`Pozostałe półki, ${remainingShelves.length}`} />
+      {remainingOnPhone.length > 0 && (
+        <details open={currentShelfIsRemaining} className={hasRemainingOnDesktop ? "mt-1" : "mt-1 lg:hidden"}>
+          <MoreSummary label="Pozostałe półki" />
           <ul className="mt-1 flex flex-wrap gap-x-4 gap-y-1">
-            {remainingShelves.map((shelf) => (
-              <li key={shelf.id}>
+            {remainingOnPhone.map((shelf) => (
+              <li key={shelf.id} className={tileShelves.includes(shelf) ? "lg:hidden" : ""}>
                 <Link href={toLocalPath(shelf.permalink)} aria-current={shelf === current ? "page" : undefined} className="aria-[current=page]:font-semibold">
                   <span className="link-line">{shelf.name}</span>{" "}
                   <span className="text-mute tabular-nums">{formatCount(shelf.count)}</span>
@@ -105,7 +86,7 @@ function ShelfTile({ shelf, isCurrent }: { shelf: Category; isCurrent: boolean }
     <Link
       href={toLocalPath(shelf.permalink)}
       aria-current={isCurrent ? "page" : undefined}
-      className={`block h-full rounded-box px-2 py-1 transition-colors duration-(--duration-reveal) ease-(--ease-out) motion-reduce:transition-none ${stateClassName}`}
+      className={`block h-full rounded-box px-2 py-1 transition-[background-color,scale] duration-(--duration-reveal) ease-(--ease-out) active:scale-[0.98] motion-reduce:transition-none ${stateClassName}`}
     >
       <span className="block font-semibold">{shelf.name}</span>
       <span className="text-small tabular-nums">{formatCount(shelf.count)}</span>

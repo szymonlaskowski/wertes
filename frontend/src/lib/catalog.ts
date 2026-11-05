@@ -1,4 +1,3 @@
-import { decodeHtmlEntities } from "@/lib/html-entities";
 import { toLocalPath } from "@/lib/catalog-paths";
 import type { SuggestedCategory } from "@/lib/search-suggestions";
 import type { Category, SearchCategoryCount } from "@/lib/store-api";
@@ -156,19 +155,10 @@ const READABLE_TAGS = ["p", "h2", "h3", "h4", "ul", "ol", "li", "strong", "br"];
 const BLOCK_TAG_PATTERN = /<(p|h2|h3|h4|ul|ol)>/;
 const BLANK_LINE_PATTERN = /\r?\n\s*\r?\n/;
 
-export function splitCategoryDescription(descriptionHtml: string) {
+export function readableCategoryDescription(descriptionHtml: string) {
   const readableHtml = keepReadableTags(descriptionHtml);
   const paragraphHtml = BLOCK_TAG_PATTERN.test(readableHtml) ? readableHtml : wrapParagraphs(readableHtml);
-  const firstParagraph = paragraphHtml.match(/<p>([\s\S]*?)<\/p>/);
-  if (!firstParagraph) {
-    return { intro: "", restHtml: paragraphHtml.trim() };
-  }
-
-  const introText = firstParagraph[1].replace(/<[^>]*>/g, "");
-  return {
-    intro: decodeHtmlEntities(introText).trim(),
-    restHtml: paragraphHtml.replace(firstParagraph[0], "").trim(),
-  };
+  return paragraphHtml.trim();
 }
 
 function keepReadableTags(html: string) {

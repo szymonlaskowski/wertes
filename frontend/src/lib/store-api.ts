@@ -9,15 +9,14 @@ const textWithEntities = type("string").pipe(decodeHtmlEntities);
 
 const image = type({ src: "string", alt: "string" });
 
-const category = type({
+const listedCategory = type({
   id: "number",
   name: textWithEntities,
   slug: "string",
   parent: "number",
-  count: "number",
   permalink: "string",
 });
-export type Category = typeof category.infer;
+export type Category = typeof listedCategory.infer & { count: number };
 
 const productSummary = type({
   id: "number",
@@ -37,6 +36,7 @@ const product = productSummary.merge({
   categories: type({ id: "number" }).array(),
   attributes: type({
     name: textWithEntities,
+    taxonomy: "string | null",
     has_variations: "boolean",
     terms: type({ name: textWithEntities, slug: "string" }).array(),
   }).array(),
@@ -61,9 +61,28 @@ export async function listCategories() {
   "use cache: remote";
   cacheLife("default");
 
-  const fields = "id,name,slug,parent,count,permalink";
+  const fields = "id,name,slug,parent,permalink";
   const response = await getFromStoreApi(`/products/categories?_fields=${fields}`);
-  return category.array().assert(await response.json());
+  const categories = listedCategory.array().assert(await response.json());
+  const productCounts = await countVisibleProductsPerCategory();
+  return categories.map((categoryWithoutCount): Category => ({
+    ...categoryWithoutCount,
+    count: productCounts.get(categoryWithoutCount.id) ?? 0,
+  }));
+}
+
+const categoryProductCounts = type({
+  taxonomy_counts: type({ term: "number", count: "number" }).array(),
+});
+
+async function countVisibleProductsPerCategory() {
+  const response = await getFromStoreApi("/products/collection-data?calculate_taxonomy_counts%5B%5D=product_cat");
+  const { taxonomy_counts } = categoryProductCounts.assert(await response.json());
+  const countsByCategoryId = new Map<number, number>();
+  for (const { term, count } of taxonomy_counts) {
+    countsByCategoryId.set(term, count);
+  }
+  return countsByCategoryId;
 }
 
 export type ProductSort = { orderby: "popularity" | "date" | "price"; order: "asc" | "desc" };
@@ -214,7 +233,53 @@ export async function findProductBySlug(slug: string) {
 
   const response = await getFromStoreApi(`/products?slug=${encodeURIComponent(slug)}`);
   const matches = product.array().assert(await response.json());
-  return matches.at(0);
+  const productMatch = matches.find((match) => match.type !== "variation");
+  if (productMatch) {
+    return productMatch;
+  }
+  return findProductWithEncodedSlug(slug);
+}
+
+async function findProductWithEncodedSlug(slug: string) {
+  const postResponse = await getFromWordpress(`/wp-json/wp/v2/product?slug=${encodeURIComponent(slug)}&_fields=id`);
+  if (!postResponse.ok) {
+    throw new Error(`WordPress product lookup for ${slug} responded with ${postResponse.status}`);
+  }
+  const posts = type({ id: "number" }).array().assert(await postResponse.json());
+  const post = posts.at(0);
+  if (!post) {
+    return undefined;
+  }
+  const productResponse = await getFromStoreApi(`/products/${post.id}`);
+  return product.assert(await productResponse.json());
+}
+
+const VARIATIONS_PER_PAGE = 100;
+const variationDetails = type({
+  id: "number",
+  sku: "string",
+  price_html: "string",
+  is_in_stock: "boolean",
+  images: image.array(),
+});
+export type VariationDetails = typeof variationDetails.infer;
+
+export async function listVariationDetails(productId: number) {
+  "use cache: remote";
+  cacheLife("default");
+
+  const fields = "id,sku,price_html,is_in_stock,images";
+  const details: VariationDetails[] = [];
+  for (let page = 1; ; page++) {
+    const response = await getFromStoreApi(
+      `/products?type=variation&parent=${productId}&per_page=${VARIATIONS_PER_PAGE}&page=${page}&_fields=${fields}`,
+    );
+    details.push(...variationDetails.array().assert(await response.json()));
+    const totalPages = Number(response.headers.get("X-WP-TotalPages"));
+    if (page >= totalPages) {
+      return details;
+    }
+  }
 }
 
 export async function findAnyProductPermalink() {

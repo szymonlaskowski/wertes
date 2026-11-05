@@ -1,10 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties } from "react";
+import { MoreSummary } from "@/components/more-summary";
 import { NormPlate } from "@/components/norm-plate";
 import { findBySlug, formatCount } from "@/lib/catalog";
 import { toLocalPath } from "@/lib/catalog-paths";
 import { type Category, wordpressUrl } from "@/lib/store-api";
+
+const VISIBLE_OTHER_DEPARTMENTS = 8;
 
 type FigureStyle = CSSProperties & Record<`--${string}`, string>;
 
@@ -76,7 +79,7 @@ const LABEL_WIDTH = FIGURE_SIZE / 5;
 
 export function WorkerDepartments({ categories, others }: { categories: Category[]; others: Category[] }) {
   return (
-    <section id="dzialy" aria-labelledby="dzialy-naglowek" className="page-width pt-10">
+    <section id="dzialy" aria-labelledby="dzialy-naglowek" className="page-width py-10">
       <div className="grid gap-5 lg:grid-cols-3">
         <div className="max-lg:contents">
           <div>
@@ -155,20 +158,35 @@ function ZoneLabel({ zone, category }: { zone: Zone; category: Category }) {
 }
 
 function OtherDepartments({ departments }: { departments: Category[] }) {
+  const largestDepartments = departments.slice(0, VISIBLE_OTHER_DEPARTMENTS);
+  const smallerDepartments = departments.slice(VISIBLE_OTHER_DEPARTMENTS);
+
   return (
     <div className="max-lg:order-last lg:mt-5">
       <h3 className="font-semibold">Pozostałe działy</h3>
-      <ul className="mt-1">
-        {departments.map((department) => (
-          <li key={department.id}>
-            <Link href={toLocalPath(department.permalink)} className="flex justify-between gap-2 py-0.5">
-              <span className="link-line">{department.name}</span>
-              <span className="text-mute tabular-nums">{formatCount(department.count)}</span>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <DepartmentList departments={largestDepartments} />
+      {smallerDepartments.length > 0 && (
+        <details className="mt-1">
+          <MoreSummary label={`Mniejsze działy, ${smallerDepartments.length}`} />
+          <DepartmentList departments={smallerDepartments} />
+        </details>
+      )}
     </div>
+  );
+}
+
+function DepartmentList({ departments }: { departments: Category[] }) {
+  return (
+    <ul className="mt-1">
+      {departments.map((department) => (
+        <li key={department.id}>
+          <Link href={toLocalPath(department.permalink)} className="flex justify-between gap-2 py-0.5">
+            <span className="link-line">{department.name}</span>
+            <span className="text-mute tabular-nums">{formatCount(department.count)}</span>
+          </Link>
+        </li>
+      ))}
+    </ul>
   );
 }
 

@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { Breadcrumb } from "@/components/breadcrumb";
 import { NormPlate } from "@/components/norm-plate";
 import { ProductTile } from "@/components/product-tile";
+import { productPagePriceClassName } from "@/components/price";
 import { StockDot } from "@/components/stock-dot";
 import { categoryTrail, findProductShelf, productCountLabel } from "@/lib/catalog";
 import { routeSegments, toLocalPath } from "@/lib/catalog-paths";
@@ -15,11 +16,16 @@ import {
   findProductBySlug,
   listBestsellersInStock,
   listCategories,
+  listVariationDetails,
   wordpressUrl,
 } from "@/lib/store-api";
 import { bindSingleLetterWords } from "@/lib/typography";
+import { buildVariantPicker } from "@/lib/variations";
+import { GalleryFocusProvider } from "./gallery-focus";
+import { OrderTerms } from "./order-terms";
 import { ProductGallery } from "./product-gallery";
 import { PurchaseForm } from "./purchase-form";
+import { VariantPurchaseForm } from "./variant-purchase-form";
 
 export const ensureStatic = "navigation";
 
@@ -27,9 +33,6 @@ const BRAND_ATTRIBUTE = "Marka";
 const NORMS_ATTRIBUTE = "Normy";
 const AVAILABILITY_ATTRIBUTE = "Dostępność";
 const SHELF_PRODUCTS = 4;
-
-const priceClassName =
-  "tabular-nums [&_.amount]:block [&_.amount]:text-small [&_.amount]:text-mute [&_.amount--netto]:text-title [&_.amount--netto]:font-semibold [&_.amount--netto]:text-ink [&_br]:hidden [&_small]:[font-size:inherit]";
 
 export async function generateStaticParams() {
   const permalink = await findAnyProductPermalink();
@@ -53,32 +56,29 @@ export default async function ProductPage(props: PageProps<"/produkt/[...path]">
   return (
     <main className="page-width pt-3 pb-10">
       {shelf && <Breadcrumb trail={categoryTrail(categories, shelf)} />}
-      <div className="mt-3 grid grid-cols-1 items-start gap-6 md:grid-cols-2">
-        <ProductGallery images={product.images} />
-        <div className="flex flex-col gap-3">
-          <div>
-            {brand && <p className="font-semibold">{brand}</p>}
-            <h1 className="font-semibold md:text-title">{bindSingleLetterWords(product.name)}</h1>
-            {product.sku && <p className="mt-1 text-small text-mute">Kod {product.sku}</p>}
-            {norms.length > 0 && (
-              <ul aria-label="Normy" className="mt-2 flex flex-wrap gap-1">
-                {norms.map((norm) => (
-                  <li key={norm}>
-                    <NormPlate norm={norm} />
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-          <div className={priceClassName} dangerouslySetInnerHTML={{ __html: product.price_html }} />
-          <Availability inStock={product.is_in_stock} />
-          {product.is_in_stock && <PurchaseForm product={product} />}
-          <div className="grid gap-3 rounded-box bg-surface p-3">
-            <BulkDiscounts />
-            <OrderHelp />
+      <GalleryFocusProvider>
+        <div className="mt-3 grid grid-cols-1 items-start gap-6 md:grid-cols-2">
+          <ProductGallery productId={product.id} images={product.images} />
+          <div className="flex flex-col gap-3">
+            <div>
+              {brand && <p className="font-semibold">{brand}</p>}
+              <h1 className="font-semibold md:text-title md:font-bold">{bindSingleLetterWords(product.name)}</h1>
+              {product.sku && <p className="mt-1 text-small text-mute">Kod {product.sku}</p>}
+              {norms.length > 0 && (
+                <ul aria-label="Normy" className="mt-2 flex flex-wrap gap-1">
+                  {norms.map((norm) => (
+                    <li key={norm}>
+                      <NormPlate norm={norm} />
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            <PurchasePanel product={product} />
+            <OrderTerms />
           </div>
         </div>
-      </div>
+      </GalleryFocusProvider>
       <div className="mt-10 grid gap-8 md:grid-cols-2">
         <Description html={product.description} />
         <Parameters product={product} />
@@ -89,6 +89,33 @@ export default async function ProductPage(props: PageProps<"/produkt/[...path]">
         </Suspense>
       )}
     </main>
+  );
+}
+
+async function PurchasePanel({ product }: { product: Product }) {
+  const cartUrl = wordpressUrl("/koszyk/");
+  const canBeOrdered = product.is_in_stock;
+  const offersVariants = product.type === "variable";
+
+  if (canBeOrdered && offersVariants) {
+    const variationDetails = await listVariationDetails(product.id);
+    return (
+      <VariantPurchaseForm
+        productId={product.id}
+        productPriceHtml={product.price_html}
+        picker={buildVariantPicker(product, variationDetails)}
+        cartUrl={cartUrl}
+        sizeChartUrl={wordpressUrl("/tabele-rozmiarow/")}
+      />
+    );
+  }
+
+  return (
+    <>
+      <div className={productPagePriceClassName} dangerouslySetInnerHTML={{ __html: product.price_html }} />
+      <Availability inStock={product.is_in_stock} />
+      {canBeOrdered && <PurchaseForm productId={product.id} cartUrl={cartUrl} />}
+    </>
   );
 }
 
@@ -105,7 +132,8 @@ async function loadProduct(path: string[]) {
 
   const canonicalPath = toLocalPath(product.permalink);
   const requestedPath = `/produkt/${path.join("/")}/`;
-  if (requestedPath !== canonicalPath) {
+  const isCanonicalPath = decodeURI(requestedPath) === decodeURI(canonicalPath);
+  if (!isCanonicalPath) {
     permanentRedirect(canonicalPath);
   }
   return product;
@@ -140,55 +168,6 @@ function Availability({ inStock }: { inStock: boolean }) {
   );
 }
 
-function BulkDiscounts() {
-  return (
-    <section aria-labelledby="rabaty">
-      <h2 id="rabaty" className="font-semibold">
-        Kupujesz więcej? Zapłacisz mniej
-      </h2>
-      <dl className="mt-1 grid grid-cols-[auto_1fr] gap-x-3 text-small">
-        {company.bulkDiscounts.map((discount) => (
-          <div key={discount.code} className="contents">
-            <dt>Koszyk od {discount.from}</dt>
-            <dd>
-              <b className="font-semibold">{discount.percent}</b> z kodem{" "}
-              <b className="font-semibold">{discount.code}</b>
-            </dd>
-          </div>
-        ))}
-      </dl>
-      <a href={wordpressUrl("/rabaty-na-duze-zamowienia/")} className="mt-1 inline-block text-small font-semibold link-line">
-        Warunki rabatów i wycena dla firm
-      </a>
-    </section>
-  );
-}
-
-function OrderHelp() {
-  return (
-    <dl className="grid gap-2 text-small sm:grid-cols-2">
-      <div>
-        <dt className="font-semibold">Dostawa</dt>
-        <dd>
-          Darmowa od {company.freeShippingFrom}, faktura VAT do każdego zamówienia.
-        </dd>
-      </div>
-      <div>
-        <dt className="font-semibold">Pomoc w doborze</dt>
-        <dd>
-          <a href={company.phoneHref} className="link-line">
-            {company.phone}
-          </a>{" "}
-          albo{" "}
-          <a href={company.emailHref} className="link-line">
-            {company.email}
-          </a>
-        </dd>
-      </div>
-    </dl>
-  );
-}
-
 function Description({ html }: { html: string }) {
   if (!html) {
     return null;
@@ -199,7 +178,10 @@ function Description({ html }: { html: string }) {
       <h2 id="opis" className="mb-1 font-semibold">
         Opis produktu
       </h2>
-      <div className="max-w-prose [&_p]:mb-2" dangerouslySetInnerHTML={{ __html: html }} />
+      <div
+        className="max-w-prose [&_:is(h2,h3,h4)]:mt-3 [&_:is(h2,h3,h4)]:mb-1 [&_:is(h2,h3,h4)]:font-semibold [&_p]:mb-2"
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
     </section>
   );
 }

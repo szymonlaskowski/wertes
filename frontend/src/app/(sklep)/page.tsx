@@ -34,8 +34,8 @@ export default async function HomePage() {
         footwear={findBySlug(categories, FOOTWEAR_SLUG)}
         ownBrandProduct={ownBrandProducts.at(0)}
       />
-      <WorkerDepartments categories={categories} others={listOtherDepartments(categories, zoneCategories)} />
       <MostChosen products={mostChosen} />
+      <WorkerDepartments categories={categories} others={listOtherDepartments(categories, zoneCategories)} />
       <OwnBrand brand={ownBrand} products={ownBrandProducts} />
       <LatestArticles articles={articles} />
       <WholesaleBand />
@@ -50,7 +50,8 @@ async function listTopProductOfEach(departments: Category[]) {
 }
 
 function listOtherDepartments(categories: Category[], zoneCategories: Category[]) {
-  return listDepartments(categories).filter(
+  const others = listDepartments(categories).filter(
     (department) => department.count > 0 && !zoneCategories.includes(department),
   );
+  return others.sort((first, second) => second.count - first.count);
 }

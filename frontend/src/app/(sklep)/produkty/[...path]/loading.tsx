@@ -19,8 +19,7 @@ export default function CategoryLoading() {
         ))}
       </div>
       <PlaceholderLine className="mt-3 w-40 text-title lg:w-100" />
-      <PlaceholderLine className="mt-1 w-15" />
-      <div className="mt-5 grid gap-1 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-3 grid grid-cols-2 gap-1 lg:grid-cols-4">
         {Array.from({ length: SHELF_TILES }, (_, index) => (
           <div key={index} className="placeholder h-8" />
         ))}

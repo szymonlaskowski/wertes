@@ -55,6 +55,7 @@
 
 @theme static {
   --duration-panel: 220ms;
+  --duration-morph: 320ms;
 }
 
 @utility page-width {
@@ -86,6 +87,42 @@
 
   @media (prefers-reduced-motion: reduce) {
     transition: none;
+  }
+}
+
+@utility button-label {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 2px;
+  transition: background-size var(--duration-hide) var(--ease-out);
+
+  :is(a, button):hover > &,
+  :is(a, button):focus-visible > & {
+    background-size: 100% 2px;
+    transition-duration: var(--duration-reveal);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+::view-transition {
+  pointer-events: none;
+}
+
+::view-transition-group(.product-image) {
+  animation-duration: var(--duration-morph);
+  animation-timing-function: var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
   }
 }
 

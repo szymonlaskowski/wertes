@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ViewTransition } from "react";
 import { Button } from "@/components/button";
 import { priceClassName } from "@/components/price";
+import { productImageTransitionName } from "@/components/product-image-transition";
 import { StockStatus } from "@/components/stock-dot";
 import { toLocalPath } from "@/lib/catalog-paths";
 import type { ProductSummary } from "@/lib/store-api";
@@ -14,7 +16,8 @@ export function ProductTile({ product }: { product: ProductSummary }) {
 
   return (
     <li className="group flex flex-col">
-      <Link href={productPath} tabIndex={-1} aria-hidden className="relative block aspect-square rounded-box bg-surface">
+      <ViewTransition name={productImageTransitionName(product.id)} share="product-image" default="none">
+        <Link href={productPath} tabIndex={-1} aria-hidden className="relative block aspect-square rounded-box bg-surface">
         {mainImage && (
           <Image
             src={mainImage.src}
@@ -24,7 +27,8 @@ export function ProductTile({ product }: { product: ProductSummary }) {
             className="object-contain p-2 mix-blend-multiply"
           />
         )}
-      </Link>
+        </Link>
+      </ViewTransition>
       <StockStatus inStock={product.is_in_stock} />
       <Link href={productPath} className="mt-0.5 line-clamp-3 min-h-[3lh] hyphens-auto">
         <span className="link-line">{bindSingleLetterWords(product.name)}</span>

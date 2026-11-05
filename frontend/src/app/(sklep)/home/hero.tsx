@@ -7,7 +7,7 @@ import { company } from "@/lib/company";
 import { type Category, type ProductSummary, wordpressUrl } from "@/lib/store-api";
 
 const BANNER_PHOTO = "/wp-content/uploads/2022/02/25-scaled.jpg";
-const FOOTWEAR_PHOTO = "/wp-content/uploads/2022/02/14-scaled.jpg";
+const FOOTWEAR_PHOTO = "/wp-content/uploads/2022/02/11-scaled.jpg";
 
 export function Hero({
   totalProducts,

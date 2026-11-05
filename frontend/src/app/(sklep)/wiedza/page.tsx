@@ -15,7 +15,7 @@ export const metadata: Metadata = { title: "Wiedza" };
 export default function KnowledgePage(props: PageProps<"/wiedza">) {
   return (
     <main className="page-width pt-4 pb-10">
-      <PageTitle>wiedza</PageTitle>
+      <PageTitle>Wiedza</PageTitle>
       <p className="mt-1 text-mute">Poradniki o doborze odzieży, rękawic i&nbsp;sprzętu BHP.</p>
       <Suspense fallback={<ArticleListPlaceholder />}>
         <ArticleList searchParams={props.searchParams} />

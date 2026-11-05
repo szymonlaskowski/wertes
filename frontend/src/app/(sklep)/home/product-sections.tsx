@@ -5,7 +5,7 @@ import type { Category, ProductSummary } from "@/lib/store-api";
 
 export function MostChosen({ products }: { products: ProductSummary[] }) {
   return (
-    <section aria-labelledby="najczesciej" className="page-width py-10">
+    <section aria-labelledby="najczesciej" className="page-width pt-10">
       <h2 id="najczesciej" className="text-title">
         Najczęściej wybierane
       </h2>

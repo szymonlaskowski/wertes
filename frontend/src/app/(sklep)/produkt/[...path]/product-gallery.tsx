@@ -1,14 +1,26 @@
 "use client";
 
 import Image from "next/image";
-import { type UIEvent, useRef, useState } from "react";
+import { type UIEvent, useEffect, useRef, useState, ViewTransition } from "react";
+import { productImageTransitionName } from "@/components/product-image-transition";
+import { useGalleryFocus } from "./gallery-focus";
 
 type GalleryImage = { src: string; alt: string };
 
-export function ProductGallery({ images }: { images: GalleryImage[] }) {
+export function ProductGallery({ productId, images }: { productId: number; images: GalleryImage[] }) {
   const slidesRef = useRef<HTMLUListElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const { focusedImageSrc } = useGalleryFocus();
   const hasThumbnails = images.length > 1;
+
+  useEffect(() => {
+    const focusedIndex = images.findIndex((image) => image.src === focusedImageSrc);
+    const galleryHasFocusedImage = focusedIndex !== -1;
+    const slides = slidesRef.current;
+    if (galleryHasFocusedImage && slides !== null) {
+      slides.scrollTo({ left: focusedIndex * slides.clientWidth, behavior: "instant" });
+    }
+  }, [images, focusedImageSrc]);
 
   function trackActiveSlide(event: UIEvent<HTMLUListElement>) {
     const slides = event.currentTarget;
@@ -29,25 +41,27 @@ export function ProductGallery({ images }: { images: GalleryImage[] }) {
 
   return (
     <div className="md:sticky md:top-3">
-      <ul
-        ref={slidesRef}
-        onScroll={trackActiveSlide}
-        aria-label="Zdjęcia produktu"
-        className="flex aspect-square snap-x snap-mandatory overflow-x-auto rounded-box bg-surface [scrollbar-width:none]"
-      >
-        {images.map((image, index) => (
-          <li key={image.src} className="relative w-full shrink-0 snap-start">
-            <Image
-              src={image.src}
-              alt={image.alt}
-              fill
-              preload={index === 0}
-              sizes="(min-width: 768px) 50vw, 100vw"
-              className="object-contain p-4 mix-blend-multiply"
-            />
-          </li>
-        ))}
-      </ul>
+      <ViewTransition name={productImageTransitionName(productId)} share="product-image" default="none">
+        <ul
+          ref={slidesRef}
+          onScroll={trackActiveSlide}
+          aria-label="Zdjęcia produktu"
+          className="flex aspect-square snap-x snap-mandatory overflow-x-auto rounded-box bg-surface [scrollbar-width:none]"
+        >
+          {images.map((image, index) => (
+            <li key={image.src} className="relative w-full shrink-0 snap-start">
+              <Image
+                src={image.src}
+                alt={image.alt}
+                fill
+                preload={index === 0}
+                sizes="(min-width: 768px) 50vw, 100vw"
+                className="object-contain p-4 mix-blend-multiply"
+              />
+            </li>
+          ))}
+        </ul>
+      </ViewTransition>
       {hasThumbnails && (
         <ul className="mt-2 flex flex-wrap gap-1">
           {images.map((image, index) => (

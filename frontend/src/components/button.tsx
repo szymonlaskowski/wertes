@@ -9,7 +9,7 @@ type ButtonProps = { variant: ButtonVariant; children: ReactNode } & (
 );
 
 const sharedClassName =
-  "inline-block rounded-box px-3 py-1.5 text-small font-semibold text-ink mouse:hover:brightness-95 active:scale-[0.97] transition-[filter,scale] duration-(--duration-reveal) ease-(--ease-out) focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-ink disabled:pointer-events-none disabled:opacity-40 motion-reduce:transition-none";
+  "inline-block rounded-box px-3 py-1.5 text-small font-semibold text-ink active:scale-[0.96] transition-[scale] duration-(--duration-reveal) ease-(--ease-out) focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-ink disabled:pointer-events-none disabled:opacity-40 motion-reduce:transition-none";
 
 const variantClassNames: Record<ButtonVariant, string> = {
   primary: "bg-accent",
@@ -22,14 +22,14 @@ export function Button(props: ButtonProps) {
   if ("href" in props) {
     return (
       <Link href={props.href} className={className}>
-        {props.children}
+        <span className="button-label">{props.children}</span>
       </Link>
     );
   }
 
   return (
     <button type={props.type} disabled={props.disabled} onClick={props.onClick} className={className}>
-      {props.children}
+      <span className="button-label">{props.children}</span>
     </button>
   );
 }

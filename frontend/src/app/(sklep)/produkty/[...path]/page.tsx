@@ -6,7 +6,7 @@ import { Button } from "@/components/button";
 import { MoreSummary } from "@/components/more-summary";
 import { Pager } from "@/components/pager";
 import { ProductTile } from "@/components/product-tile";
-import { categoryTrail, formatCount, productCountLabel, splitCategoryDescription } from "@/lib/catalog";
+import { categoryTrail, formatCount, productCountLabel, readableCategoryDescription } from "@/lib/catalog";
 import {
   CATEGORY_FILTERS,
   type CategoryFilter,
@@ -35,6 +35,7 @@ import {
 } from "@/lib/store-api";
 import { CategoryGuide } from "./category-guide";
 import { CategoryHeader } from "./category-header";
+import { CheckSquare, SizeSquareFace } from "./filter-mark";
 import { CategoryResultsPlaceholder } from "./loading";
 
 const VISIBLE_FACET_ROWS = 8;
@@ -59,19 +60,18 @@ export default async function CategoryPage(props: PageProps<"/produkty/[...path]
   const { category, categories, page } = await loadCategory(path);
   const ancestors = categoryTrail(categories, category).slice(0, -1);
   const view = readCategoryView(await props.searchParams);
-  const viewKey = categoryViewUrl("", view, page);
-  const description = splitCategoryDescription(await getCategoryDescription(category.id));
+  const descriptionHtml = readableCategoryDescription(await getCategoryDescription(category.id));
   const isFirstPage = page === 1;
 
   return (
     <main className="page-width pt-3 pb-10">
-      <CategoryHeader category={category} categories={categories} ancestors={ancestors} intro={description.intro} />
-      <Suspense key={viewKey} fallback={<CategoryResultsPlaceholder />}>
+      <CategoryHeader category={category} categories={categories} ancestors={ancestors} />
+      <Suspense fallback={<CategoryResultsPlaceholder />}>
         <CategoryResults category={category} page={page} view={view} />
       </Suspense>
       {isFirstPage && (
         <Suspense>
-          <CategoryGuide category={category} descriptionHtml={description.restHtml} />
+          <CategoryGuide category={category} descriptionHtml={descriptionHtml} />
         </Suspense>
       )}
     </main>
@@ -126,6 +126,7 @@ async function CategoryResults({ category, page, view }: CategoryResultsProps) {
   return (
     <div className="mt-5 grid gap-8 md:grid-cols-[240px_1fr]">
       <div className="md:col-start-2">
+        <MobileFilters categoryPath={categoryPath} view={view} facets={facets} />
         <SelectedFilters categoryPath={categoryPath} view={view} facets={facets} />
         <SortBar categoryPath={categoryPath} view={view} total={total} />
         {products.length === 0 ? (
@@ -145,13 +146,38 @@ async function CategoryResults({ category, page, view }: CategoryResultsProps) {
           pageUrl={(pageNumber) => categoryViewUrl(categoryPath, view, pageNumber)}
         />
       </div>
-      <aside aria-label="Filtry" className="grid content-start gap-5 md:col-start-1 md:row-start-1">
-        <InStockOnlyToggle categoryPath={categoryPath} view={view} />
-        {facets.map(({ filter, rows }) => (
-          <Facet key={filter.param} filter={filter} rows={rows} categoryPath={categoryPath} view={view} />
-        ))}
+      <aside aria-label="Filtry" className="max-md:hidden md:col-start-1 md:row-start-1">
+        <FilterPanel categoryPath={categoryPath} view={view} facets={facets} />
       </aside>
     </div>
+  );
+}
+
+type FilterPanelProps = {
+  categoryPath: string;
+  view: CategoryView;
+  facets: { filter: CategoryFilter; rows: FacetRow[] }[];
+};
+
+function FilterPanel({ categoryPath, view, facets }: FilterPanelProps) {
+  return (
+    <div className="grid content-start gap-5">
+      <InStockOnlyToggle categoryPath={categoryPath} view={view} />
+      {facets.map(({ filter, rows }) => (
+        <Facet key={filter.param} filter={filter} rows={rows} categoryPath={categoryPath} view={view} />
+      ))}
+    </div>
+  );
+}
+
+function MobileFilters({ categoryPath, view, facets }: FilterPanelProps) {
+  return (
+    <details className="mb-3 md:hidden">
+      <MoreSummary label="Filtry" />
+      <div className="mt-3">
+        <FilterPanel categoryPath={categoryPath} view={view} facets={facets} />
+      </div>
+    </details>
   );
 }
 
@@ -227,18 +253,12 @@ function InStockOnlyToggle({ categoryPath, view }: { categoryPath: string; view:
   );
 }
 
-function CheckSquare({ isChecked }: { isChecked: boolean }) {
-  const stateClassName = isChecked ? "border-ink bg-ink" : "border-mute bg-paper";
-  return <span aria-hidden="true" className={`size-2 shrink-0 rounded-box border-2 ${stateClassName}`} />;
-}
-
 function SizeSquares({ filter, rows, categoryPath, view }: FacetProps) {
   return (
     <ul className="flex flex-wrap gap-1">
       {rows.map((row) => {
         const isSelected = view.selected[filter.param].includes(row.slug);
         const toggledView = withToggledValue(view, filter.param, row.slug);
-        const stateClassName = isSelected ? "bg-ink text-paper" : "bg-surface mouse:hover:bg-accent";
         return (
           <li key={row.slug}>
             <Link
@@ -246,9 +266,9 @@ function SizeSquares({ filter, rows, categoryPath, view }: FacetProps) {
               {...filterLinkProps}
               aria-current={isSelected ? "true" : undefined}
               title={productCountLabel(row.count)}
-              className={`flex h-6 min-w-6 items-center justify-center rounded-box px-1 tabular-nums transition-colors duration-(--duration-reveal) ease-(--ease-out) motion-reduce:transition-none ${stateClassName}`}
+              className="block rounded-box"
             >
-              {row.name}
+              <SizeSquareFace isSelected={isSelected}>{row.name}</SizeSquareFace>
             </Link>
           </li>
         );
