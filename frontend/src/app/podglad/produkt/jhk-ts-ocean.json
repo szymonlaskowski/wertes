@@ -1,0 +1,469 @@
+{
+ "name": "Koszulka męska JHK TS OCEAN 145 g/m² do personalizacji, różne kolory",
+ "sku": "JHK-TS OCEAN",
+ "brand": "JHK",
+ "images": [
+  "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-bk-l_01.jpg",
+  "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-bk-l_02.jpg",
+  "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-bk-l_03.jpg",
+  "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-kg-l_01.jpg",
+  "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-ny-l_01.jpg",
+  "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-or-l_01.jpg",
+  "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-rb-l_01.jpg",
+  "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-rd-l_01.jpg",
+  "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-sy-l_01.jpg",
+  "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-wh-l_01.jpg"
+ ],
+ "variants": [
+  {
+   "id": 11696527,
+   "sku": "TS OCEAN BK 3XL",
+   "color": "BK - Black",
+   "size": "3XL",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-bk-l_01.jpg",
+   "inStock": false,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696528,
+   "sku": "TS OCEAN BK L",
+   "color": "BK - Black",
+   "size": "L",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-bk-l_01.jpg",
+   "inStock": false,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696529,
+   "sku": "TS OCEAN BK M",
+   "color": "BK - Black",
+   "size": "M",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-bk-l_01.jpg",
+   "inStock": false,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696530,
+   "sku": "TS OCEAN BK S",
+   "color": "BK - Black",
+   "size": "S",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-bk-l_01.jpg",
+   "inStock": true,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696531,
+   "sku": "TS OCEAN BK XL",
+   "color": "BK - Black",
+   "size": "XL",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-bk-l_01.jpg",
+   "inStock": false,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696532,
+   "sku": "TS OCEAN BK XXL",
+   "color": "BK - Black",
+   "size": "XXL",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-bk-l_01.jpg",
+   "inStock": false,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696533,
+   "sku": "TS OCEAN KG L",
+   "color": "KG - Kelly Green",
+   "size": "L",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-kg-l_01.jpg",
+   "inStock": false,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696534,
+   "sku": "TS OCEAN KG M",
+   "color": "KG - Kelly Green",
+   "size": "M",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-kg-l_01.jpg",
+   "inStock": true,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696535,
+   "sku": "TS OCEAN KG S",
+   "color": "KG - Kelly Green",
+   "size": "S",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-kg-l_01.jpg",
+   "inStock": true,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696536,
+   "sku": "TS OCEAN KG XL",
+   "color": "KG - Kelly Green",
+   "size": "XL",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-kg-l_01.jpg",
+   "inStock": true,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696537,
+   "sku": "TS OCEAN KG XXL",
+   "color": "KG - Kelly Green",
+   "size": "XXL",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-kg-l_01.jpg",
+   "inStock": true,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696538,
+   "sku": "TS OCEAN NY 3XL",
+   "color": "NY - Navy",
+   "size": "3XL",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-ny-l_01.jpg",
+   "inStock": false,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696539,
+   "sku": "TS OCEAN NY L",
+   "color": "NY - Navy",
+   "size": "L",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-ny-l_01.jpg",
+   "inStock": false,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696540,
+   "sku": "TS OCEAN NY M",
+   "color": "NY - Navy",
+   "size": "M",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-ny-l_01.jpg",
+   "inStock": true,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696541,
+   "sku": "TS OCEAN NY S",
+   "color": "NY - Navy",
+   "size": "S",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-ny-l_01.jpg",
+   "inStock": true,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696542,
+   "sku": "TS OCEAN NY XL",
+   "color": "NY - Navy",
+   "size": "XL",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-ny-l_01.jpg",
+   "inStock": true,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696543,
+   "sku": "TS OCEAN NY XXL",
+   "color": "NY - Navy",
+   "size": "XXL",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-ny-l_01.jpg",
+   "inStock": false,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696544,
+   "sku": "TS OCEAN OR L",
+   "color": "OR - Orange",
+   "size": "L",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-or-l_01.jpg",
+   "inStock": false,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696545,
+   "sku": "TS OCEAN OR M",
+   "color": "OR - Orange",
+   "size": "M",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-or-l_01.jpg",
+   "inStock": false,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696546,
+   "sku": "TS OCEAN OR S",
+   "color": "OR - Orange",
+   "size": "S",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-or-l_01.jpg",
+   "inStock": true,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696547,
+   "sku": "TS OCEAN OR XL",
+   "color": "OR - Orange",
+   "size": "XL",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-or-l_01.jpg",
+   "inStock": false,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696548,
+   "sku": "TS OCEAN OR XXL",
+   "color": "OR - Orange",
+   "size": "XXL",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-or-l_01.jpg",
+   "inStock": false,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696549,
+   "sku": "TS OCEAN RB 3XL",
+   "color": "RB - Royal Blue",
+   "size": "3XL",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-rb-l_01.jpg",
+   "inStock": false,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696550,
+   "sku": "TS OCEAN RB L",
+   "color": "RB - Royal Blue",
+   "size": "L",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-rb-l_01.jpg",
+   "inStock": true,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696551,
+   "sku": "TS OCEAN RB M",
+   "color": "RB - Royal Blue",
+   "size": "M",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-rb-l_01.jpg",
+   "inStock": true,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696552,
+   "sku": "TS OCEAN RB S",
+   "color": "RB - Royal Blue",
+   "size": "S",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-rb-l_01.jpg",
+   "inStock": true,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696553,
+   "sku": "TS OCEAN RB XL",
+   "color": "RB - Royal Blue",
+   "size": "XL",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-rb-l_01.jpg",
+   "inStock": true,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696554,
+   "sku": "TS OCEAN RB XXL",
+   "color": "RB - Royal Blue",
+   "size": "XXL",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-rb-l_01.jpg",
+   "inStock": false,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696555,
+   "sku": "TS OCEAN RD 3XL",
+   "color": "RD - Red",
+   "size": "3XL",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-rd-l_01.jpg",
+   "inStock": true,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696556,
+   "sku": "TS OCEAN RD L",
+   "color": "RD - Red",
+   "size": "L",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-rd-l_01.jpg",
+   "inStock": true,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696557,
+   "sku": "TS OCEAN RD M",
+   "color": "RD - Red",
+   "size": "M",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-rd-l_01.jpg",
+   "inStock": true,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696558,
+   "sku": "TS OCEAN RD S",
+   "color": "RD - Red",
+   "size": "S",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-rd-l_01.jpg",
+   "inStock": true,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696559,
+   "sku": "TS OCEAN RD XL",
+   "color": "RD - Red",
+   "size": "XL",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-rd-l_01.jpg",
+   "inStock": true,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696560,
+   "sku": "TS OCEAN RD XXL",
+   "color": "RD - Red",
+   "size": "XXL",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-rd-l_01.jpg",
+   "inStock": true,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696561,
+   "sku": "TS OCEAN SY L",
+   "color": "SY - Gold",
+   "size": "L",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-sy-l_01.jpg",
+   "inStock": true,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696562,
+   "sku": "TS OCEAN SY M",
+   "color": "SY - Gold",
+   "size": "M",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-sy-l_01.jpg",
+   "inStock": true,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696563,
+   "sku": "TS OCEAN SY S",
+   "color": "SY - Gold",
+   "size": "S",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-sy-l_01.jpg",
+   "inStock": true,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696564,
+   "sku": "TS OCEAN SY XL",
+   "color": "SY - Gold",
+   "size": "XL",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-sy-l_01.jpg",
+   "inStock": true,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696565,
+   "sku": "TS OCEAN SY XXL",
+   "color": "SY - Gold",
+   "size": "XXL",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-sy-l_01.jpg",
+   "inStock": true,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696566,
+   "sku": "TS OCEAN WH 3XL",
+   "color": "WH White",
+   "size": "3XL",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-wh-l_01.jpg",
+   "inStock": true,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696567,
+   "sku": "TS OCEAN WH L",
+   "color": "WH White",
+   "size": "L",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-wh-l_01.jpg",
+   "inStock": false,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696568,
+   "sku": "TS OCEAN WH M",
+   "color": "WH White",
+   "size": "M",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-wh-l_01.jpg",
+   "inStock": false,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696569,
+   "sku": "TS OCEAN WH S",
+   "color": "WH White",
+   "size": "S",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-wh-l_01.jpg",
+   "inStock": false,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696570,
+   "sku": "TS OCEAN WH XL",
+   "color": "WH White",
+   "size": "XL",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-wh-l_01.jpg",
+   "inStock": false,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  },
+  {
+   "id": 11696571,
+   "sku": "TS OCEAN WH XXL",
+   "color": "WH White",
+   "size": "XXL",
+   "image": "https://wertes.pl/wp-content/uploads/2026/09/ts-ocean-wh-l_01.jpg",
+   "inStock": true,
+   "netGrosze": 638,
+   "grossGrosze": 785
+  }
+ ]
+}

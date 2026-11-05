@@ -1,0 +1,130 @@
+{
+ "name": "REIS Kombinezon malarski KOM W",
+ "sku": "KOM W",
+ "brand": "Reis",
+ "images": [
+  "https://wertes.pl/wp-content/uploads/2022/02/KOM.png"
+ ],
+ "variants": [
+  {
+   "id": 826097,
+   "sku": "KOMW7XL",
+   "color": null,
+   "size": "7XL",
+   "image": "https://wertes.pl/wp-content/uploads/2022/02/KOM.png",
+   "inStock": true,
+   "netGrosze": 822,
+   "grossGrosze": 1011
+  },
+  {
+   "id": 826098,
+   "sku": "KOMW8XL",
+   "color": null,
+   "size": "8XL",
+   "image": "https://wertes.pl/wp-content/uploads/2022/02/KOM.png",
+   "inStock": true,
+   "netGrosze": 822,
+   "grossGrosze": 1011
+  },
+  {
+   "id": 826089,
+   "sku": "KOMWL",
+   "color": null,
+   "size": "L",
+   "image": "https://wertes.pl/wp-content/uploads/2022/02/KOM.png",
+   "inStock": true,
+   "netGrosze": 685,
+   "grossGrosze": 843
+  },
+  {
+   "id": 826090,
+   "sku": "KOMWM",
+   "color": null,
+   "size": "M",
+   "image": "https://wertes.pl/wp-content/uploads/2022/02/KOM.png",
+   "inStock": true,
+   "netGrosze": 685,
+   "grossGrosze": 843
+  },
+  {
+   "id": 826091,
+   "sku": "KOMWXL",
+   "color": null,
+   "size": "XL",
+   "image": "https://wertes.pl/wp-content/uploads/2022/02/KOM.png",
+   "inStock": true,
+   "netGrosze": 685,
+   "grossGrosze": 843
+  },
+  {
+   "id": 826092,
+   "sku": "KOMWXXL",
+   "color": null,
+   "size": "2XL",
+   "image": "https://wertes.pl/wp-content/uploads/2022/02/KOM.png",
+   "inStock": true,
+   "netGrosze": 685,
+   "grossGrosze": 843
+  },
+  {
+   "id": 826093,
+   "sku": "KOMWXXXL",
+   "color": null,
+   "size": "XXXL",
+   "image": "https://wertes.pl/wp-content/uploads/2022/02/KOM.png",
+   "inStock": true,
+   "netGrosze": 685,
+   "grossGrosze": 843
+  },
+  {
+   "id": 826094,
+   "sku": "KOMW4XL",
+   "color": null,
+   "size": "4XL",
+   "image": "https://wertes.pl/wp-content/uploads/2022/02/KOM.png",
+   "inStock": false,
+   "netGrosze": 753,
+   "grossGrosze": 926
+  },
+  {
+   "id": 826095,
+   "sku": "KOMW5XL",
+   "color": null,
+   "size": "5XL",
+   "image": "https://wertes.pl/wp-content/uploads/2022/02/KOM.png",
+   "inStock": true,
+   "netGrosze": 753,
+   "grossGrosze": 926
+  },
+  {
+   "id": 826096,
+   "sku": "KOMW6XL",
+   "color": null,
+   "size": "6XL",
+   "image": "https://wertes.pl/wp-content/uploads/2022/02/KOM.png",
+   "inStock": true,
+   "netGrosze": 822,
+   "grossGrosze": 1011
+  },
+  {
+   "id": 826099,
+   "sku": "KOMWS",
+   "color": null,
+   "size": "S",
+   "image": "https://wertes.pl/wp-content/uploads/2022/02/KOM.png",
+   "inStock": true,
+   "netGrosze": 685,
+   "grossGrosze": 843
+  },
+  {
+   "id": 826100,
+   "sku": "KOMWXS",
+   "color": null,
+   "size": "XS",
+   "image": "https://wertes.pl/wp-content/uploads/2022/02/KOM.png",
+   "inStock": true,
+   "netGrosze": 651,
+   "grossGrosze": 801
+  }
+ ]
+}
