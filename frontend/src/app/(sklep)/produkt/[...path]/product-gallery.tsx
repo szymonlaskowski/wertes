@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { type UIEvent, useEffect, useRef, useState, ViewTransition } from "react";
+import { type PointerEvent, type UIEvent, useEffect, useRef, useState, ViewTransition } from "react";
 import { productImageTransitionName } from "@/components/product-image-transition";
 import { useGalleryFocus } from "./gallery-focus";
 
@@ -39,6 +39,14 @@ export function ProductGallery({ productId, images }: { productId: number; image
     });
   }
 
+  function followPointerWithZoom(event: PointerEvent<HTMLLIElement>) {
+    const slide = event.currentTarget;
+    const bounds = slide.getBoundingClientRect();
+    const percentFromLeft = ((event.clientX - bounds.left) / bounds.width) * 100;
+    const percentFromTop = ((event.clientY - bounds.top) / bounds.height) * 100;
+    slide.style.setProperty("--zoom-origin", `${percentFromLeft}% ${percentFromTop}%`);
+  }
+
   return (
     <div className="md:sticky md:top-3">
       <ViewTransition name={productImageTransitionName(productId)} share="product-image" default="none">
@@ -49,14 +57,18 @@ export function ProductGallery({ productId, images }: { productId: number; image
           className="flex aspect-square snap-x snap-mandatory overflow-x-auto rounded-box bg-surface [scrollbar-width:none]"
         >
           {images.map((image, index) => (
-            <li key={image.src} className="relative w-full shrink-0 snap-start">
+            <li
+              key={image.src}
+              onPointerMove={followPointerWithZoom}
+              className="group/slide relative w-full shrink-0 snap-start overflow-hidden mouse:cursor-zoom-in"
+            >
               <Image
                 src={image.src}
                 alt={image.alt}
                 fill
                 preload={index === 0}
                 sizes="(min-width: 768px) 50vw, 100vw"
-                className="object-contain p-4 mix-blend-multiply"
+                className="origin-(--zoom-origin) object-contain p-4 mix-blend-multiply transition-[scale] duration-(--duration-panel) ease-(--ease-out) mouse:group-hover/slide:scale-200 motion-reduce:transition-none"
               />
             </li>
           ))}

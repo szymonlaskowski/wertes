@@ -67,7 +67,7 @@ export function MegaNav({ departments }: { departments: MegaNavDepartment[] }) {
 
   return (
     <div onMouseLeave={close} onBlur={closeWhenFocusLeaves} onKeyDown={closeOnEscape}>
-      <ul className="flex flex-wrap gap-x-4">
+      <ul className="flex gap-x-4 md:flex-wrap">
         {departments.map((department, index) => (
           <li
             key={department.id}

@@ -1,3 +1,5 @@
+const FREE_SHIPPING_FROM_ZLOTY = 500;
+
 export const company = {
   name: "Wertes",
   address: "Wiązowa 12, 87-800 Włocławek",
@@ -6,7 +8,8 @@ export const company = {
   phoneHref: "tel:+48780531108",
   email: "biuro@wertes.pl",
   emailHref: "mailto:biuro@wertes.pl",
-  freeShippingFrom: "500 zł",
+  freeShippingFrom: `${FREE_SHIPPING_FROM_ZLOTY} zł`,
+  freeShippingFromGrossGrosze: FREE_SHIPPING_FROM_ZLOTY * 100,
   bulkDiscounts: [
     { from: "1500 zł", percent: "4%", code: "DUZ4ZAM" },
     { from: "8000 zł", percent: "7%", code: "DUZ7ZAM" },

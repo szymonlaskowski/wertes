@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { DepartmentNav } from "@/components/department-nav";
-import { AccountIcon, CartIcon } from "@/components/icons";
+import { CartButton } from "@/components/cart/cart-button";
+import { AccountIcon } from "@/components/icons";
 import { SearchBox } from "@/components/search-box";
 import { listSuggestibleCategories } from "@/lib/catalog";
 import { company } from "@/lib/company";
@@ -23,10 +24,7 @@ export async function SiteHeader() {
             <AccountIcon />
             <span className="link-line max-sm:sr-only">Konto</span>
           </a>
-          <a href={wordpressUrl("/koszyk/")} className={iconLinkClassName}>
-            <CartIcon />
-            <span className="link-line max-sm:sr-only">Koszyk</span>
-          </a>
+          <CartButton cartPageUrl={wordpressUrl("/koszyk/")} className={iconLinkClassName} />
         </div>
       </div>
       <div className="mx-auto max-w-180">
@@ -54,4 +52,4 @@ function TopBar() {
   );
 }
 
-const iconLinkClassName = "group flex items-center gap-1 focus-visible:outline-2 focus-visible:outline-ink";
+const iconLinkClassName = "group flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-ink";

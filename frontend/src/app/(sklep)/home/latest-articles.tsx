@@ -31,7 +31,7 @@ function ArticleCard({ article }: { article: Article }) {
       <Link href={articlePath(article)} className="block">
         <span className="relative block aspect-4/3 overflow-hidden">
           {image && (
-            <Image src={image.source_url} alt={image.alt_text} fill sizes="(min-width: 768px) 25vw, 50vw" className="object-cover" />
+            <Image src={image.source_url} alt={image.alt_text} fill sizes="(min-width: 768px) 25vw, 50vw" className="zoom-on-hover object-cover" />
           )}
         </span>
         <time dateTime={article.date} className="mt-1.5 block text-small text-mute tabular-nums">

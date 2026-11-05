@@ -51,11 +51,27 @@
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --duration-reveal: 150ms;
   --duration-hide: 120ms;
+
+  --animate-bump: bump 320ms var(--ease-out);
+
+  @keyframes bump {
+    0% {
+      scale: 0.6;
+    }
+    60% {
+      scale: 1.15;
+    }
+    100% {
+      scale: 1;
+    }
+  }
 }
 
 @theme static {
   --duration-panel: 220ms;
   --duration-morph: 320ms;
+  --duration-drawer: 280ms;
+  --duration-zoom: 600ms;
 }
 
 @utility page-width {
@@ -90,24 +106,6 @@
   }
 }
 
-@utility button-label {
-  background-image: linear-gradient(currentColor, currentColor);
-  background-repeat: no-repeat;
-  background-position: 0 100%;
-  background-size: 0% 2px;
-  transition: background-size var(--duration-hide) var(--ease-out);
-
-  :is(a, button):hover > &,
-  :is(a, button):focus-visible > & {
-    background-size: 100% 2px;
-    transition-duration: var(--duration-reveal);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-  }
-}
-
 ::view-transition {
   pointer-events: none;
 }
@@ -123,6 +121,21 @@
   ::view-transition-group(*) {
     animation-duration: 0s !important;
     animation-delay: 0s !important;
+  }
+}
+
+@utility zoom-on-hover {
+  transition: scale var(--duration-zoom) var(--ease-out);
+
+  @media (hover: hover) and (pointer: fine) {
+    a:hover &,
+    .group:hover & {
+      scale: 1.06;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
 }
 

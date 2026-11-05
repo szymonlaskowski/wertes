@@ -14,7 +14,7 @@ import {
   isOptionAvailable,
   selectOption,
 } from "@/lib/variations";
-import { BuyRow } from "./buy-row";
+import { AddToCartForm } from "@/components/cart/add-to-cart-form";
 import { useGalleryFocus } from "./gallery-focus";
 
 const chipClassName =
@@ -46,7 +46,7 @@ export function VariantPurchaseForm({ productId, productPriceHtml, picker, cartU
   }
 
   return (
-    <form action={cartUrl} method="get" className="flex flex-col gap-3">
+    <AddToCartForm cartUrl={cartUrl} className="flex flex-col gap-3" withQuantity submitLabel="Dodaj do koszyka">
       <div className={productPagePriceClassName} dangerouslySetInnerHTML={{ __html: priceHtml }} />
       <SelectedVariantStock picker={picker} selection={selection} variant={selectedVariant} />
       <input type="hidden" name="add-to-cart" value={productId} />
@@ -57,8 +57,7 @@ export function VariantPurchaseForm({ productId, productPriceHtml, picker, cartU
       <a href={sizeChartUrl} className="-mt-2 self-start text-small link-line">
         Tabele rozmiarów
       </a>
-      <BuyRow />
-    </form>
+    </AddToCartForm>
   );
 }
 

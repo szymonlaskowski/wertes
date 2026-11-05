@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { CART_PROXY_PATH } from "./src/lib/cart";
 
 const wordpressUrl = process.env.WP_URL;
 if (!wordpressUrl) {
@@ -13,6 +14,9 @@ const nextConfig: NextConfig = {
   },
   cacheComponents: true,
   partialPrefetching: true,
+  async rewrites() {
+    return [{ source: `${CART_PROXY_PATH}/:path*`, destination: `${wordpressUrl}/wp-json/wc/store/v1/cart/:path*` }];
+  },
   turbopack: {
     rules: {
       "*.css": {

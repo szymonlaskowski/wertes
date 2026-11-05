@@ -61,12 +61,12 @@ function LeadArticle({ article }: { article: Article }) {
     <Link href={articlePath(article)} className="group mt-6 grid items-center gap-x-6 gap-y-3 md:grid-cols-[7fr_5fr]">
       <div className="relative aspect-3/2 overflow-hidden">
         {image && (
-          <Image src={image.source_url} alt={image.alt_text} fill preload sizes="(min-width: 768px) 60vw, 100vw" className="object-cover" />
+          <Image src={image.source_url} alt={image.alt_text} fill preload sizes="(min-width: 768px) 60vw, 100vw" className="zoom-on-hover object-cover" />
         )}
       </div>
       <div>
         <ArticleDate article={article} />
-        <h2 className="mt-1 text-title">
+        <h2 className="mt-1 font-semibold md:text-title md:font-bold">
           <span className="link-line">{bindSingleLetterWords(article.title.rendered)}</span>
         </h2>
         <p className="mt-2 line-clamp-5 text-mute">{articleExcerpt(article)}</p>
@@ -83,7 +83,7 @@ function ArticleCard({ article }: { article: Article }) {
       <Link href={articlePath(article)} className="block">
         <div className="relative aspect-3/2 overflow-hidden">
           {image && (
-            <Image src={image.source_url} alt={image.alt_text} fill sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" className="object-cover" />
+            <Image src={image.source_url} alt={image.alt_text} fill sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" className="zoom-on-hover object-cover" />
           )}
         </div>
         <ArticleDate article={article} className="mt-2" />

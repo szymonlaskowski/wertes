@@ -7,7 +7,7 @@ import { company } from "@/lib/company";
 export default function ErrorPage({ retry }: { error: Error & { digest?: string }; retry: () => void }) {
   return (
     <main className="page-width pt-4 pb-10">
-      <PageTitle>coś się zacięło</PageTitle>
+      <PageTitle>Coś się zacięło</PageTitle>
       <p className="mt-2 max-w-95">
         Ta strona nie załadowała się, to błąd po naszej stronie. Spróbuj jeszcze raz, a&nbsp;jeśli dalej nie działa, zadzwoń:{" "}
         <a href={company.phoneHref} className="link-line font-semibold">

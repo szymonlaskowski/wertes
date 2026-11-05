@@ -21,10 +21,10 @@ export function WholesaleBand() {
             umieścimy logo twojej firmy.
           </p>
           <p className="mt-4 flex flex-wrap gap-2">
-            <Button variant="primary" href={company.phoneHref}>
+            <Button variant="primary" onInk href={company.phoneHref}>
               Zadzwoń: {company.phone}
             </Button>
-            <Button variant="secondary" href={company.emailHref}>
+            <Button variant="secondary" onInk href={company.emailHref}>
               Napisz: {company.email}
             </Button>
           </p>

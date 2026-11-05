@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ViewTransition } from "react";
 import { Button } from "@/components/button";
+import { QuickAddButton } from "@/components/cart/quick-add-button";
 import { priceClassName } from "@/components/price";
 import { productImageTransitionName } from "@/components/product-image-transition";
 import { StockStatus } from "@/components/stock-dot";
@@ -17,14 +18,14 @@ export function ProductTile({ product }: { product: ProductSummary }) {
   return (
     <li className="group flex flex-col">
       <ViewTransition name={productImageTransitionName(product.id)} share="product-image" default="none">
-        <Link href={productPath} tabIndex={-1} aria-hidden className="relative block aspect-square rounded-box bg-surface">
+        <Link href={productPath} tabIndex={-1} aria-hidden className="relative block aspect-square overflow-hidden rounded-box bg-surface">
         {mainImage && (
           <Image
             src={mainImage.src}
             alt={mainImage.alt}
             fill
             sizes="(min-width: 768px) 20vw, 50vw"
-            className="object-contain p-2 mix-blend-multiply"
+            className="zoom-on-hover object-contain p-2 mix-blend-multiply"
           />
         )}
         </Link>
@@ -36,9 +37,9 @@ export function ProductTile({ product }: { product: ProductSummary }) {
       {product.sku && <p className="truncate text-small text-mute">Kod {product.sku}</p>}
       <div className={`mt-1 mb-2 ${priceClassName}`} dangerouslySetInnerHTML={{ __html: product.price_html }} />
       {product.is_in_stock && (
-        <p className="mt-auto">
+        <div className="mt-auto grid">
           <CartAction product={product} productPath={productPath} />
-        </p>
+        </div>
       )}
     </li>
   );
@@ -47,9 +48,7 @@ export function ProductTile({ product }: { product: ProductSummary }) {
 function CartAction({ product, productPath }: { product: ProductSummary; productPath: string }) {
   if (product.type === "simple") {
     return (
-      <Button variant="primary" href={wordpressUrl(`/koszyk/?add-to-cart=${product.id}`)}>
-        Dodaj do koszyka<span className="sr-only">: {product.name}</span>
-      </Button>
+      <QuickAddButton productId={product.id} productName={product.name} cartUrl={wordpressUrl("/koszyk/")} />
     );
   }
 

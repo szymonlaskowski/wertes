@@ -3,7 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { Bestsellers } from "@/components/bestsellers";
 import { Button } from "@/components/button";
+import { QuickAddButton } from "@/components/cart/quick-add-button";
 import { PageTitle } from "@/components/page-title";
 import { Pager } from "@/components/pager";
 import { priceClassName } from "@/components/price";
@@ -61,6 +63,16 @@ async function SearchResults({ params }: { params: Awaited<PageProps<"/szukaj">[
   }
   const { shelves, brands } = splitSearchCounts(categories, categoryCounts);
 
+  if (total === 0) {
+    return (
+      <>
+        <PageTitle>„{query}”</PageTitle>
+        <p className="mt-1 text-mute">{resultCountLabel(total, category)}</p>
+        <Bestsellers />
+      </>
+    );
+  }
+
   return (
     <>
       <PageTitle>„{query}”</PageTitle>
@@ -104,9 +116,9 @@ function ResultRow({ product }: { product: ProductSummary }) {
         href={productPath}
         tabIndex={-1}
         aria-hidden
-        className="relative block size-9 rounded-box bg-surface max-md:row-span-3 md:size-12"
+        className="relative block size-9 overflow-hidden rounded-box bg-surface max-md:row-span-3 md:size-12"
       >
-        {mainImage && <Image src={mainImage.src} alt={mainImage.alt} fill sizes="96px" className="object-contain p-1 mix-blend-multiply" />}
+        {mainImage && <Image src={mainImage.src} alt={mainImage.alt} fill sizes="96px" className="zoom-on-hover object-contain p-1 mix-blend-multiply" />}
         <span className="absolute top-1 left-1 flex">
           <StockDot inStock={product.is_in_stock} />
         </span>
@@ -132,9 +144,7 @@ function RowAction({ product, productPath }: { product: ProductSummary; productP
 
   if (product.type === "simple") {
     return (
-      <Button variant="primary" href={wordpressUrl(`/koszyk/?add-to-cart=${product.id}`)}>
-        Dodaj do koszyka<span className="sr-only">: {product.name}</span>
-      </Button>
+      <QuickAddButton productId={product.id} productName={product.name} cartUrl={wordpressUrl("/koszyk/")} />
     );
   }
 

@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
+import { CartDrawer } from "@/components/cart/cart-drawer";
+import { CartProvider } from "@/components/cart/cart-provider";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { wordpressUrl } from "@/lib/store-api";
 import "./globals.css";
 
 const montserrat = Montserrat({
@@ -29,6 +32,8 @@ const stylesWithoutJavaScript = `
       body > div[hidden][id^="S:"]:not(:has(main)) { padding-inline: 40px; }
     }
   }
+  [data-collapsible] { max-height: none !important; mask: none !important; }
+  [data-collapsible-toggle] { display: none !important; }
   li:hover > [data-mega-panel],
   li:focus-within > [data-mega-panel] {
     visibility: visible;
@@ -47,9 +52,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </noscript>
       </head>
       <body className="min-h-full flex flex-col">
-        <SiteHeader />
-        {children}
-        <SiteFooter />
+        <CartProvider checkoutPageUrl={wordpressUrl("/zamowienia/")}>
+          <SiteHeader />
+          {children}
+          <SiteFooter />
+          <CartDrawer />
+        </CartProvider>
       </body>
     </html>
   );

@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { cleanArticleHtml, linkedProductSlugs, readingMinutes } from "./articles";
+import { articleExcerpt, cleanArticleHtml, linkedProductSlugs, readingMinutes } from "./articles";
 
 const site = "https://wp.example";
 
@@ -27,4 +27,14 @@ test("linked products are listed once, in order of appearance", () => {
 test("reading time is at least one minute", () => {
   expect(readingMinutes("<p>krótko</p>")).toBe(1);
   expect(readingMinutes(`<p>${"słowo ".repeat(1000)}</p>`)).toBe(5);
+});
+
+test("excerpt skips the repeated title and the table of contents headings", () => {
+  const article = {
+    date: "2024-10-28T10:00:00",
+    slug: "worek",
+    title: { rendered: "Worek Big Bag na 1000 kg" },
+    excerpt: { rendered: "<p>Plan Artykułu Worek Big Bag na 1000 kg Wstęp Współczesny przemysł budowlany [&hellip;]</p>" },
+  };
+  expect(articleExcerpt(article)).toBe("Współczesny przemysł budowlany…");
 });

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { type Article, articleImage, articlePath, searchArticles } from "@/lib/articles";
 import type { Category } from "@/lib/store-api";
+import { CollapsibleDescription } from "./collapsible-description";
 
 const RELATED_ARTICLES = 3;
 
@@ -18,7 +19,7 @@ export async function CategoryGuide({ category, descriptionHtml }: { category: C
         <h2 id="zanim-wybierzesz" className="text-title">
           Zanim wybierzesz
         </h2>
-        {hasDescription && <div className="article-body mt-2" dangerouslySetInnerHTML={{ __html: descriptionHtml }} />}
+        {hasDescription && <CollapsibleDescription html={descriptionHtml} />}
       </div>
       {articles.length > 0 && <RelatedArticles articles={articles} />}
     </section>
@@ -48,8 +49,8 @@ function RelatedArticle({ article }: { article: Article }) {
 
   return (
     <Link href={articlePath(article)} className="grid grid-cols-[96px_minmax(0,1fr)] items-start gap-2">
-      <span className="relative block aspect-4/3">
-        {image && <Image src={image.source_url} alt="" fill sizes="96px" className="object-cover" />}
+      <span className="relative block aspect-4/3 overflow-hidden">
+        {image && <Image src={image.source_url} alt="" fill sizes="96px" className="zoom-on-hover object-cover" />}
       </span>
       <span className="font-semibold link-line">{article.title.rendered}</span>
     </Link>

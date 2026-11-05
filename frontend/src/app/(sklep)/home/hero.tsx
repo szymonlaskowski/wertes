@@ -33,7 +33,7 @@ export function Hero({
               dostawą od&nbsp;{company.freeShippingFrom}.
             </p>
             <p className="mt-3">
-              <Button variant="primary" href="#dzialy">
+              <Button variant="primary" onInk href="#dzialy">
                 Wybierz dział
               </Button>
             </p>
@@ -61,8 +61,8 @@ export function Hero({
 
 function FootwearTile({ footwear }: { footwear: Category }) {
   return (
-    <Link href={toLocalPath(footwear.permalink)} className="group relative flex min-h-29 flex-col justify-end">
-      <Image src={wordpressUrl(FOOTWEAR_PHOTO)} alt="" fill sizes="(min-width: 1024px) 25vw, 50vw" className="object-cover" />
+    <Link href={toLocalPath(footwear.permalink)} className="group relative flex min-h-29 flex-col justify-end overflow-hidden">
+      <Image src={wordpressUrl(FOOTWEAR_PHOTO)} alt="" fill sizes="(min-width: 1024px) 25vw, 50vw" className="zoom-on-hover object-cover" />
       <TileLabel name={footwear.name} detail={productCountLabel(footwear.count)} />
     </Link>
   );
@@ -72,14 +72,14 @@ function OwnBrandTile({ product }: { product: ProductSummary | undefined }) {
   const image = product?.images.at(0);
 
   return (
-    <Link href="#wertes-safe" className="group relative flex min-h-29 flex-col justify-end bg-accent">
+    <Link href="#wertes-safe" className="group relative flex min-h-29 flex-col justify-end overflow-hidden bg-accent">
       {image && (
         <Image
           src={image.src}
           alt=""
           width={240}
           height={240}
-          className="absolute top-2 right-0 h-4/5 w-auto mix-blend-multiply"
+          className="zoom-on-hover absolute top-2 right-0 h-4/5 w-auto origin-bottom-right mix-blend-multiply"
         />
       )}
       <TileLabel name="Wertes Safe+" detail={"Nasza marka, rękawice i\u00a0fartuchy ze\u00a0skóry"} />

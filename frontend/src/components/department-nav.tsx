@@ -21,7 +21,10 @@ export async function DepartmentNav() {
   const departments = MENU_DEPARTMENT_SLUGS.map((slug) => findBySlug(categories, slug));
 
   return (
-    <nav aria-label="Menu główne" className="relative flex flex-wrap justify-between gap-x-4 px-2 md:px-5">
+    <nav
+      aria-label="Menu główne"
+      className="relative flex justify-between gap-x-4 px-2 whitespace-nowrap max-md:mask-r-from-85% max-md:overflow-x-auto max-md:[scrollbar-width:none] md:flex-wrap md:px-5"
+    >
       <MegaNav
         departments={departments.map((department) => ({
           id: department.id,
@@ -31,7 +34,7 @@ export async function DepartmentNav() {
           panel: <DepartmentPanel department={department} categories={categories} />,
         }))}
       />
-      <ul className="flex flex-wrap gap-x-4">
+      <ul className="flex gap-x-4 md:flex-wrap">
         <li>
           <Link href="/wiedza/" className={infoLinkClassName}>
             <span className="link-line">Wiedza</span>

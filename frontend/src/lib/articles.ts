@@ -78,9 +78,23 @@ export function articleImage(article: Article) {
   return article._embedded?.["wp:featuredmedia"]?.at(0);
 }
 
+const EXCERPT_LEADING_HEADINGS = ["Plan Artykułu", "Spis treści:", "Wstęp"];
+
 export function articleExcerpt(article: Article) {
   const text = decodeHtmlEntities(article.excerpt.rendered.replace(/<[^>]+>/g, ""));
-  return text.replace(/\s*\[…\]\s*$/, "…").trim();
+  const withEllipsis = text.replace(/\s*\[…\]\s*$/, "…").trim();
+  return withoutLeadingHeadings(withEllipsis, article.title.rendered);
+}
+
+function withoutLeadingHeadings(excerpt: string, title: string) {
+  const headings = [...EXCERPT_LEADING_HEADINGS, title];
+  let remaining = excerpt.trim();
+  let leadingHeading = headings.find((heading) => remaining.startsWith(heading));
+  while (leadingHeading !== undefined) {
+    remaining = remaining.slice(leadingHeading.length).trim();
+    leadingHeading = headings.find((heading) => remaining.startsWith(heading));
+  }
+  return remaining;
 }
 
 export function readingMinutes(html: string) {
