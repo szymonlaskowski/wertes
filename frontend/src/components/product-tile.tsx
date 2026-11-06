@@ -1,0 +1,60 @@
+import Image from "next/image";
+import Link from "next/link";
+import { ViewTransition } from "react";
+import { Button } from "@/components/button";
+import { QuickAddButton } from "@/components/cart/quick-add-button";
+import { priceClassName } from "@/components/price";
+import { productImageTransitionName } from "@/components/product-image-transition";
+import { StockStatus } from "@/components/stock-dot";
+import { toLocalPath } from "@/lib/catalog-paths";
+import type { ProductSummary } from "@/lib/store-api";
+import { wordpressUrl } from "@/lib/store-api";
+import { bindSingleLetterWords } from "@/lib/typography";
+
+export function ProductTile({ product }: { product: ProductSummary }) {
+  const mainImage = product.images.at(0);
+  const productPath = toLocalPath(product.permalink);
+
+  return (
+    <li className="group flex flex-col">
+      <ViewTransition name={productImageTransitionName(product.id)} share="product-image" default="none">
+        <Link href={productPath} tabIndex={-1} aria-hidden className="relative block aspect-square overflow-hidden rounded-box bg-surface">
+        {mainImage && (
+          <Image
+            src={mainImage.src}
+            alt={mainImage.alt}
+            fill
+            sizes="(min-width: 768px) 20vw, 50vw"
+            className="zoom-on-hover object-contain p-2 mix-blend-multiply"
+          />
+        )}
+        </Link>
+      </ViewTransition>
+      <StockStatus inStock={product.is_in_stock} />
+      <Link href={productPath} className="mt-0.5 line-clamp-3 min-h-[3lh] hyphens-auto">
+        <span className="link-line">{bindSingleLetterWords(product.name)}</span>
+      </Link>
+      {product.sku && <p className="truncate text-small text-mute">Kod {product.sku}</p>}
+      <div className={`mt-1 mb-2 ${priceClassName}`} dangerouslySetInnerHTML={{ __html: product.price_html }} />
+      {product.is_in_stock && (
+        <div className="mt-auto grid">
+          <CartAction product={product} productPath={productPath} />
+        </div>
+      )}
+    </li>
+  );
+}
+
+function CartAction({ product, productPath }: { product: ProductSummary; productPath: string }) {
+  if (product.type === "simple") {
+    return (
+      <QuickAddButton productId={product.id} productName={product.name} cartUrl={wordpressUrl("/koszyk/")} />
+    );
+  }
+
+  return (
+    <Button variant="primary" href={productPath}>
+      Wybierz rozmiar<span className="sr-only">: {product.name}</span>
+    </Button>
+  );
+}
