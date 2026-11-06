@@ -23,7 +23,7 @@ import {
 } from "./preview-product";
 
 const chipClassName =
-  "flex h-6 min-w-6 cursor-pointer items-center justify-center rounded-box bg-surface px-1 tabular-nums transition-colors duration-(--duration-reveal) ease-(--ease-out) peer-checked:bg-ink peer-checked:text-paper peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink mouse:peer-enabled:peer-not-checked:hover:bg-accent peer-disabled:cursor-not-allowed peer-disabled:bg-paper peer-disabled:text-mute motion-reduce:transition-none";
+  "flex h-6 min-w-6 cursor-pointer items-center justify-center bg-surface px-1 tabular-nums transition-colors duration-(--duration-reveal) ease-(--ease-out) peer-checked:bg-ink peer-checked:text-paper peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink mouse:peer-enabled:peer-not-checked:hover:bg-accent peer-disabled:cursor-not-allowed peer-disabled:bg-paper peer-disabled:text-mute motion-reduce:transition-none";
 
 type Selection = { color: string | null; size: string | null; quantity: number };
 
@@ -112,7 +112,7 @@ function ColorChoice({
               className="peer sr-only"
             />
             <span className="sr-only">{color}</span>
-            <span className="relative block size-8 rounded-box bg-surface outline-2 outline-transparent peer-checked:outline-ink peer-focus-visible:outline-ink mouse:hover:outline-ink">
+            <span className="relative block size-8 bg-surface outline-2 outline-transparent peer-checked:outline-ink peer-focus-visible:outline-ink mouse:hover:outline-ink">
               <Image src={imageForColor(product, color)} alt="" fill unoptimized className="object-contain p-0.5 mix-blend-multiply" />
             </span>
           </label>

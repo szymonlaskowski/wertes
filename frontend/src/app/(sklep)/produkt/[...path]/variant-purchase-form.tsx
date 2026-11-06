@@ -18,10 +18,10 @@ import { AddToCartForm } from "@/components/cart/add-to-cart-form";
 import { useGalleryFocus } from "./gallery-focus";
 
 const chipClassName =
-  "flex h-6 min-w-6 cursor-pointer items-center justify-center rounded-box bg-surface px-1 tabular-nums transition-[background-color,scale] duration-(--duration-reveal) ease-(--ease-out) active:scale-[0.94] peer-checked:bg-ink peer-checked:text-paper peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink mouse:peer-enabled:peer-not-checked:hover:bg-accent peer-disabled:cursor-not-allowed peer-disabled:bg-paper peer-disabled:text-mute motion-reduce:transition-none";
+  "flex h-6 min-w-6 cursor-pointer items-center justify-center bg-surface px-1 tabular-nums transition-[background-color,scale] duration-(--duration-reveal) ease-(--ease-out) active:scale-[0.94] peer-checked:bg-ink peer-checked:text-paper peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink mouse:peer-enabled:peer-not-checked:hover:bg-accent peer-disabled:cursor-not-allowed peer-disabled:bg-paper peer-disabled:text-mute motion-reduce:transition-none";
 
 const swatchClassName =
-  "relative block size-8 cursor-pointer rounded-box bg-surface transition-[scale] duration-(--duration-reveal) ease-(--ease-out) active:scale-[0.94] motion-reduce:transition-none outline-2 outline-offset-0 outline-transparent peer-checked:outline-ink peer-focus-visible:outline-ink mouse:peer-enabled:hover:outline-ink peer-disabled:cursor-not-allowed peer-disabled:bg-paper";
+  "relative block size-8 cursor-pointer bg-surface transition-[scale] duration-(--duration-reveal) ease-(--ease-out) active:scale-[0.94] motion-reduce:transition-none outline-2 outline-offset-0 outline-transparent peer-checked:outline-ink peer-focus-visible:outline-ink mouse:peer-enabled:hover:outline-ink peer-disabled:cursor-not-allowed peer-disabled:bg-paper";
 
 type VariantPurchaseFormProps = {
   productId: number;

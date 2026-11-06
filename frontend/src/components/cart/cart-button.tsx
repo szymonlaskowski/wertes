@@ -20,7 +20,7 @@ export function CartButton({ cartPageUrl, className }: { cartPageUrl: string; cl
         {itemCount > 0 && (
           <span
             key={itemCount}
-            className="absolute -top-1.5 -right-1 flex h-2.5 min-w-2.5 motion-safe:animate-bump items-center justify-center rounded-box bg-accent px-0.5 text-small leading-none font-bold text-ink tabular-nums"
+            className="absolute -top-1.5 -right-1 flex h-2.5 min-w-2.5 motion-safe:animate-bump items-center justify-center bg-accent px-0.5 text-small leading-none font-bold text-ink tabular-nums"
           >
             {itemCount}
           </span>

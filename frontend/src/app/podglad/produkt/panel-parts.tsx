@@ -17,7 +17,7 @@ const VAT_MULTIPLIER = 1.23;
 export function ProductImage({ src, alt }: { src: string; alt: string }) {
   return (
     <div className="md:sticky md:top-3">
-      <div className="relative aspect-square rounded-box bg-surface">
+      <div className="relative aspect-square bg-surface">
         <Image src={src} alt={alt} fill unoptimized preload className="object-contain p-4 mix-blend-multiply" />
       </div>
     </div>
@@ -128,7 +128,7 @@ export function QuantityField({
         min={1}
         step={1}
         inputMode="numeric"
-        className="mt-1 h-6 w-10 rounded-box bg-surface px-2 font-normal tabular-nums focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+        className="mt-1 h-6 w-10 bg-surface px-2 font-normal tabular-nums focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       />
     </label>
   );
@@ -146,7 +146,7 @@ export function QuantityTiersTable({
   const showsUnitPrice = unitNetGrosze !== undefined;
 
   return (
-    <section aria-labelledby="rabat-ilosciowy" className="rounded-box bg-surface p-2">
+    <section aria-labelledby="rabat-ilosciowy" className="bg-surface p-2">
       <h3 id="rabat-ilosciowy" className="px-1 font-semibold">
         Rabat ilościowy na ten produkt
       </h3>

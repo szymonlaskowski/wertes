@@ -18,9 +18,9 @@ export function StockDot({ inStock }: { inStock: boolean }) {
 
 export function StockStatus({ inStock }: { inStock: boolean }) {
   return (
-    <p className="mt-1 flex items-center gap-1 text-small">
+    <span className="flex shrink-0 items-center gap-1">
       <span aria-hidden="true" className={`inline-block size-1 rounded-full ${dotColorClassName(inStock)}`} />
       {stockLabel(inStock)}
-    </p>
+    </span>
   );
 }

@@ -67,7 +67,6 @@ function ProductTilePlaceholder() {
       </div>
       <PlaceholderLine className="mt-1 w-12 font-semibold" />
       <PlaceholderLine className="w-10 text-small" />
-      <div className="placeholder mt-2 h-5 w-20" />
     </li>
   );
 }

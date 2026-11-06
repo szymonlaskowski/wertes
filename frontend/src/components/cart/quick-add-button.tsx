@@ -4,11 +4,15 @@ export function QuickAddButton({ productId, productName, cartUrl }: { productId:
   return (
     <AddToCartForm
       cartUrl={cartUrl}
-      className="contents"
+      className="contents touch:[&_button]:min-w-6 touch:[&_button]:px-1.5"
       withQuantity={false}
       submitLabel={
         <>
-          Dodaj do koszyka<span className="sr-only">: {productName}</span>
+          <span className="touch:sr-only">Dodaj do koszyka</span>
+          <span aria-hidden="true" className="mouse:hidden">
+            +
+          </span>
+          <span className="sr-only">: {productName}</span>
         </>
       }
     >

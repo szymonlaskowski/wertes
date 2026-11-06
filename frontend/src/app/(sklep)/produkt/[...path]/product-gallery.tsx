@@ -54,7 +54,7 @@ export function ProductGallery({ productId, images }: { productId: number; image
           ref={slidesRef}
           onScroll={trackActiveSlide}
           aria-label="Zdjęcia produktu"
-          className="flex aspect-square snap-x snap-mandatory overflow-x-auto rounded-box bg-surface [scrollbar-width:none]"
+          className="flex aspect-square snap-x snap-mandatory overflow-x-auto bg-surface [scrollbar-width:none]"
         >
           {images.map((image, index) => (
             <li
@@ -111,7 +111,7 @@ function Thumbnail({
       aria-label={label}
       aria-current={isActive}
       onClick={onSelect}
-      className={`relative block size-8 rounded-box bg-surface outline-2 outline-offset-0 focus-visible:outline-ink ${outlineClassName}`}
+      className={`relative block size-8 bg-surface outline-2 outline-offset-0 focus-visible:outline-ink ${outlineClassName}`}
     >
       <Image src={image.src} alt="" fill sizes="64px" className="object-contain p-0.5 mix-blend-multiply" />
     </button>

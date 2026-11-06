@@ -14,7 +14,7 @@ function useShownAsSelected(isSelected: boolean) {
 export function CheckSquare({ isChecked }: { isChecked: boolean }) {
   const isShownChecked = useShownAsSelected(isChecked);
   const stateClassName = isShownChecked ? "border-ink bg-ink" : "border-mute bg-paper";
-  return <span aria-hidden="true" className={`size-2 shrink-0 rounded-box border-2 ${stateClassName}`} />;
+  return <span aria-hidden="true" className={`size-2 shrink-0 border-2 ${stateClassName}`} />;
 }
 
 export function SizeSquareFace({ isSelected, children }: { isSelected: boolean; children: ReactNode }) {
@@ -22,7 +22,7 @@ export function SizeSquareFace({ isSelected, children }: { isSelected: boolean; 
   const stateClassName = isShownSelected ? "bg-ink text-paper" : "bg-surface mouse:hover:bg-accent";
   return (
     <span
-      className={`flex h-6 min-w-6 items-center justify-center rounded-box px-1 tabular-nums transition-[background-color,scale] duration-(--duration-reveal) ease-(--ease-out) active:scale-[0.94] motion-reduce:transition-none ${stateClassName}`}
+      className={`flex h-6 min-w-6 items-center justify-center px-1 tabular-nums transition-[background-color,scale] duration-(--duration-reveal) ease-(--ease-out) active:scale-[0.94] motion-reduce:transition-none ${stateClassName}`}
     >
       {children}
     </span>

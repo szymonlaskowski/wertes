@@ -3,7 +3,7 @@ import { wordpressUrl } from "@/lib/store-api";
 
 export function OrderTerms() {
   return (
-    <div className="grid gap-3 rounded-box bg-surface p-3">
+    <div className="grid gap-3 bg-surface p-3">
       <BulkDiscounts />
       <OrderHelp />
     </div>

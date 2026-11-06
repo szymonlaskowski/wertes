@@ -266,7 +266,7 @@ function SizeSquares({ filter, rows, categoryPath, view }: FacetProps) {
               {...filterLinkProps}
               aria-current={isSelected ? "true" : undefined}
               title={productCountLabel(row.count)}
-              className="block rounded-box"
+              className="block"
             >
               <SizeSquareFace isSelected={isSelected}>{row.name}</SizeSquareFace>
             </Link>
@@ -297,7 +297,7 @@ function SelectedFilters({ categoryPath, view, facets }: SelectedFiltersProps) {
           <Link
             href={chip.href}
             {...filterLinkProps}
-            className="inline-flex items-center gap-1 rounded-box bg-ink px-1.5 py-0.5 text-small text-paper transition-colors duration-(--duration-reveal) ease-(--ease-out) mouse:hover:bg-accent mouse:hover:text-ink motion-reduce:transition-none"
+            className="inline-flex items-center gap-1 bg-ink px-1.5 py-0.5 text-small text-paper transition-colors duration-(--duration-reveal) ease-(--ease-out) mouse:hover:bg-accent mouse:hover:text-ink motion-reduce:transition-none"
           >
             <span className="sr-only">Usuń filtr: </span>
             {chip.label}

@@ -75,7 +75,7 @@ function PurchasePlaceholder() {
           <PlaceholderLine className="w-5" />
           <div className="placeholder mt-1 h-6 w-10" />
         </div>
-        <div className="placeholder rounded-box px-3 py-1.5 text-small font-semibold">
+        <div className="placeholder px-3 py-1.5 text-body font-semibold">
           <span className="invisible">Dodaj do koszyka</span>
         </div>
       </div>

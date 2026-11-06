@@ -86,7 +86,7 @@ function ShelfTile({ shelf, isCurrent }: { shelf: Category; isCurrent: boolean }
     <Link
       href={toLocalPath(shelf.permalink)}
       aria-current={isCurrent ? "page" : undefined}
-      className={`block h-full rounded-box px-2 py-1 transition-[background-color,scale] duration-(--duration-reveal) ease-(--ease-out) active:scale-[0.98] motion-reduce:transition-none ${stateClassName}`}
+      className={`block h-full px-2 py-1 transition-[background-color,scale] duration-(--duration-reveal) ease-(--ease-out) active:scale-[0.98] motion-reduce:transition-none ${stateClassName}`}
     >
       <span className="block font-semibold">{shelf.name}</span>
       <span className="text-small tabular-nums">{formatCount(shelf.count)}</span>

@@ -16,7 +16,7 @@ import {
 } from "./preview-product";
 
 const selectClassName =
-  "mt-1 h-6 rounded-box bg-surface px-1 font-normal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink";
+  "mt-1 h-6 bg-surface px-1 font-normal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink";
 
 type Selection = { color: string | null; size: string | null; quantity: number };
 
@@ -111,7 +111,7 @@ function TierMention({
   unit: string;
   isActive: boolean;
 }) {
-  const className = isActive ? "rounded-box bg-ink px-0.5 text-paper" : "";
+  const className = isActive ? "bg-ink px-0.5 text-paper" : "";
 
   return (
     <span className={`mr-1 inline-block ${className}`}>

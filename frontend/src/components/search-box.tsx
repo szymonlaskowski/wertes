@@ -155,7 +155,7 @@ export function SearchBox({ categories }: { categories: SuggestedCategory[] }) {
           onChange={(event) => changeQuery(event.target.value)}
           onFocus={() => setIsOpen(true)}
           onKeyDown={moveSelection}
-          className="min-w-0 flex-1 rounded-box bg-surface px-2 py-1 text-body text-ink outline-none placeholder:text-mute focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ink"
+          className="min-w-0 flex-1 bg-surface px-2 py-1 text-body text-ink outline-none placeholder:text-mute focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ink"
         />
         <Button variant="primary" type="submit">
           Szukaj
@@ -166,7 +166,7 @@ export function SearchBox({ categories }: { categories: SuggestedCategory[] }) {
           aria-label="Podpowiedzi"
           hidden={!isListVisible}
           onMouseDown={(event) => event.preventDefault()}
-          className="absolute inset-x-0 top-full z-30 mt-0.5 rounded-box bg-surface py-0.5 text-ink"
+          className="absolute inset-x-0 top-full z-30 mt-0.5 bg-surface py-0.5 text-ink"
         >
           {categoryMatches.length > 0 && (
             <div role="group" aria-label="Kategorie">

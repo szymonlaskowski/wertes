@@ -98,7 +98,7 @@ function FilledCart({ cart }: { cart: Cart }) {
         </dl>
         <a
           href={checkoutUrl}
-          className="mt-2 block rounded-box bg-accent px-3 py-2 text-center font-semibold transition-[background-color,color,scale] duration-(--duration-reveal) ease-(--ease-out) mouse:hover:bg-ink mouse:hover:text-paper active:scale-[0.98] focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-ink motion-reduce:transition-none"
+          className="mt-2 block bg-accent px-3 py-2 text-center font-semibold transition-[background-color,color,scale] duration-(--duration-reveal) ease-(--ease-out) mouse:hover:bg-ink mouse:hover:text-accent active:scale-[0.98] focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-ink motion-reduce:transition-none"
         >
           Przejdź do kasy
         </a>
@@ -125,7 +125,7 @@ function FreeShippingProgress({ grossGrosze }: { grossGrosze: number }) {
           </>
         )}
       </p>
-      <div aria-hidden="true" className="mt-1 h-1 overflow-hidden rounded-box bg-surface">
+      <div aria-hidden="true" className="mt-1 h-1 overflow-hidden bg-surface">
         <div
           className="h-full origin-left bg-accent transition-[scale] duration-(--duration-drawer) ease-(--ease-out) motion-reduce:transition-none"
           style={{ scale: `${filledFraction} 1` }}
@@ -143,7 +143,7 @@ function CartLineItem({ item }: { item: CartItem }) {
 
   return (
     <article className="flex gap-2 py-1.5">
-      <div className="relative size-10 shrink-0 rounded-box bg-surface">
+      <div className="relative size-10 shrink-0 bg-surface">
         {thumbnail && (
           <Image src={thumbnail.thumbnail} alt="" fill sizes="80px" className="object-contain p-0.5 mix-blend-multiply" />
         )}
@@ -166,7 +166,7 @@ function CartLineItem({ item }: { item: CartItem }) {
 }
 
 const stepperButtonClassName =
-  "flex size-4 items-center justify-center rounded-box bg-surface font-semibold transition-[background-color,scale] duration-(--duration-reveal) ease-(--ease-out) mouse:hover:bg-accent active:scale-[0.92] disabled:pointer-events-none disabled:text-mute motion-reduce:transition-none";
+  "flex size-4 items-center justify-center bg-surface font-semibold transition-[background-color,scale] duration-(--duration-reveal) ease-(--ease-out) mouse:hover:bg-accent active:scale-[0.92] disabled:pointer-events-none disabled:text-mute motion-reduce:transition-none";
 
 function QuantityStepper({ item }: { item: CartItem }) {
   const { isUpdating, changeQuantity, removeItem } = useCart();

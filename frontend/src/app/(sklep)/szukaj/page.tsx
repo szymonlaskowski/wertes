@@ -116,7 +116,7 @@ function ResultRow({ product }: { product: ProductSummary }) {
         href={productPath}
         tabIndex={-1}
         aria-hidden
-        className="relative block size-9 overflow-hidden rounded-box bg-surface max-md:row-span-3 md:size-12"
+        className="relative block size-9 overflow-hidden bg-surface max-md:row-span-3 md:size-12"
       >
         {mainImage && <Image src={mainImage.src} alt={mainImage.alt} fill sizes="96px" className="zoom-on-hover object-contain p-1 mix-blend-multiply" />}
         <span className="absolute top-1 left-1 flex">

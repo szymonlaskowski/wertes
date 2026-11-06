@@ -33,7 +33,7 @@ export function Hero({
               dostawą od&nbsp;{company.freeShippingFrom}.
             </p>
             <p className="mt-3">
-              <Button variant="primary" onInk href="#dzialy">
+              <Button variant="accent" onInk href="#dzialy">
                 Wybierz dział
               </Button>
             </p>

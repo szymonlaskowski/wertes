@@ -51,7 +51,7 @@ export function AddToCartForm({ cartUrl, className, withQuantity, submitLabel, c
 }
 
 const stepButtonClassName =
-  "flex h-6 w-5 items-center justify-center rounded-box bg-surface text-body font-semibold transition-[background-color,scale] duration-(--duration-reveal) ease-(--ease-out) mouse:hover:bg-accent active:scale-[0.92] focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-ink motion-reduce:transition-none";
+  "flex h-6 w-5 items-center justify-center bg-surface text-body font-semibold transition-[background-color,scale] duration-(--duration-reveal) ease-(--ease-out) mouse:hover:bg-accent active:scale-[0.92] focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-ink motion-reduce:transition-none";
 
 function QuantityAndSubmit({ isAdding, submitLabel }: { isAdding: boolean; submitLabel: ReactNode }) {
   const quantityRef = useRef<HTMLInputElement>(null);
@@ -88,7 +88,7 @@ function QuantityAndSubmit({ isAdding, submitLabel }: { isAdding: boolean; submi
             step={1}
             inputMode="numeric"
             required
-            className="h-6 w-7 [appearance:textfield] rounded-box bg-surface text-center tabular-nums focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-ink [&::-webkit-inner-spin-button]:appearance-none"
+            className="h-6 w-7 [appearance:textfield] bg-surface text-center tabular-nums focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-ink [&::-webkit-inner-spin-button]:appearance-none"
           />
           <button type="button" aria-label="Więcej sztuk" onClick={() => stepQuantity("up")} className={stepButtonClassName}>
             +

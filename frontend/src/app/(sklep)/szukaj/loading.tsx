@@ -38,7 +38,7 @@ function ResultRowPlaceholder() {
         <PlaceholderLine className="w-12 font-semibold" />
         <PlaceholderLine className="w-10 text-small" />
       </div>
-      <div className="placeholder rounded-box px-3 py-1.5 text-small font-semibold justify-self-start md:justify-self-end">
+      <div className="placeholder px-3 py-1.5 text-body font-semibold justify-self-start md:justify-self-end">
         <span className="invisible">Dodaj do koszyka</span>
       </div>
     </li>

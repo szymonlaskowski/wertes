@@ -21,7 +21,7 @@ import {
 type Quantities = Record<number, number>;
 
 const cellInputClassName =
-  "h-5 w-5 rounded-box bg-surface text-center tabular-nums focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink md:w-6";
+  "h-5 w-5 bg-surface text-center tabular-nums focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink md:w-6";
 
 type MatrixCardProps = {
   product: PreviewProduct;
@@ -122,7 +122,7 @@ function ColorSizeMatrix({
             <tr key={color}>
               <th scope="row" className="text-left font-normal">
                 <span className="flex items-center gap-1">
-                  <span className="relative block size-5 shrink-0 rounded-box bg-surface">
+                  <span className="relative block size-5 shrink-0 bg-surface">
                     <Image src={imageForColor(product, color)} alt="" fill unoptimized className="object-contain mix-blend-multiply" />
                   </span>
                   <span className="sr-only md:not-sr-only md:whitespace-nowrap">{color}</span>

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-export type ButtonVariant = "primary" | "secondary";
+export type ButtonVariant = "primary" | "accent" | "secondary";
 
 type ButtonProps = { variant: ButtonVariant; onInk?: boolean; children: ReactNode } & (
   | { href: string }
@@ -9,19 +9,25 @@ type ButtonProps = { variant: ButtonVariant; onInk?: boolean; children: ReactNod
 );
 
 const sharedClassName =
-  "inline-flex items-center justify-center rounded-box px-3 py-1.5 text-small font-semibold text-ink transition-[background-color,color,scale] duration-(--duration-reveal) ease-(--ease-out) active:scale-[0.96] focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-ink disabled:pointer-events-none disabled:opacity-40 motion-reduce:transition-none";
+  "inline-flex items-center justify-center px-3 py-1.5 text-body font-semibold transition-[background-color,color,box-shadow,scale] duration-(--duration-reveal) ease-(--ease-out) active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-40 motion-reduce:transition-none";
 
-const variantClassNames: Record<ButtonVariant, string> = {
-  primary: "bg-accent",
-  secondary: "bg-surface",
+const onPaperClassNames: Record<ButtonVariant, string> = {
+  primary: "bg-ink text-paper mouse:hover:text-accent",
+  accent: "bg-accent text-ink mouse:hover:bg-ink mouse:hover:text-accent",
+  secondary: "text-ink inset-ring inset-ring-ink/25 mouse:hover:inset-ring-ink",
 };
 
-const hoverOnPaperClassName = "mouse:hover:bg-ink mouse:hover:text-paper";
-const hoverOnInkClassName = "mouse:hover:bg-paper";
+const onInkClassNames: Record<ButtonVariant, string> = {
+  primary: "bg-paper text-ink mouse:hover:bg-accent",
+  accent: "bg-accent text-ink mouse:hover:bg-paper",
+  secondary: "text-paper inset-ring inset-ring-paper/30 mouse:hover:inset-ring-paper",
+};
 
 export function Button(props: ButtonProps) {
-  const hoverClassName = props.onInk ? hoverOnInkClassName : hoverOnPaperClassName;
-  const className = `${sharedClassName} ${variantClassNames[props.variant]} ${hoverClassName}`;
+  const variantClassName = props.onInk
+    ? `${onInkClassNames[props.variant]} focus-visible:outline-paper`
+    : `${onPaperClassNames[props.variant]} focus-visible:outline-ink`;
+  const className = `${sharedClassName} ${variantClassName}`;
 
   if ("href" in props) {
     return (

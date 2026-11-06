@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ViewTransition } from "react";
-import { Button } from "@/components/button";
 import { QuickAddButton } from "@/components/cart/quick-add-button";
 import { priceClassName } from "@/components/price";
 import { productImageTransitionName } from "@/components/product-image-transition";
@@ -11,50 +10,49 @@ import type { ProductSummary } from "@/lib/store-api";
 import { wordpressUrl } from "@/lib/store-api";
 import { bindSingleLetterWords } from "@/lib/typography";
 
+const quickAddRevealClassName =
+  "absolute right-1 bottom-1 grid transition-[opacity,translate] duration-(--duration-reveal) ease-(--ease-out) mouse:left-1 mouse:translate-y-0.5 mouse:opacity-0 mouse:group-hover:translate-y-0 mouse:group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100 motion-reduce:transition-none";
+
 export function ProductTile({ product }: { product: ProductSummary }) {
   const mainImage = product.images.at(0);
   const productPath = toLocalPath(product.permalink);
+  const canAddFromTile = product.is_in_stock && product.type === "simple";
 
   return (
     <li className="group flex flex-col">
-      <ViewTransition name={productImageTransitionName(product.id)} share="product-image" default="none">
-        <Link href={productPath} tabIndex={-1} aria-hidden className="relative block aspect-square overflow-hidden rounded-box bg-surface">
-        {mainImage && (
-          <Image
-            src={mainImage.src}
-            alt={mainImage.alt}
-            fill
-            sizes="(min-width: 768px) 20vw, 50vw"
-            className="zoom-on-hover object-contain p-2 mix-blend-multiply"
-          />
+      <div className="relative">
+        <ViewTransition name={productImageTransitionName(product.id)} share="product-image" default="none">
+          <Link href={productPath} tabIndex={-1} aria-hidden className="relative block aspect-square overflow-hidden bg-surface">
+            {mainImage && (
+              <Image
+                src={mainImage.src}
+                alt={mainImage.alt}
+                fill
+                sizes="(min-width: 768px) 20vw, 50vw"
+                className="zoom-on-hover object-contain p-2 mix-blend-multiply"
+              />
+            )}
+          </Link>
+        </ViewTransition>
+        {canAddFromTile && (
+          <div className={quickAddRevealClassName}>
+            <QuickAddButton productId={product.id} productName={product.name} cartUrl={wordpressUrl("/koszyk/")} />
+          </div>
         )}
-        </Link>
-      </ViewTransition>
-      <StockStatus inStock={product.is_in_stock} />
-      <Link href={productPath} className="mt-0.5 line-clamp-3 min-h-[3lh] hyphens-auto">
-        <span className="link-line">{bindSingleLetterWords(product.name)}</span>
+      </div>
+      <div className="mt-1 flex min-w-0 items-center gap-1 text-small text-mute">
+        <StockStatus inStock={product.is_in_stock} />
+        {product.sku && (
+          <>
+            <span aria-hidden="true">·</span>
+            <span className="truncate">Kod {product.sku}</span>
+          </>
+        )}
+      </div>
+      <Link href={productPath} className="mt-0.5 line-clamp-3 text-pretty">
+        {bindSingleLetterWords(product.name)}
       </Link>
-      {product.sku && <p className="truncate text-small text-mute">Kod {product.sku}</p>}
-      <div className={`mt-1 mb-2 ${priceClassName}`} dangerouslySetInnerHTML={{ __html: product.price_html }} />
-      {product.is_in_stock && (
-        <div className="mt-auto grid">
-          <CartAction product={product} productPath={productPath} />
-        </div>
-      )}
+      <div className={`mt-auto pt-1 ${priceClassName}`} dangerouslySetInnerHTML={{ __html: product.price_html }} />
     </li>
-  );
-}
-
-function CartAction({ product, productPath }: { product: ProductSummary; productPath: string }) {
-  if (product.type === "simple") {
-    return (
-      <QuickAddButton productId={product.id} productName={product.name} cartUrl={wordpressUrl("/koszyk/")} />
-    );
-  }
-
-  return (
-    <Button variant="primary" href={productPath}>
-      Wybierz rozmiar<span className="sr-only">: {product.name}</span>
-    </Button>
   );
 }
