@@ -21,7 +21,7 @@ export function Hero({
   ownBrandProduct: ProductSummary | undefined;
 }) {
   return (
-    <section aria-labelledby="od-stop-do-glow" className="page-width pt-3">
+    <section aria-labelledby="od-stop-do-glow" className="page-width pt-3 max-md:-order-2">
       <div className="grid gap-2 lg:grid-cols-3">
         <div className="grid bg-ink text-paper md:grid-cols-2 lg:col-span-2">
           <div className="flex flex-col justify-end p-5 max-md:order-last max-md:p-3">
@@ -32,7 +32,7 @@ export function Hero({
               {productCountLabel(totalProducts)} od {brandCount} producentów dla ciebie i&nbsp;twojej firmy, z&nbsp;darmową
               dostawą od&nbsp;{company.freeShippingFrom}.
             </p>
-            <p className="mt-3">
+            <p className="mt-3 max-md:hidden">
               <Button variant="accent" onInk href="#dzialy">
                 Wybierz dział
               </Button>
@@ -49,7 +49,7 @@ export function Hero({
             />
           </div>
         </div>
-        <div className="grid gap-2 md:grid-cols-2 lg:grid-cols-1">
+        <div className="grid gap-2 max-md:hidden md:grid-cols-2 lg:grid-cols-1">
           <FootwearTile footwear={footwear} />
           <OwnBrandTile product={ownBrandProduct} />
         </div>

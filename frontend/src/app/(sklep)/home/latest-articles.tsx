@@ -5,7 +5,7 @@ import { formatArticleDate } from "@/lib/article-date";
 
 export function LatestArticles({ articles }: { articles: Article[] }) {
   return (
-    <section aria-labelledby="wiedza" className="page-width py-10">
+    <section aria-labelledby="wiedza" className="page-width py-10 max-md:hidden">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 id="wiedza" className="text-title">
           Wiedza, która pomaga wybrać

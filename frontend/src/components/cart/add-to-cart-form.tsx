@@ -8,12 +8,12 @@ import { useCart } from "./cart-provider";
 type AddToCartFormProps = {
   cartUrl: string;
   className: string;
-  withQuantity: boolean;
+  quantityUnit: string | null;
   submitLabel: ReactNode;
   children: ReactNode;
 };
 
-export function AddToCartForm({ cartUrl, className, withQuantity, submitLabel, children }: AddToCartFormProps) {
+export function AddToCartForm({ cartUrl, className, quantityUnit, submitLabel, children }: AddToCartFormProps) {
   const { addLine } = useCart();
   const [isAdding, setIsAdding] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -33,13 +33,13 @@ export function AddToCartForm({ cartUrl, className, withQuantity, submitLabel, c
   return (
     <form action={cartUrl} method="get" onSubmit={addWithoutLeavingThePage} className={className}>
       {children}
-      {withQuantity ? (
-        <QuantityAndSubmit isAdding={isAdding} submitLabel={submitLabel} />
-      ) : (
+      {quantityUnit === null ? (
         <>
           <input type="hidden" name="quantity" value={1} />
           <SubmitButton isAdding={isAdding} submitLabel={submitLabel} />
         </>
+      ) : (
+        <QuantityAndSubmit unit={quantityUnit} isAdding={isAdding} submitLabel={submitLabel} />
       )}
       {errorMessage !== null && (
         <p role="alert" className="text-small font-semibold">
@@ -53,7 +53,7 @@ export function AddToCartForm({ cartUrl, className, withQuantity, submitLabel, c
 const stepButtonClassName =
   "flex h-6 w-5 items-center justify-center bg-surface text-body font-semibold transition-[background-color,scale] duration-(--duration-reveal) ease-(--ease-out) mouse:hover:bg-accent active:scale-[0.92] focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-ink motion-reduce:transition-none";
 
-function QuantityAndSubmit({ isAdding, submitLabel }: { isAdding: boolean; submitLabel: ReactNode }) {
+function QuantityAndSubmit({ unit, isAdding, submitLabel }: { unit: string; isAdding: boolean; submitLabel: ReactNode }) {
   const quantityRef = useRef<HTMLInputElement>(null);
 
   function stepQuantity(direction: "up" | "down") {
@@ -71,11 +71,11 @@ function QuantityAndSubmit({ isAdding, submitLabel }: { isAdding: boolean; submi
   return (
     <div className="z-10 bg-paper max-md:sticky max-md:bottom-0 max-md:-mx-2 max-md:px-2 max-md:py-1.5">
       <label htmlFor="ilosc" className="font-semibold">
-        Ilość
+        Ilość ({unit})
       </label>
       <div className="mt-1 flex gap-1">
         <div className="flex gap-0.5">
-          <button type="button" aria-label="Mniej sztuk" onClick={() => stepQuantity("down")} className={stepButtonClassName}>
+          <button type="button" aria-label="Zmniejsz ilość" onClick={() => stepQuantity("down")} className={stepButtonClassName}>
             −
           </button>
           <input
@@ -90,7 +90,7 @@ function QuantityAndSubmit({ isAdding, submitLabel }: { isAdding: boolean; submi
             required
             className="h-6 w-7 [appearance:textfield] bg-surface text-center tabular-nums focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-ink [&::-webkit-inner-spin-button]:appearance-none"
           />
-          <button type="button" aria-label="Więcej sztuk" onClick={() => stepQuantity("up")} className={stepButtonClassName}>
+          <button type="button" aria-label="Zwiększ ilość" onClick={() => stepQuantity("up")} className={stepButtonClassName}>
             +
           </button>
         </div>

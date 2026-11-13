@@ -49,7 +49,7 @@ export function ProductTile({ product }: { product: ProductSummary }) {
           </>
         )}
       </div>
-      <Link href={productPath} className="mt-0.5 line-clamp-3 text-pretty">
+      <Link href={productPath} className="mt-0.5 line-clamp-3 text-pretty wrap-break-word hyphens-auto">
         {bindSingleLetterWords(product.name)}
       </Link>
       <div className={`mt-auto pt-1 ${priceClassName}`} dangerouslySetInnerHTML={{ __html: product.price_html }} />

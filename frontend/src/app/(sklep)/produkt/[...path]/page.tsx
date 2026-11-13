@@ -5,7 +5,6 @@ import { Suspense } from "react";
 import { Breadcrumb } from "@/components/breadcrumb";
 import { NormPlate } from "@/components/norm-plate";
 import { ProductTile } from "@/components/product-tile";
-import { productPagePriceClassName } from "@/components/price";
 import { StockDot } from "@/components/stock-dot";
 import { categoryTrail, findProductShelf, productCountLabel } from "@/lib/catalog";
 import { routeSegments, toLocalPath } from "@/lib/catalog-paths";
@@ -19,12 +18,15 @@ import {
   listVariationDetails,
   wordpressUrl,
 } from "@/lib/store-api";
+import { type SaleUnit, saleUnitOf } from "@/lib/sale-unit";
 import { bindSingleLetterWords } from "@/lib/typography";
 import { buildVariantPicker } from "@/lib/variations";
 import { GalleryFocusProvider } from "./gallery-focus";
 import { OrderTerms } from "./order-terms";
 import { ProductGallery } from "./product-gallery";
+import { ProductPrice } from "./product-price";
 import { PurchaseForm } from "./purchase-form";
+import { QuantityDiscounts } from "./quantity-discounts";
 import { VariantPurchaseForm } from "./variant-purchase-form";
 
 export const ensureStatic = "navigation";
@@ -52,6 +54,7 @@ export default async function ProductPage(props: PageProps<"/produkt/[...path]">
   const shelf = findProductShelf(categories, productCategoryIds);
   const brand = attributeValues(product, BRAND_ATTRIBUTE).join(", ");
   const norms = attributeValues(product, NORMS_ATTRIBUTE);
+  const unit = saleUnitOf(product.name);
 
   return (
     <main className="page-width pt-3 pb-10">
@@ -74,7 +77,10 @@ export default async function ProductPage(props: PageProps<"/produkt/[...path]">
                 </ul>
               )}
             </div>
-            <PurchasePanel product={product} />
+            <PurchasePanel product={product} unit={unit} />
+            <Suspense>
+              <QuantityDiscounts permalink={product.permalink} unit={unit} />
+            </Suspense>
             <OrderTerms />
           </div>
         </div>
@@ -92,7 +98,7 @@ export default async function ProductPage(props: PageProps<"/produkt/[...path]">
   );
 }
 
-async function PurchasePanel({ product }: { product: Product }) {
+async function PurchasePanel({ product, unit }: { product: Product; unit: SaleUnit }) {
   const cartUrl = wordpressUrl("/koszyk/");
   const canBeOrdered = product.is_in_stock;
   const offersVariants = product.type === "variable";
@@ -105,16 +111,17 @@ async function PurchasePanel({ product }: { product: Product }) {
         productPriceHtml={product.price_html}
         picker={buildVariantPicker(product, variationDetails)}
         cartUrl={cartUrl}
-        sizeChartUrl={wordpressUrl("/tabele-rozmiarow/")}
+        sizeChartUrl="/tabele-rozmiarow/"
+        unit={unit}
       />
     );
   }
 
   return (
     <>
-      <div className={productPagePriceClassName} dangerouslySetInnerHTML={{ __html: product.price_html }} />
+      <ProductPrice priceHtml={product.price_html} unit={unit} />
       <Availability inStock={product.is_in_stock} />
-      {canBeOrdered && <PurchaseForm productId={product.id} cartUrl={cartUrl} />}
+      {canBeOrdered && <PurchaseForm productId={product.id} cartUrl={cartUrl} unit={unit} />}
     </>
   );
 }

@@ -36,6 +36,8 @@ import {
 import { CategoryGuide } from "./category-guide";
 import { CategoryHeader } from "./category-header";
 import { CheckSquare, SizeSquareFace } from "./filter-mark";
+import { findCategoryYoastHead, yoastMetadata } from "@/lib/yoast";
+import { FilterSheet } from "./filter-sheet";
 import { CategoryResultsPlaceholder } from "./loading";
 
 const VISIBLE_FACET_ROWS = 8;
@@ -52,7 +54,7 @@ export async function generateStaticParams() {
 export async function generateMetadata(props: PageProps<"/produkty/[...path]">): Promise<Metadata> {
   const { path } = await props.params;
   const { category } = await loadCategory(path);
-  return { title: category.name };
+  return yoastMetadata(await findCategoryYoastHead(category.id), category.name);
 }
 
 export default async function CategoryPage(props: PageProps<"/produkty/[...path]">) {
@@ -126,7 +128,7 @@ async function CategoryResults({ category, page, view }: CategoryResultsProps) {
   return (
     <div className="mt-5 grid gap-8 md:grid-cols-[240px_1fr]">
       <div className="md:col-start-2">
-        <MobileFilters categoryPath={categoryPath} view={view} facets={facets} />
+        <MobileFilters categoryPath={categoryPath} view={view} facets={facets} total={total} />
         <SelectedFilters categoryPath={categoryPath} view={view} facets={facets} />
         <SortBar categoryPath={categoryPath} view={view} total={total} />
         {products.length === 0 ? (
@@ -170,14 +172,13 @@ function FilterPanel({ categoryPath, view, facets }: FilterPanelProps) {
   );
 }
 
-function MobileFilters({ categoryPath, view, facets }: FilterPanelProps) {
+function MobileFilters({ categoryPath, view, facets, total }: FilterPanelProps & { total: number }) {
+  const selectedCount = selectedFilterChips(categoryPath, view, facets).length;
+  const clearHref = hasSelectedFilters(view) ? categoryViewUrl(categoryPath, withoutFilters(view), 1) : null;
   return (
-    <details className="mb-3 md:hidden">
-      <MoreSummary label="Filtry" />
-      <div className="mt-3">
-        <FilterPanel categoryPath={categoryPath} view={view} facets={facets} />
-      </div>
-    </details>
+    <FilterSheet selectedCount={selectedCount} resultLabel={productCountLabel(total)} clearHref={clearHref}>
+      <FilterPanel categoryPath={categoryPath} view={view} facets={facets} />
+    </FilterSheet>
   );
 }
 

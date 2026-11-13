@@ -5,7 +5,7 @@ export function QuickAddButton({ productId, productName, cartUrl }: { productId:
     <AddToCartForm
       cartUrl={cartUrl}
       className="contents touch:[&_button]:min-w-6 touch:[&_button]:px-1.5"
-      withQuantity={false}
+      quantityUnit={null}
       submitLabel={
         <>
           <span className="touch:sr-only">Dodaj do koszyka</span>

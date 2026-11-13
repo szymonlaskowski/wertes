@@ -79,7 +79,7 @@ const LABEL_WIDTH = FIGURE_SIZE / 5;
 
 export function WorkerDepartments({ categories, others }: { categories: Category[]; others: Category[] }) {
   return (
-    <section id="dzialy" aria-labelledby="dzialy-naglowek" className="page-width py-10">
+    <section id="dzialy" aria-labelledby="dzialy-naglowek" className="page-width py-10 max-md:-order-1">
       <div className="grid gap-5 lg:grid-cols-3">
         <div className="max-lg:contents">
           <div>

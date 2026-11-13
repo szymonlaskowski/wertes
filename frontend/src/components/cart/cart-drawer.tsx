@@ -5,7 +5,8 @@ import Link from "next/link";
 import { type MouseEvent, useEffect, useRef } from "react";
 import { Button } from "@/components/button";
 import { toLocalPath } from "@/lib/catalog-paths";
-import { type Cart, type CartItem, formatGrosze } from "@/lib/cart";
+import { type Cart, type CartItem, formatGrosze, priceReductionPercent } from "@/lib/cart";
+import { CHECKOUT_PATH } from "@/lib/checkout";
 import { company } from "@/lib/company";
 import { useCart } from "./cart-provider";
 
@@ -69,7 +70,7 @@ function EmptyCart() {
 }
 
 function FilledCart({ cart }: { cart: Cart }) {
-  const { checkoutUrl, errorMessage } = useCart();
+  const { errorMessage, closeCart } = useCart();
   const netGrosze = Number(cart.totals.total_items);
   const grossGrosze = netGrosze + Number(cart.totals.total_items_tax);
 
@@ -96,12 +97,13 @@ function FilledCart({ cart }: { cart: Cart }) {
             <span className="text-small text-mute">netto, {formatGrosze(grossGrosze)} brutto</span>
           </dd>
         </dl>
-        <a
-          href={checkoutUrl}
+        <Link
+          href={CHECKOUT_PATH}
+          onClick={closeCart}
           className="mt-2 block bg-accent px-3 py-2 text-center font-semibold transition-[background-color,color,scale] duration-(--duration-reveal) ease-(--ease-out) mouse:hover:bg-ink mouse:hover:text-accent active:scale-[0.98] focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-ink motion-reduce:transition-none"
         >
           Przejdź do kasy
-        </a>
+        </Link>
         <p className="mt-1 text-center text-small text-mute">Dostawę, płatność i fakturę wybierzesz w kasie.</p>
       </footer>
     </>
@@ -139,6 +141,7 @@ function CartLineItem({ item }: { item: CartItem }) {
   const { closeCart } = useCart();
   const thumbnail = item.images.at(0);
   const lineNetGrosze = Number(item.totals.line_subtotal);
+  const reductionPercent = priceReductionPercent(item);
   const variantText = item.variation.map((attribute) => `${attribute.attribute} ${attribute.value}`).join(", ");
 
   return (
@@ -153,11 +156,12 @@ function CartLineItem({ item }: { item: CartItem }) {
           <span className="link-line">{item.name}</span>
         </Link>
         {variantText && <p className="text-small text-mute">{variantText}</p>}
-        <div className="mt-1 flex items-center justify-between gap-2">
+        <div className="mt-1 flex flex-wrap items-center justify-between gap-2">
           <QuantityStepper item={item} />
-          <p className="text-right tabular-nums">
+          <p className="ml-auto shrink-0 text-right tabular-nums">
             <span className="block font-semibold">{formatGrosze(lineNetGrosze)}</span>
             <span className="text-small text-mute">netto</span>
+            {reductionPercent > 0 && <span className="block text-small">taniej o {reductionPercent}%</span>}
           </p>
         </div>
       </div>

@@ -2,9 +2,10 @@ import { type } from "arktype";
 import { cacheLife } from "next/cache";
 import { decodeHtmlEntities } from "./html-entities";
 import { getFromWordpress } from "./store-api";
+import { YOAST_FIELDS, yoastHead } from "./yoast";
 
 export const ARTICLES_PER_PAGE = 7;
-const LIVE_SHOP_URL = "https://wertes.pl";
+export const LIVE_SHOP_URL = "https://wertes.pl";
 const WORDS_READ_PER_MINUTE = 200;
 
 const textWithEntities = type("string").pipe(decodeHtmlEntities);
@@ -19,7 +20,7 @@ const articleSummary = type({
 });
 export type Article = typeof articleSummary.infer;
 
-const articleWithContent = articleSummary.merge({ content: { rendered: "string" } });
+const articleWithContent = articleSummary.merge({ content: { rendered: "string" }, "yoast_head_json?": yoastHead });
 
 const SUMMARY_FIELDS = "date,slug,title,excerpt,_links,_embedded";
 
@@ -61,7 +62,7 @@ export async function findArticleBySlug(slug: string) {
   "use cache";
   cacheLife("default");
 
-  const path = `/wp-json/wp/v2/posts?slug=${encodeURIComponent(slug)}&_embed=wp:featuredmedia&_fields=${SUMMARY_FIELDS},content`;
+  const path = `/wp-json/wp/v2/posts?slug=${encodeURIComponent(slug)}&_embed=wp:featuredmedia&_fields=${SUMMARY_FIELDS},content,${YOAST_FIELDS}`;
   const response = await getFromWordpress(path);
   if (!response.ok) {
     throw new Error(`WordPress ${path} responded with ${response.status}`);

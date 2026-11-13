@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import { CartDrawer } from "@/components/cart/cart-drawer";
 import { CartProvider } from "@/components/cart/cart-provider";
+import { HelpWidget } from "@/components/help-widget";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { wordpressUrl } from "@/lib/store-api";
 import "./globals.css";
 
 const montserrat = Montserrat({
@@ -52,12 +52,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </noscript>
       </head>
       <body className="min-h-full flex flex-col">
-        <CartProvider checkoutPageUrl={wordpressUrl("/zamowienia/")}>
+        <CartProvider>
           <SiteHeader />
           {children}
           <SiteFooter />
           <CartDrawer />
         </CartProvider>
+        <HelpWidget />
       </body>
     </html>
   );

@@ -18,6 +18,7 @@ import {
 import { toLocalPath } from "@/lib/catalog-paths";
 import { findProductBySlug, wordpressUrl } from "@/lib/store-api";
 import { bindSingleLetterWords } from "@/lib/typography";
+import { yoastMetadata } from "@/lib/yoast";
 
 const LINKED_PRODUCTS = 4;
 const OTHER_ARTICLES = 4;
@@ -30,7 +31,7 @@ export async function generateStaticParams() {
 export async function generateMetadata(props: PageProps<"/wiedza/[slug]">): Promise<Metadata> {
   const { slug } = await props.params;
   const article = await loadArticle(slug);
-  return { title: article.title.rendered };
+  return yoastMetadata(article.yoast_head_json, article.title.rendered);
 }
 
 export default async function ArticlePage(props: PageProps<"/wiedza/[slug]">) {

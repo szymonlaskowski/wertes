@@ -1,5 +1,5 @@
+import Link from "next/link";
 import { company } from "@/lib/company";
-import { wordpressUrl } from "@/lib/store-api";
 
 export function OrderTerms() {
   return (
@@ -27,9 +27,9 @@ function BulkDiscounts() {
           </div>
         ))}
       </dl>
-      <a href={wordpressUrl("/rabaty-na-duze-zamowienia/")} className="mt-1 inline-block text-small font-semibold link-line">
+      <Link href="/rabaty-na-duze-zamowienia/" className="mt-1 inline-block text-small font-semibold link-line">
         Warunki rabatów i wycena dla firm
-      </a>
+      </Link>
     </section>
   );
 }

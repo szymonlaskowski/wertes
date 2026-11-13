@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { OrderTerms } from "@/app/(sklep)/produkt/[...path]/order-terms";
-import { wordpressUrl } from "@/lib/store-api";
 import { ChipsCard } from "./chips-card";
 import { MatrixCard } from "./matrix-card";
 import { type PreviewProduct, colorAndSizeProduct, findVariant, sizeOnlyProduct } from "./preview-product";
@@ -15,7 +14,7 @@ export const metadata: Metadata = {
 type PlannedQuantity = { color: string | null; size: string; quantity: number };
 
 export default function ProductPreviewPage() {
-  const sizeChartUrl = wordpressUrl("/tabele-rozmiarow/");
+  const sizeChartUrl = "/tabele-rozmiarow/";
 
   return (
     <main className="page-width flex flex-col gap-10 pt-3 pb-10">

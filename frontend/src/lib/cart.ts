@@ -13,14 +13,45 @@ const cartItem = type({
   images: type({ thumbnail: "string", alt: "string" }).array(),
   variation: type({ attribute: textWithEntities, value: textWithEntities }).array(),
   quantity_limits: type({ minimum: "number", maximum: "number" }),
+  prices: type({ price: "string", regular_price: "string" }),
   totals: type({ line_subtotal: "string", line_subtotal_tax: "string" }),
 });
 export type CartItem = typeof cartItem.infer;
 
+export function priceReductionPercent(item: Pick<CartItem, "prices">) {
+  const paidPrice = Number(item.prices.price);
+  const regularPrice = Number(item.prices.regular_price);
+  if (paidPrice >= regularPrice) {
+    return 0;
+  }
+  return Math.round((1 - paidPrice / regularPrice) * 100);
+}
+
+const shippingRate = type({
+  rate_id: "string",
+  instance_id: "number",
+  name: textWithEntities,
+  price: "string",
+  selected: "boolean",
+});
+export type ShippingRate = typeof shippingRate.infer;
+
 const cart = type({
   items: cartItem.array(),
   items_count: "number",
-  totals: type({ total_items: "string", total_items_tax: "string" }),
+  needs_shipping: "boolean",
+  shipping_rates: type({ package_id: "number", shipping_rates: shippingRate.array() }).array(),
+  payment_methods: "string[]",
+  coupons: type({ code: "string" }).array(),
+  totals: type({
+    total_items: "string",
+    total_items_tax: "string",
+    total_discount: "string",
+    total_discount_tax: "string",
+    total_shipping: "string | null",
+    total_shipping_tax: "string | null",
+    total_price: "string",
+  }),
 });
 export type Cart = typeof cart.infer;
 
@@ -64,6 +95,18 @@ export function changeCartItemQuantity(token: string, key: string, quantity: num
 
 export function removeCartItem(token: string, key: string) {
   return requestCart("/remove-item/", token, "POST", { key });
+}
+
+export function selectShippingRate(token: string, packageId: number, rateId: string) {
+  return requestCart("/select-shipping-rate/", token, "POST", { package_id: packageId, rate_id: rateId });
+}
+
+export function applyCoupon(token: string, code: string) {
+  return requestCart("/apply-coupon/", token, "POST", { code });
+}
+
+export function removeCoupon(token: string, code: string) {
+  return requestCart("/remove-coupon/", token, "POST", { code });
 }
 
 async function requestCart(

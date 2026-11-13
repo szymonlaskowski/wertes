@@ -21,7 +21,7 @@ export function MostChosen({ products }: { products: ProductSummary[] }) {
 
 export function OwnBrand({ brand, products }: { brand: Category; products: ProductSummary[] }) {
   return (
-    <section id="wertes-safe" aria-labelledby="wertes-safe-naglowek" className="bg-accent">
+    <section id="wertes-safe" aria-labelledby="wertes-safe-naglowek" className="on-accent">
       <div className="page-width grid gap-5 py-10 lg:grid-cols-3">
         <div>
           <h2 id="wertes-safe-naglowek" className="text-title md:text-display">

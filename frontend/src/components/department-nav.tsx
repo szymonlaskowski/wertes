@@ -4,12 +4,13 @@ import { CountedLink } from "@/components/counted-link";
 import { MegaNav } from "@/components/mega-nav";
 import { BRANDS_SLUG, childrenOf, findBySlug, formatCount, productCountLabel } from "@/lib/catalog";
 import { toLocalPath } from "@/lib/catalog-paths";
-import { listCategories, wordpressUrl, type Category } from "@/lib/store-api";
+import { listCategories, type Category } from "@/lib/store-api";
 
 const MENU_DEPARTMENT_SLUGS = ["artykuly-bhp", "przemysl", "promocje-i-nowosci"];
 const ROWS_PER_GROUP = 14;
 
-const wordpressPages = [
+const infoPages = [
+  { label: "Wiedza", path: "/wiedza/" },
   { label: "O nas", path: "/o-nas/" },
   { label: "Kontakt", path: "/kontakt/" },
 ];
@@ -35,16 +36,11 @@ export async function DepartmentNav() {
         }))}
       />
       <ul className="flex gap-x-4 md:flex-wrap">
-        <li>
-          <Link href="/wiedza/" className={infoLinkClassName}>
-            <span className="link-line">Wiedza</span>
-          </Link>
-        </li>
-        {wordpressPages.map((page) => (
+        {infoPages.map((page) => (
           <li key={page.path}>
-            <a href={wordpressUrl(page.path)} className={infoLinkClassName}>
+            <Link href={page.path} className={infoLinkClassName}>
               <span className="link-line">{page.label}</span>
-            </a>
+            </Link>
           </li>
         ))}
       </ul>

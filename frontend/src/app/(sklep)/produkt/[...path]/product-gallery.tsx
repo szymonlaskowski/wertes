@@ -54,7 +54,8 @@ export function ProductGallery({ productId, images }: { productId: number; image
           ref={slidesRef}
           onScroll={trackActiveSlide}
           aria-label="Zdjęcia produktu"
-          className="flex aspect-square snap-x snap-mandatory overflow-x-auto bg-surface [scrollbar-width:none]"
+          tabIndex={0}
+          className="flex aspect-square snap-x snap-mandatory overflow-x-auto bg-surface [scrollbar-width:none] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
         >
           {images.map((image, index) => (
             <li

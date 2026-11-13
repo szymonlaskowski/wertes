@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
-import { productPagePriceClassName } from "@/components/price";
+import { useState, useSyncExternalStore } from "react";
+import { inputClassName } from "@/components/field";
 import { StockDot } from "@/components/stock-dot";
 import {
   type PickerVariant,
@@ -15,7 +15,9 @@ import {
   selectOption,
 } from "@/lib/variations";
 import { AddToCartForm } from "@/components/cart/add-to-cart-form";
+import type { SaleUnit } from "@/lib/sale-unit";
 import { useGalleryFocus } from "./gallery-focus";
+import { ProductPrice } from "./product-price";
 
 const chipClassName =
   "flex h-6 min-w-6 cursor-pointer items-center justify-center bg-surface px-1 tabular-nums transition-[background-color,scale] duration-(--duration-reveal) ease-(--ease-out) active:scale-[0.94] peer-checked:bg-ink peer-checked:text-paper peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink mouse:peer-enabled:peer-not-checked:hover:bg-accent peer-disabled:cursor-not-allowed peer-disabled:bg-paper peer-disabled:text-mute motion-reduce:transition-none";
@@ -23,19 +25,23 @@ const chipClassName =
 const swatchClassName =
   "relative block size-8 cursor-pointer bg-surface transition-[scale] duration-(--duration-reveal) ease-(--ease-out) active:scale-[0.94] motion-reduce:transition-none outline-2 outline-offset-0 outline-transparent peer-checked:outline-ink peer-focus-visible:outline-ink mouse:peer-enabled:hover:outline-ink peer-disabled:cursor-not-allowed peer-disabled:bg-paper";
 
+const PHONE_WIDTH_QUERY = "(max-width: 767.98px)";
+
 type VariantPurchaseFormProps = {
   productId: number;
   productPriceHtml: string;
   picker: VariantPicker;
   cartUrl: string;
   sizeChartUrl: string;
+  unit: SaleUnit;
 };
 
-export function VariantPurchaseForm({ productId, productPriceHtml, picker, cartUrl, sizeChartUrl }: VariantPurchaseFormProps) {
+export function VariantPurchaseForm({ productId, productPriceHtml, picker, cartUrl, sizeChartUrl, unit }: VariantPurchaseFormProps) {
   const [selection, setSelection] = useState(() => initialSelection(picker));
   const selectedVariant = findSelectedVariant(picker, selection);
   const priceHtml = selectedVariant ? selectedVariant.priceHtml : productPriceHtml;
   const { focusImage } = useGalleryFocus();
+  const isPhone = useSyncExternalStore(subscribeToPhoneWidth, readIsPhone, () => false);
 
   function choose(choice: VariantChoice, value: string) {
     setSelection(selectOption(picker, selection, choice.name, value));
@@ -46,14 +52,18 @@ export function VariantPurchaseForm({ productId, productPriceHtml, picker, cartU
   }
 
   return (
-    <AddToCartForm cartUrl={cartUrl} className="flex flex-col gap-3" withQuantity submitLabel="Dodaj do koszyka">
-      <div className={productPagePriceClassName} dangerouslySetInnerHTML={{ __html: priceHtml }} />
+    <AddToCartForm cartUrl={cartUrl} className="flex flex-col gap-3" quantityUnit={unit.countOf} submitLabel="Dodaj do koszyka">
+      <ProductPrice priceHtml={priceHtml} unit={unit} />
       <SelectedVariantStock picker={picker} selection={selection} variant={selectedVariant} />
       <input type="hidden" name="add-to-cart" value={productId} />
       {selectedVariant && <SelectedVariantFields variant={selectedVariant} />}
-      {picker.choices.map((choice) => (
-        <ChoiceFieldset key={choice.name} picker={picker} choice={choice} selection={selection} onChoose={choose} />
-      ))}
+      {isPhone ? (
+        <ChoiceSelects picker={picker} selection={selection} onChoose={choose} />
+      ) : (
+        picker.choices.map((choice) => (
+          <ChoiceFieldset key={choice.name} picker={picker} choice={choice} selection={selection} onChoose={choose} />
+        ))
+      )}
       <a href={sizeChartUrl} className="-mt-2 self-start text-small link-line">
         Tabele rozmiarów
       </a>
@@ -152,6 +162,55 @@ function ChoiceFieldset({
       {hasUnavailableOption && <p className="mt-1 text-small text-mute">Opcje bez tła są chwilowo niedostępne.</p>}
     </fieldset>
   );
+}
+
+function ChoiceSelects({
+  picker,
+  selection,
+  onChoose,
+}: {
+  picker: VariantPicker;
+  selection: Selection;
+  onChoose: (choice: VariantChoice, value: string) => void;
+}) {
+  return (
+    <div className="grid grid-cols-2 gap-1">
+      {picker.choices.map((choice) => (
+        <label key={choice.name} className="grid content-start gap-1">
+          <span className="font-semibold">{choice.name}</span>
+          <select
+            name={choice.formField}
+            value={selection[choice.name] ?? ""}
+            required
+            onChange={(event) => onChoose(choice, event.target.value)}
+            className={inputClassName}
+          >
+            <option value="" disabled>
+              Wybierz
+            </option>
+            {choice.options.map((option) => {
+              const isAvailable = isOptionAvailable(picker, selection, choice.name, option.value);
+              return (
+                <option key={option.value} value={option.value} disabled={!isAvailable}>
+                  {isAvailable ? option.label : `${option.label} (brak)`}
+                </option>
+              );
+            })}
+          </select>
+        </label>
+      ))}
+    </div>
+  );
+}
+
+function subscribeToPhoneWidth(onWidthChange: () => void) {
+  const phoneWidth = window.matchMedia(PHONE_WIDTH_QUERY);
+  phoneWidth.addEventListener("change", onWidthChange);
+  return () => phoneWidth.removeEventListener("change", onWidthChange);
+}
+
+function readIsPhone() {
+  return window.matchMedia(PHONE_WIDTH_QUERY).matches;
 }
 
 function optionLabel(choice: VariantChoice, value: string) {

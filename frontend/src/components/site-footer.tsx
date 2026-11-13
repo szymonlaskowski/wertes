@@ -1,14 +1,20 @@
+import Link from "next/link";
+import { CookieConsent } from "@/components/cookie-consent";
 import { company } from "@/lib/company";
 import { wordpressUrl } from "@/lib/store-api";
 
-const helpPages = [
+const shopPages = [
+  { label: "O nas", path: "/o-nas/" },
+  { label: "Kontakt", path: "/kontakt/" },
+  { label: "Jak złożyć zamówienie", path: "/wiedza/jak-zlozyc-zamowienie/" },
+  { label: "Koszt i czas dostawy", path: "/wiedza/koszt-i-czas-transportu/" },
   { label: "Rabaty na duże zamówienia", path: "/rabaty-na-duze-zamowienia/" },
+  { label: "Znakowanie odzieży", path: "/znakowanie-odziezy/" },
   { label: "Zwrot zamówienia", path: "/zwroty-i-wymiany/" },
   { label: "Reklamacje", path: "/reklamacje/" },
   { label: "Tabele rozmiarów", path: "/tabele-rozmiarow/" },
   { label: "Regulamin sklepu", path: "/regulamin/" },
   { label: "Polityka prywatności", path: "/polityka-prywatnosci/" },
-  { label: "Moje konto", path: "/moje-konto/" },
 ];
 
 export function SiteFooter() {
@@ -26,13 +32,21 @@ export function SiteFooter() {
         </a>
       </p>
       <ul className="flex flex-wrap gap-x-3 gap-y-1">
-        {helpPages.map((page) => (
+        {shopPages.map((page) => (
           <li key={page.path}>
-            <a href={wordpressUrl(page.path)} className="link-line">
+            <Link href={page.path} className="link-line">
               {page.label}
-            </a>
+            </Link>
           </li>
         ))}
+        <li>
+          <a href={wordpressUrl("/moje-konto/")} className="link-line">
+            Moje konto
+          </a>
+        </li>
+        <li>
+          <CookieConsent />
+        </li>
       </ul>
     </footer>
   );

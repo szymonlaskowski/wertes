@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { listLatestArticles } from "@/lib/articles";
 import { BRANDS_SLUG, findBySlug, listBrands, listDepartments } from "@/lib/catalog";
 import { type Category, countProducts, listBestsellersInStock, listCategories } from "@/lib/store-api";
@@ -13,6 +14,12 @@ const OWN_BRAND_PRODUCTS = 3;
 const OWN_BRAND_SLUG = "wertes-safe";
 const FOOTWEAR_SLUG = "buty-ochronne-i-robocze";
 
+export const metadata: Metadata = {
+  title: { absolute: "Sklep i Hurtownia z artykułami BHP | Wertes" },
+  description:
+    "Jesteśmy sklepem, który za główny cel obrał sobie dostarczanie klientom z branży BHP oraz przemysłowej produktów o jak najwyższej jakości.",
+};
+
 export default async function HomePage() {
   const categories = await listCategories();
   const zoneCategories = zones.map((zone) => findBySlug(categories, zone.slug));
@@ -27,7 +34,7 @@ export default async function HomePage() {
   ]);
 
   return (
-    <main className="w-full">
+    <main className="flex w-full flex-col">
       <Hero
         totalProducts={totalProducts}
         brandCount={brands.length}

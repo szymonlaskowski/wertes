@@ -2,6 +2,7 @@ const FREE_SHIPPING_FROM_ZLOTY = 500;
 
 export const company = {
   name: "Wertes",
+  legalName: "Wertes Jarosław Kowalczyk",
   address: "Wiązowa 12, 87-800 Włocławek",
   taxId: "8351124370",
   phone: "780 531 108",
