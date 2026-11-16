@@ -1,11 +1,15 @@
 <?php
 /**
  * Plugin Name: Wertes headless checkout
- * Description: Sends customers back to the Next.js shop after payment and serves the customer account to it. Needs WERTES_FRONTEND_URL in wp-config.php, e.g. define( 'WERTES_FRONTEND_URL', 'https://wertes.pl' );
+ * Description: Sends customers back to the Next.js shop after payment and serves the customer account to it. Sends them to https://wertes.vercel.app unless wp-config.php defines WERTES_FRONTEND_URL, e.g. define( 'WERTES_FRONTEND_URL', 'https://wertes.pl' );
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
+}
+
+if ( ! defined( 'WERTES_FRONTEND_URL' ) ) {
+	define( 'WERTES_FRONTEND_URL', 'https://wertes.vercel.app' );
 }
 
 const WERTES_ACCOUNT_COOKIE        = 'wertes_account';
@@ -20,11 +24,9 @@ add_filter( 'woocommerce_get_checkout_order_received_url', 'wertes_frontend_orde
 add_filter( 'woocommerce_get_endpoint_url', 'wertes_frontend_password_reset_url', 10, 2 );
 add_action( 'woocommerce_store_api_checkout_order_processed', 'wertes_assign_order_to_signed_in_customer' );
 add_action( 'rest_api_init', 'wertes_register_account_routes' );
+add_filter( 'woocommerce_get_children', 'wertes_list_sold_out_variations_to_frontend', 10, 3 );
 
 function wertes_frontend_order_confirmation_url( $url, $order ) {
-	if ( ! defined( 'WERTES_FRONTEND_URL' ) ) {
-		return $url;
-	}
 	$query = http_build_query(
 		array(
 			'id'    => $order->get_id(),
@@ -36,10 +38,18 @@ function wertes_frontend_order_confirmation_url( $url, $order ) {
 }
 
 function wertes_frontend_password_reset_url( $url, $endpoint ) {
-	if ( 'lost-password' !== $endpoint || ! defined( 'WERTES_FRONTEND_URL' ) ) {
+	if ( 'lost-password' !== $endpoint ) {
 		return $url;
 	}
 	return untrailingslashit( WERTES_FRONTEND_URL ) . '/konto/nowe-haslo/';
+}
+
+function wertes_list_sold_out_variations_to_frontend( $children, $product, $visible_only ) {
+	$is_frontend_listing_variations = $visible_only && $product->is_type( 'variable' ) && WC()->is_store_api_request();
+	if ( ! $is_frontend_listing_variations ) {
+		return $children;
+	}
+	return $product->get_children();
 }
 
 function wertes_assign_order_to_signed_in_customer( $order ) {

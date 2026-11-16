@@ -19,7 +19,7 @@ export default function ContactPage() {
           <h2 id="dane-kontaktowe" className="sr-only">
             Dane kontaktowe
           </h2>
-          <p className="grid text-title">
+          <p className="grid text-figure md:text-title">
             <a href={company.phoneHref} className="justify-self-start link-line">
               {company.phone}
             </a>

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { type FormEvent, type KeyboardEvent, useEffect, useState } from "react";
+import { type FormEvent, type KeyboardEvent, startTransition, useEffect, useOptimistic, useState } from "react";
 import { Button } from "@/components/button";
 import { useCart } from "@/components/cart/cart-provider";
 import { Field, inputClassName, inputOnSurfaceClassName } from "@/components/field";
@@ -254,6 +254,15 @@ function BuyerSection({ savedBuyer, onAddressChange }: BuyerSectionProps) {
 
 function ShippingOptions({ packageId, rates }: { packageId: number; rates: ShippingRate[] }) {
   const { isUpdating, chooseShippingRate } = useCart();
+  const selectedRateId = rates.find((rate) => rate.selected)?.rate_id;
+  const [checkedRateId, checkRateBeforeCartAnswers] = useOptimistic(selectedRateId);
+
+  function chooseRate(rateId: string) {
+    startTransition(async () => {
+      checkRateBeforeCartAnswers(rateId);
+      await chooseShippingRate(packageId, rateId);
+    });
+  }
 
   return (
     <ul className="grid gap-1">
@@ -264,9 +273,9 @@ function ShippingOptions({ packageId, rates }: { packageId: number; rates: Shipp
               type="radio"
               name="shipping_rate"
               value={rate.rate_id}
-              checked={rate.selected}
+              checked={rate.rate_id === checkedRateId}
               disabled={isUpdating}
-              onChange={() => chooseShippingRate(packageId, rate.rate_id)}
+              onChange={() => chooseRate(rate.rate_id)}
               className="size-2 shrink-0 translate-y-0.5 accent-ink"
             />
             <span className="flex-1">{rate.name}</span>

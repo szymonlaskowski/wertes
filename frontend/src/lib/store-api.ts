@@ -255,6 +255,7 @@ async function findProductWithEncodedSlug(slug: string) {
 }
 
 const VARIATIONS_PER_PAGE = 100;
+const EVERY_STOCK_STATUS = "stock_status[]=instock&stock_status[]=outofstock&stock_status[]=onbackorder";
 const variationDetails = type({
   id: "number",
   sku: "string",
@@ -272,7 +273,7 @@ export async function listVariationDetails(productId: number) {
   const details: VariationDetails[] = [];
   for (let page = 1; ; page++) {
     const response = await getFromStoreApi(
-      `/products?type=variation&parent=${productId}&per_page=${VARIATIONS_PER_PAGE}&page=${page}&_fields=${fields}`,
+      `/products?type=variation&parent=${productId}&${EVERY_STOCK_STATUS}&per_page=${VARIATIONS_PER_PAGE}&page=${page}&_fields=${fields}`,
     );
     details.push(...variationDetails.array().assert(await response.json()));
     const totalPages = Number(response.headers.get("X-WP-TotalPages"));

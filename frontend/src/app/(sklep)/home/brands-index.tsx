@@ -17,7 +17,7 @@ export function BrandsIndex({ brands, allBrands }: { brands: Category[]; allBran
       <ul className="flex flex-wrap items-baseline gap-x-3 gap-y-1 lg:col-span-3">
         {largestBrands.map((brand) => (
           <li key={brand.id}>
-            <Link href={toLocalPath(brand.permalink)} className="text-title">
+            <Link href={toLocalPath(brand.permalink)} className="text-figure md:text-title">
               <span className="link-line">{brand.name}</span>
               <sup className="ml-0.5 text-small text-mute tabular-nums">{formatCount(brand.count)}</sup>
             </Link>
