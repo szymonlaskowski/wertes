@@ -5,36 +5,24 @@ import { Suspense } from "react";
 import { Breadcrumb } from "@/components/breadcrumb";
 import { NormPlate } from "@/components/norm-plate";
 import { ProductTile } from "@/components/product-tile";
-import { StockDot } from "@/components/stock-dot";
 import { categoryTrail, findProductShelf, productCountLabel } from "@/lib/catalog";
 import { routeSegments, toLocalPath } from "@/lib/catalog-paths";
-import { company } from "@/lib/company";
-import type { Category, Product } from "@/lib/store-api";
-import {
-  findAnyProductPermalink,
-  findProductBySlug,
-  listBestsellersInStock,
-  listCategories,
-  listVariationDetails,
-  wordpressUrl,
-} from "@/lib/store-api";
-import { type SaleUnit, saleUnitOf } from "@/lib/sale-unit";
+import type { Category } from "@/lib/store-api";
+import { findAnyProductPermalink, findProductBySlug, listBestsellersInStock, listCategories } from "@/lib/store-api";
+import { saleUnitOf } from "@/lib/sale-unit";
 import { bindSingleLetterWords } from "@/lib/typography";
-import { buildVariantPicker } from "@/lib/variations";
 import { readWordpressProductPage } from "@/lib/wordpress-product-page";
 import { GalleryFocusProvider } from "./gallery-focus";
+import { NormMeanings } from "./norm-meanings";
 import { OrderTerms } from "./order-terms";
+import { Description, Parameters, PurchasePanel, attributeValues } from "./product-details";
 import { ProductGallery } from "./product-gallery";
-import { ProductPrice } from "./product-price";
-import { PurchaseForm } from "./purchase-form";
 import { QuantityDiscounts } from "./quantity-discounts";
-import { VariantPurchaseForm } from "./variant-purchase-form";
 
 export const ensureStatic = "navigation";
 
 const BRAND_ATTRIBUTE = "Marka";
 const NORMS_ATTRIBUTE = "Normy";
-const AVAILABILITY_ATTRIBUTE = "Dostępność";
 const SHELF_PRODUCTS = 4;
 
 export async function generateStaticParams() {
@@ -80,14 +68,24 @@ export default async function ProductPage(props: PageProps<"/produkt/[...path]">
               )}
             </div>
             <PurchasePanel product={product} unit={unit} />
-            <QuantityDiscounts tiers={wordpressProductPage.quantityDiscountTiers} unit={unit} />
-            <OrderTerms />
           </div>
         </div>
       </GalleryFocusProvider>
-      <div className="mt-10 grid gap-8 md:grid-cols-2">
+      <section aria-labelledby="karta-katalogowa" className="mt-10 bg-surface p-3">
+        <h2 id="karta-katalogowa" className="text-title">
+          Karta katalogowa
+        </h2>
+        <div className="mt-5 grid items-start gap-6 md:grid-cols-3">
+          <div className="grid gap-5">
+            <NormMeanings norms={norms} />
+            <Parameters product={product} />
+          </div>
+          <QuantityDiscounts tiers={wordpressProductPage.quantityDiscountTiers} unit={unit} />
+          <OrderTerms />
+        </div>
+      </section>
+      <div className="mt-10">
         <Description html={product.description} />
-        <Parameters product={product} />
       </div>
       {shelf && (
         <Suspense>
@@ -95,34 +93,6 @@ export default async function ProductPage(props: PageProps<"/produkt/[...path]">
         </Suspense>
       )}
     </main>
-  );
-}
-
-async function PurchasePanel({ product, unit }: { product: Product; unit: SaleUnit }) {
-  const cartUrl = wordpressUrl("/koszyk/");
-  const canBeOrdered = product.is_in_stock;
-  const offersVariants = product.type === "variable";
-
-  if (canBeOrdered && offersVariants) {
-    const variationDetails = await listVariationDetails(product.id);
-    return (
-      <VariantPurchaseForm
-        productId={product.id}
-        productPriceHtml={product.price_html}
-        picker={buildVariantPicker(product, variationDetails)}
-        cartUrl={cartUrl}
-        sizeChartUrl="/tabele-rozmiarow/"
-        unit={unit}
-      />
-    );
-  }
-
-  return (
-    <>
-      <ProductPrice priceHtml={product.price_html} unit={unit} />
-      <Availability inStock={product.is_in_stock} />
-      {canBeOrdered && <PurchaseForm productId={product.id} cartUrl={cartUrl} unit={unit} />}
-    </>
   );
 }
 
@@ -144,86 +114,6 @@ async function loadProduct(path: string[]) {
     permanentRedirect(canonicalPath);
   }
   return product;
-}
-
-function attributeValues(product: Product, attributeName: string) {
-  const attribute = product.attributes.find((candidate) => candidate.name === attributeName);
-  if (!attribute) {
-    return [];
-  }
-  return attribute.terms.map((term) => term.name);
-}
-
-function Availability({ inStock }: { inStock: boolean }) {
-  if (inStock) {
-    return (
-      <p className="flex items-center gap-1 text-small">
-        <StockDot inStock />
-        Na stanie, wysyłka w 48 h
-      </p>
-    );
-  }
-
-  return (
-    <p className="flex flex-wrap items-center gap-x-1 text-small">
-      <StockDot inStock={false} />
-      Brak w magazynie, zapytaj o termin:
-      <a href={company.phoneHref} className="link-line">
-        {company.phone}
-      </a>
-    </p>
-  );
-}
-
-function Description({ html }: { html: string }) {
-  if (!html) {
-    return null;
-  }
-
-  return (
-    <section aria-labelledby="opis">
-      <h2 id="opis" className="mb-1 font-semibold">
-        Opis produktu
-      </h2>
-      <div
-        className="max-w-prose [&_:is(h2,h3,h4)]:mt-3 [&_:is(h2,h3,h4)]:mb-1 [&_:is(h2,h3,h4)]:font-semibold [&_p]:mb-2"
-        dangerouslySetInnerHTML={{ __html: html }}
-      />
-    </section>
-  );
-}
-
-function Parameters({ product }: { product: Product }) {
-  const parameters = product.attributes.filter(
-    (attribute) => !attribute.has_variations && attribute.name !== AVAILABILITY_ATTRIBUTE,
-  );
-
-  return (
-    <section aria-labelledby="parametry">
-      <h2 id="parametry" className="mb-1 font-semibold">
-        Parametry
-      </h2>
-      <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1">
-        {product.sku && <ParameterRow name="Kod" value={product.sku} />}
-        {parameters.map((attribute) => (
-          <ParameterRow
-            key={attribute.name}
-            name={attribute.name}
-            value={attribute.terms.map((term) => term.name).join(", ")}
-          />
-        ))}
-      </dl>
-    </section>
-  );
-}
-
-function ParameterRow({ name, value }: { name: string; value: string }) {
-  return (
-    <div className="contents">
-      <dt className="text-mute">{name}</dt>
-      <dd>{value}</dd>
-    </div>
-  );
 }
 
 async function ShelfProducts({ shelf, currentProductId }: { shelf: Category; currentProductId: number }) {

@@ -37,9 +37,14 @@ export default function ProductLoading() {
           <PurchasePlaceholder />
         </div>
       </div>
-      <div className="mt-10 grid gap-8 md:grid-cols-2">
+      <div className="mt-10 bg-surface p-3">
+        <PlaceholderLine className="w-60 max-w-full text-title" />
+        <div className="mt-5 grid gap-6 md:grid-cols-3">
+          <ParametersPlaceholder />
+        </div>
+      </div>
+      <div className="mt-10">
         <DescriptionPlaceholder />
-        <ParametersPlaceholder />
       </div>
       <ShelfPlaceholder />
     </main>
