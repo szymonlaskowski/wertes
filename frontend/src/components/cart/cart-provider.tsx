@@ -19,6 +19,7 @@ const CART_TOKEN_KEY = "wertes-cart-token";
 
 type CartContextValue = {
   cart: Cart | null;
+  isLoadingStoredCart: boolean;
   isOpen: boolean;
   isUpdating: boolean;
   errorMessage: string | null;
@@ -38,16 +39,18 @@ const CartContext = createContext<CartContextValue | null>(null);
 export function CartProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<Cart | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [isLoadingStoredCart, setIsLoadingStoredCart] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem(CART_TOKEN_KEY);
-    if (storedToken === null) {
-      return;
-    }
-    readCart(storedToken).then(applyResponse);
+    readStoredCart().then((response) => {
+      if (response !== null) {
+        applyResponse(response);
+      }
+      setIsLoadingStoredCart(false);
+    });
   }, []);
 
   function applyResponse(response: CartResponse) {
@@ -107,6 +110,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const value: CartContextValue = {
     cart,
+    isLoadingStoredCart,
     isOpen,
     isUpdating,
     errorMessage,
@@ -132,4 +136,12 @@ export function useCart() {
     throw new Error("useCart needs a CartProvider in the root layout");
   }
   return cartContext;
+}
+
+async function readStoredCart() {
+  const storedToken = localStorage.getItem(CART_TOKEN_KEY);
+  if (storedToken === null) {
+    return null;
+  }
+  return readCart(storedToken);
 }

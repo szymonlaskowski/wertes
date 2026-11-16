@@ -18,12 +18,12 @@ import { ParcelPointPicker } from "./parcel-point-picker";
 const POSTCODE_PATTERN = "[0-9]{2}-[0-9]{3}";
 
 export function CheckoutForm() {
-  const { cart } = useCart();
+  const { cart, isLoadingStoredCart } = useCart();
 
-  if (cart === null) {
+  if (isLoadingStoredCart) {
     return <p role="status">Wczytuję koszyk…</p>;
   }
-  if (cart.items_count === 0) {
+  if (cart === null || cart.items_count === 0) {
     return (
       <p>
         Twój koszyk jest pusty.{" "}

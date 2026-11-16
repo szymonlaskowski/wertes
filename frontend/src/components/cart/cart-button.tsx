@@ -1,10 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import type { MouseEvent } from "react";
 import { CartIcon } from "@/components/icons";
 import { useCart } from "./cart-provider";
 
-export function CartButton({ cartPageUrl, className }: { cartPageUrl: string; className: string }) {
+export function CartButton({ className }: { className: string }) {
   const { cart, openCart } = useCart();
   const itemCount = cart === null ? 0 : cart.items_count;
 
@@ -14,7 +15,7 @@ export function CartButton({ cartPageUrl, className }: { cartPageUrl: string; cl
   }
 
   return (
-    <a href={cartPageUrl} onClick={openDrawerInstead} className={className}>
+    <Link href="/kasa/" prefetch={false} onClick={openDrawerInstead} className={className}>
       <span className="relative">
         <CartIcon />
         {itemCount > 0 && (
@@ -28,6 +29,6 @@ export function CartButton({ cartPageUrl, className }: { cartPageUrl: string; cl
       </span>
       <span className="link-line max-sm:sr-only">Koszyk</span>
       {itemCount > 0 && <span className="sr-only">, produktów: {itemCount}</span>}
-    </a>
+    </Link>
   );
 }

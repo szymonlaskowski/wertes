@@ -24,7 +24,7 @@ export async function SiteHeader() {
             <AccountIcon />
             <span className="link-line max-sm:sr-only">Konto</span>
           </a>
-          <CartButton cartPageUrl={wordpressUrl("/koszyk/")} className={iconLinkClassName} />
+          <CartButton className={iconLinkClassName} />
         </div>
       </div>
       <div className="mx-auto max-w-180">
