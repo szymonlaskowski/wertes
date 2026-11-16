@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { type FormEvent, type KeyboardEvent, useState } from "react";
+import { type FormEvent, type KeyboardEvent, useEffect, useState } from "react";
 import { Button } from "@/components/button";
 import { useCart } from "@/components/cart/cart-provider";
 import { Field, inputClassName, inputOnSurfaceClassName } from "@/components/field";
+import { type Account, readAccount } from "@/lib/account";
 import { type Cart, formatGrosze, type ShippingRate } from "@/lib/cart";
 import { company } from "@/lib/company";
 import {
@@ -17,10 +18,31 @@ import { ParcelPointPicker } from "./parcel-point-picker";
 
 const POSTCODE_PATTERN = "[0-9]{2}-[0-9]{3}";
 
+const NO_SAVED_BUYER = {
+  email: "",
+  first_name: "",
+  last_name: "",
+  company: "",
+  nip: "",
+  phone: "",
+  address_1: "",
+  postcode: "",
+  city: "",
+};
+type SavedBuyer = typeof NO_SAVED_BUYER;
+
 export function CheckoutForm() {
   const { cart, isLoadingStoredCart } = useCart();
+  const [savedAccount, setSavedAccount] = useState<Account | null>(null);
+  const [isLoadingAccount, setIsLoadingAccount] = useState(true);
 
-  if (isLoadingStoredCart) {
+  useEffect(() => {
+    readAccount()
+      .then(setSavedAccount)
+      .finally(() => setIsLoadingAccount(false));
+  }, []);
+
+  if (isLoadingStoredCart || isLoadingAccount) {
     return <p role="status">Wczytuję koszyk…</p>;
   }
   if (cart === null || cart.items_count === 0) {
@@ -34,15 +56,29 @@ export function CheckoutForm() {
       </p>
     );
   }
-  return <FilledCheckout cart={cart} />;
+  return <FilledCheckout cart={cart} savedBuyer={savedBuyerOf(savedAccount)} />;
 }
 
-function FilledCheckout({ cart }: { cart: Cart }) {
+function savedBuyerOf(account: Account | null): SavedBuyer {
+  if (account === null) {
+    return NO_SAVED_BUYER;
+  }
+  return { email: account.email, ...account.address };
+}
+
+function addressLine(buyer: SavedBuyer) {
+  if (buyer.address_1 === "") {
+    return "";
+  }
+  return `${buyer.address_1}, ${buyer.postcode} ${buyer.city}`;
+}
+
+function FilledCheckout({ cart, savedBuyer }: { cart: Cart; savedBuyer: SavedBuyer }) {
   const { isUpdating, errorMessage, submitOrder } = useCart();
   const [pickedPoint, setPickedPoint] = useState<{ operator: string; point: ParcelPoint } | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [searchNear, setSearchNear] = useState("");
+  const [searchNear, setSearchNear] = useState(() => addressLine(savedBuyer));
 
   const shippingPackage = cart.shipping_rates.at(0);
   const selectedRate = shippingPackage?.shipping_rates.find((rate) => rate.selected);
@@ -73,7 +109,7 @@ function FilledCheckout({ cart }: { cart: Cart }) {
   return (
     <form onSubmit={order} className="mt-5 grid items-start gap-8 lg:grid-cols-[1fr_400px]">
       <div className="grid gap-8">
-        <BuyerSection onAddressChange={setSearchNear} />
+        <BuyerSection savedBuyer={savedBuyer} onAddressChange={setSearchNear} />
         <section aria-labelledby="dostawa" className="grid gap-2">
           <h2 id="dostawa" className="font-semibold">
             Dostawa
@@ -156,7 +192,9 @@ function FilledCheckout({ cart }: { cart: Cart }) {
   );
 }
 
-function BuyerSection({ onAddressChange }: { onAddressChange: (address: string) => void }) {
+type BuyerSectionProps = { savedBuyer: SavedBuyer; onAddressChange: (address: string) => void };
+
+function BuyerSection({ savedBuyer, onAddressChange }: BuyerSectionProps) {
   function rememberAddress(event: FormEvent<HTMLFieldSetElement>) {
     const form = event.currentTarget.form;
     if (form === null) {
@@ -173,31 +211,32 @@ function BuyerSection({ onAddressChange }: { onAddressChange: (address: string) 
       </h2>
       <fieldset onChange={rememberAddress} className="grid gap-2 sm:grid-cols-2">
         <Field label="Imię">
-          <input name="first_name" autoComplete="given-name" required className={inputClassName} />
+          <input name="first_name" defaultValue={savedBuyer.first_name} autoComplete="given-name" required className={inputClassName} />
         </Field>
         <Field label="Nazwisko">
-          <input name="last_name" autoComplete="family-name" required className={inputClassName} />
+          <input name="last_name" defaultValue={savedBuyer.last_name} autoComplete="family-name" required className={inputClassName} />
         </Field>
         <Field label="E-mail">
-          <input name="email" type="email" autoComplete="email" required className={inputClassName} />
+          <input name="email" type="email" defaultValue={savedBuyer.email} autoComplete="email" required className={inputClassName} />
         </Field>
         <Field label="Telefon">
-          <input name="phone" type="tel" autoComplete="tel" required className={inputClassName} />
+          <input name="phone" type="tel" defaultValue={savedBuyer.phone} autoComplete="tel" required className={inputClassName} />
         </Field>
         <Field label="Firma (opcjonalnie)">
-          <input name="company" autoComplete="organization" className={inputClassName} />
+          <input name="company" defaultValue={savedBuyer.company} autoComplete="organization" className={inputClassName} />
         </Field>
         <Field label="NIP (opcjonalnie)">
-          <input name="tax_id" inputMode="numeric" className={inputClassName} />
+          <input name="tax_id" defaultValue={savedBuyer.nip} inputMode="numeric" className={inputClassName} />
         </Field>
         <div className="sm:col-span-2">
           <Field label="Ulica i numer">
-            <input name="street" autoComplete="street-address" required className={inputClassName} />
+            <input name="street" defaultValue={savedBuyer.address_1} autoComplete="street-address" required className={inputClassName} />
           </Field>
         </div>
         <Field label="Kod pocztowy">
           <input
             name="postcode"
+            defaultValue={savedBuyer.postcode}
             autoComplete="postal-code"
             required
             pattern={POSTCODE_PATTERN}
@@ -206,7 +245,7 @@ function BuyerSection({ onAddressChange }: { onAddressChange: (address: string) 
           />
         </Field>
         <Field label="Miejscowość">
-          <input name="city" autoComplete="address-level2" required className={inputClassName} />
+          <input name="city" defaultValue={savedBuyer.city} autoComplete="address-level2" required className={inputClassName} />
         </Field>
       </fieldset>
     </section>

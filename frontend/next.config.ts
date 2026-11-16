@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { ACCOUNT_PROXY_PATH } from "./src/lib/account";
 import { CART_PROXY_PATH } from "./src/lib/cart";
 import { CHECKOUT_PROXY_PATH } from "./src/lib/checkout";
 import { CONTACT_FORM_ID, CONTACT_FORM_PROXY_PATH } from "./src/lib/contact-form";
@@ -20,6 +21,7 @@ const nextConfig: NextConfig = {
     return [
       { source: `${CART_PROXY_PATH}/:path*`, destination: `${wordpressUrl}/wp-json/wc/store/v1/cart/:path*` },
       { source: `${CHECKOUT_PROXY_PATH}/`, destination: `${wordpressUrl}/wp-json/wc/store/v1/checkout` },
+      { source: `${ACCOUNT_PROXY_PATH}/:path*`, destination: `${wordpressUrl}/wp-json/wertes/v1/konto/:path*` },
       {
         source: CONTACT_FORM_PROXY_PATH,
         destination: `${wordpressUrl}/wp-json/contact-form-7/v1/contact-forms/${CONTACT_FORM_ID}/feedback`,

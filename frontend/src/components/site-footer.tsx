@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { CookieConsent } from "@/components/cookie-consent";
 import { company } from "@/lib/company";
-import { wordpressUrl } from "@/lib/store-api";
 
 const shopPages = [
   { label: "O nas", path: "/o-nas/" },
@@ -15,6 +14,7 @@ const shopPages = [
   { label: "Tabele rozmiarów", path: "/tabele-rozmiarow/" },
   { label: "Regulamin sklepu", path: "/regulamin/" },
   { label: "Polityka prywatności", path: "/polityka-prywatnosci/" },
+  { label: "Moje konto", path: "/konto/" },
 ];
 
 export function SiteFooter() {
@@ -39,11 +39,6 @@ export function SiteFooter() {
             </Link>
           </li>
         ))}
-        <li>
-          <a href={wordpressUrl("/moje-konto/")} className="link-line">
-            Moje konto
-          </a>
-        </li>
         <li>
           <CookieConsent />
         </li>

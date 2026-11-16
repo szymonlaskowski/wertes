@@ -6,7 +6,7 @@ import { AccountIcon } from "@/components/icons";
 import { SearchBox } from "@/components/search-box";
 import { listSuggestibleCategories } from "@/lib/catalog";
 import { company } from "@/lib/company";
-import { listCategories, wordpressUrl } from "@/lib/store-api";
+import { listCategories } from "@/lib/store-api";
 
 export async function SiteHeader() {
   const suggestibleCategories = listSuggestibleCategories(await listCategories());
@@ -20,10 +20,10 @@ export async function SiteHeader() {
         </Link>
         <SearchBox categories={suggestibleCategories} />
         <div className="ml-auto flex items-center gap-3 pb-1.5 font-semibold md:ml-0">
-          <a href={wordpressUrl("/moje-konto/")} className={iconLinkClassName}>
+          <Link href="/konto/" prefetch={false} className={iconLinkClassName}>
             <AccountIcon />
             <span className="link-line max-sm:sr-only">Konto</span>
-          </a>
+          </Link>
           <CartButton className={iconLinkClassName} />
         </div>
       </div>
