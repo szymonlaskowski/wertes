@@ -1,8 +1,7 @@
-import { findQuantityDiscountTiers, type QuantityDiscountTier } from "@/lib/quantity-discounts";
+import type { QuantityDiscountTier } from "@/lib/quantity-discounts";
 import type { SaleUnit } from "@/lib/sale-unit";
 
-export async function QuantityDiscounts({ permalink, unit }: { permalink: string; unit: SaleUnit }) {
-  const tiers = await findQuantityDiscountTiers(permalink);
+export function QuantityDiscounts({ tiers, unit }: { tiers: QuantityDiscountTier[]; unit: SaleUnit }) {
   if (tiers.length === 0) {
     return null;
   }

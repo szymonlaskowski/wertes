@@ -4,7 +4,7 @@ import Link from "next/link";
 import { type FormEvent, type KeyboardEvent, useState } from "react";
 import { Button } from "@/components/button";
 import { useCart } from "@/components/cart/cart-provider";
-import { Field, inputClassName } from "@/components/field";
+import { Field, inputClassName, inputOnSurfaceClassName } from "@/components/field";
 import { type Cart, formatGrosze, type ShippingRate } from "@/lib/cart";
 import { company } from "@/lib/company";
 import {
@@ -292,7 +292,7 @@ function CouponForm({ appliedCodes }: { appliedCodes: string[] }) {
               value={code}
               onChange={(event) => setCode(event.target.value)}
               onKeyDown={applyOnEnter}
-              className={inputClassName}
+              className={inputOnSurfaceClassName}
             />
           </Field>
         </div>

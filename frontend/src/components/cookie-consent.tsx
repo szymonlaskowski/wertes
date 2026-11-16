@@ -71,7 +71,7 @@ export function CookieConsent() {
   return (
     <section
       aria-labelledby="cookie-consent-title"
-      className="fixed right-2 bottom-2 left-2 z-40 grid max-h-[calc(100dvh-32px)] max-w-50 gap-2 overflow-y-auto bg-ink p-3 text-paper"
+      className="fixed right-12 bottom-2 left-2 z-40 grid max-h-[calc(100dvh-32px)] max-w-50 gap-2 overflow-y-auto bg-ink p-3 text-paper"
     >
       <h2 id="cookie-consent-title" className="font-semibold">
         Cenimy Twoją prywatność

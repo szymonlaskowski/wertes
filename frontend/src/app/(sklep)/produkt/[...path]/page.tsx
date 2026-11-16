@@ -21,6 +21,7 @@ import {
 import { type SaleUnit, saleUnitOf } from "@/lib/sale-unit";
 import { bindSingleLetterWords } from "@/lib/typography";
 import { buildVariantPicker } from "@/lib/variations";
+import { readWordpressProductPage } from "@/lib/wordpress-product-page";
 import { GalleryFocusProvider } from "./gallery-focus";
 import { OrderTerms } from "./order-terms";
 import { ProductGallery } from "./product-gallery";
@@ -54,7 +55,8 @@ export default async function ProductPage(props: PageProps<"/produkt/[...path]">
   const shelf = findProductShelf(categories, productCategoryIds);
   const brand = attributeValues(product, BRAND_ATTRIBUTE).join(", ");
   const norms = attributeValues(product, NORMS_ATTRIBUTE);
-  const unit = saleUnitOf(product.name);
+  const wordpressProductPage = await readWordpressProductPage(product.permalink);
+  const unit = saleUnitOf(product.name, wordpressProductPage.statedSaleUnit);
 
   return (
     <main className="page-width pt-3 pb-10">
@@ -78,9 +80,7 @@ export default async function ProductPage(props: PageProps<"/produkt/[...path]">
               )}
             </div>
             <PurchasePanel product={product} unit={unit} />
-            <Suspense>
-              <QuantityDiscounts permalink={product.permalink} unit={unit} />
-            </Suspense>
+            <QuantityDiscounts tiers={wordpressProductPage.quantityDiscountTiers} unit={unit} />
             <OrderTerms />
           </div>
         </div>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { PageTitle } from "@/components/page-title";
+import { articlePath, findArticleBySlug } from "@/lib/articles";
 import { wordpressUrl } from "@/lib/store-api";
 import { bindSingleLetterWords } from "@/lib/typography";
 import { cleanPageHtml, CONTENT_PAGE_SLUGS, findContentPage } from "@/lib/wordpress-pages";
@@ -33,6 +34,7 @@ export default async function ContentPage(props: PageProps<"/[strona]">) {
 async function loadPage(slug: string) {
   const isShopPage = CONTENT_PAGE_SLUGS.includes(slug);
   if (!isShopPage) {
+    await redirectOldArticleAddress(slug);
     notFound();
   }
   const page = await findContentPage(slug);
@@ -40,4 +42,11 @@ async function loadPage(slug: string) {
     notFound();
   }
   return page;
+}
+
+async function redirectOldArticleAddress(slug: string) {
+  const article = await findArticleBySlug(slug);
+  if (article) {
+    permanentRedirect(articlePath(article));
+  }
 }
