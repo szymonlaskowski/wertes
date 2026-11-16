@@ -285,17 +285,17 @@ function CouponForm({ appliedCodes }: { appliedCodes: string[] }) {
 
   return (
     <div className="grid gap-1">
-      <div className="flex items-end gap-1">
-        <div className="flex-1">
-          <Field label="Kod rabatowy">
-            <input
-              value={code}
-              onChange={(event) => setCode(event.target.value)}
-              onKeyDown={applyOnEnter}
-              className={inputOnSurfaceClassName}
-            />
-          </Field>
-        </div>
+      <label htmlFor="kod-rabatowy" className="-mb-0.5 text-small font-semibold">
+        Kod rabatowy
+      </label>
+      <div className="flex gap-1">
+        <input
+          id="kod-rabatowy"
+          value={code}
+          onChange={(event) => setCode(event.target.value)}
+          onKeyDown={applyOnEnter}
+          className={inputOnSurfaceClassName}
+        />
         <Button variant="secondary" type="button" onClick={apply} disabled={isUpdating}>
           Użyj
         </Button>

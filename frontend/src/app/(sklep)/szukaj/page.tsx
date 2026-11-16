@@ -130,7 +130,7 @@ function ResultRow({ product }: { product: ProductSummary }) {
         {product.sku && <p className="text-small text-mute">Kod {product.sku}</p>}
       </div>
       <div className={priceClassName} dangerouslySetInnerHTML={{ __html: product.price_html }} />
-      <div className="md:justify-self-end">
+      <div className="md:grid">
         <RowAction product={product} productPath={productPath} />
       </div>
     </li>
