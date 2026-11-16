@@ -80,7 +80,7 @@ const LABEL_WIDTH = FIGURE_SIZE / 5;
 export function WorkerDepartments({ categories, others }: { categories: Category[]; others: Category[] }) {
   return (
     <section id="dzialy" aria-labelledby="dzialy-naglowek" className="page-width py-10 max-md:-order-1">
-      <div className="grid gap-5 lg:grid-cols-3">
+      <div className="grid gap-x-3 gap-y-5 lg:grid-cols-4">
         <div className="max-lg:contents">
           <div>
             <h2 id="dzialy-naglowek" className="text-title">
@@ -90,7 +90,7 @@ export function WorkerDepartments({ categories, others }: { categories: Category
           </div>
           <OtherDepartments departments={others} />
         </div>
-        <nav aria-label="Działy według części ciała" className="relative grid grid-cols-2 gap-x-2 gap-y-4 md:block md:aspect-square lg:col-span-2">
+        <nav aria-label="Działy według części ciała" className="relative grid grid-cols-2 gap-x-2 gap-y-4 md:block md:aspect-square lg:col-span-3 lg:ml-auto lg:w-full lg:max-w-112">
           {zones.map((zone) => (
             <ZoneLink key={zone.slug} zone={zone} category={findBySlug(categories, zone.slug)} />
           ))}

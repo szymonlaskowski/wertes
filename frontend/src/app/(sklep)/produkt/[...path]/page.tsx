@@ -71,7 +71,7 @@ export default async function ProductPage(props: PageProps<"/produkt/[...path]">
           </div>
         </div>
       </GalleryFocusProvider>
-      <section aria-labelledby="karta-katalogowa" className="mt-10 bg-surface p-3">
+      <section aria-labelledby="karta-katalogowa" className="mt-10 chamfer-panel bg-surface p-3">
         <h2 id="karta-katalogowa" className="text-title">
           Karta katalogowa
         </h2>

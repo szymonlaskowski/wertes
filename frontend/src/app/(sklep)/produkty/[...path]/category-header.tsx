@@ -80,13 +80,15 @@ function Shelves({ shelves, current }: { shelves: Category[]; current: Category 
 }
 
 function ShelfTile({ shelf, isCurrent }: { shelf: Category; isCurrent: boolean }) {
-  const stateClassName = isCurrent ? "bg-ink text-paper" : "bg-surface mouse:hover:bg-accent";
+  const stateClassName = isCurrent
+    ? "bg-ink text-paper focus-visible:outline-accent"
+    : "bg-surface mouse:hover:bg-accent focus-visible:outline-ink";
 
   return (
     <Link
       href={toLocalPath(shelf.permalink)}
       aria-current={isCurrent ? "page" : undefined}
-      className={`block h-full px-2 py-1 transition-[background-color,scale] duration-(--duration-reveal) ease-(--ease-out) active:scale-[0.98] motion-reduce:transition-none ${stateClassName}`}
+      className={`block h-full chamfer-control px-2 py-1 focus-visible:outline-2 focus-visible:-outline-offset-4 transition-[background-color,scale] duration-(--duration-reveal) ease-(--ease-out) active:scale-[0.98] motion-reduce:transition-none ${stateClassName}`}
     >
       <span className="block font-semibold">{shelf.name}</span>
       <span className="text-small tabular-nums">{formatCount(shelf.count)}</span>

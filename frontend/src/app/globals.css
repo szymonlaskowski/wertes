@@ -11,7 +11,8 @@
 
 @theme inline {
   --font-*: initial;
-  --font-sans: var(--font-montserrat);
+  --font-sans: var(--font-barlow);
+  --font-display: var(--font-barlow-condensed);
 }
 
 @theme {
@@ -23,21 +24,22 @@
   --inset-shadow-*: initial;
   --drop-shadow-*: initial;
 
-  --color-ink: #313131;
-  --color-mute: #5f5f5f;
+  --color-ink: #1a1a18;
+  --color-mute: #55554f;
   --color-paper: #ffffff;
-  --color-surface: #f3f3f1;
+  --color-surface: #ecebe6;
   --color-accent: #fece00;
   --color-in-stock: #2e9e44;
 
-  --text-display: 88px;
-  --text-display--line-height: 0.95;
-  --text-display--letter-spacing: -0.025em;
-  --text-display--font-weight: 700;
-  --text-title: 44px;
-  --text-title--line-height: 1.02;
-  --text-title--letter-spacing: -0.02em;
-  --text-title--font-weight: 700;
+  --text-display: 136px;
+  --text-display--line-height: 0.86;
+  --text-display--font-weight: 800;
+  --text-title: 60px;
+  --text-title--line-height: 0.9;
+  --text-title--font-weight: 800;
+  --text-figure: 36px;
+  --text-figure--line-height: 1;
+  --text-figure--font-weight: 800;
   --text-body: 16px;
   --text-body--line-height: 1.5;
   --text-small: 13px;
@@ -46,6 +48,12 @@
   --spacing: 8px;
 
   --tracking-label: 0.08em;
+  --tracking-control: 0.04em;
+
+  --chamfer-plate: 6px;
+  --chamfer-control: 12px;
+  --chamfer-tile: 24px;
+  --chamfer-panel: 48px;
 
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --duration-reveal: 150ms;
@@ -71,6 +79,34 @@
   --duration-morph: 320ms;
   --duration-drawer: 280ms;
   --duration-zoom: 600ms;
+}
+
+@utility text-display {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+}
+
+@utility text-title {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+}
+
+@utility text-figure {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+}
+
+@utility chamfer-* {
+  --chamfer: --value(--chamfer-*);
+  clip-path: polygon(0 0, calc(100% - var(--chamfer)) 0, 100% var(--chamfer), 100% 100%, 0 100%);
+}
+
+@utility hazard-tape {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--color-ink) 0 calc(var(--spacing) * 2),
+    var(--color-accent) calc(var(--spacing) * 2) calc(var(--spacing) * 4)
+  );
 }
 
 @utility page-width {
@@ -156,9 +192,11 @@
   }
   & :where(h2) {
     margin: calc(var(--spacing) * 6) 0 calc(var(--spacing) * 2);
+    font-family: var(--font-display);
+    font-weight: var(--text-title--font-weight);
+    text-transform: uppercase;
     font-size: var(--text-title);
     line-height: var(--text-title--line-height);
-    letter-spacing: var(--text-title--letter-spacing);
   }
   & :where(h3, h4) {
     margin: calc(var(--spacing) * 4) 0 var(--spacing);

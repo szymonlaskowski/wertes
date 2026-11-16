@@ -22,7 +22,7 @@ export function ProductTile({ product }: { product: ProductSummary }) {
     <li className="group flex flex-col">
       <div className="relative">
         <ViewTransition name={productImageTransitionName(product.id)} share="product-image" default="none">
-          <Link href={productPath} tabIndex={-1} aria-hidden className="relative block aspect-square overflow-hidden bg-surface">
+          <Link href={productPath} tabIndex={-1} aria-hidden className="relative block aspect-square chamfer-tile overflow-hidden bg-surface">
             {mainImage && (
               <Image
                 src={mainImage.src}

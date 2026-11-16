@@ -7,9 +7,8 @@ export function MostChosen({ products }: { products: ProductSummary[] }) {
   return (
     <section aria-labelledby="najczesciej" className="page-width pt-10">
       <h2 id="najczesciej" className="text-title">
-        Najczęściej wybierane
+        Najczęściej wybierane w&nbsp;każdym dziale
       </h2>
-      <p className="mt-1 text-mute">Najchętniej kupowany produkt z&nbsp;każdego działu.</p>
       <ul className="mt-4 grid grid-cols-2 gap-x-3 gap-y-5 md:grid-cols-4">
         {products.map((product) => (
           <ProductTile key={product.id} product={product} />
@@ -22,17 +21,17 @@ export function MostChosen({ products }: { products: ProductSummary[] }) {
 export function OwnBrand({ brand, products }: { brand: Category; products: ProductSummary[] }) {
   return (
     <section id="wertes-safe" aria-labelledby="wertes-safe-naglowek" className="on-accent">
-      <div className="page-width grid gap-5 py-10 lg:grid-cols-3">
+      <div className="page-width grid gap-x-3 gap-y-5 py-10 lg:grid-cols-4">
+        <h2 id="wertes-safe-naglowek" className="text-title md:text-display lg:col-span-4">
+          Wertes Safe+
+        </h2>
         <div>
-          <h2 id="wertes-safe-naglowek" className="text-title md:text-display">
-            Wertes Safe+
-          </h2>
-          <p className="mt-2">Nasza marka: rękawice i&nbsp;fartuchy ze skóry bydlęcej i&nbsp;koziej, z&nbsp;normami nadrukowanymi na&nbsp;wyrobie.</p>
+          <p>Nasza marka: rękawice i&nbsp;fartuchy ze skóry bydlęcej i&nbsp;koziej, z&nbsp;normami nadrukowanymi na&nbsp;wyrobie.</p>
           <Link href={toLocalPath(brand.permalink)} className="mt-3 inline-block font-semibold link-line">
             Wszystkie produkty Wertes Safe+
           </Link>
         </div>
-        <ul className="grid grid-cols-2 gap-x-3 gap-y-5 md:grid-cols-3 lg:col-span-2">
+        <ul className="grid grid-cols-2 gap-x-3 gap-y-5 md:grid-cols-3 lg:col-span-3">
           {products.map((product) => (
             <ProductTile key={product.id} product={product} />
           ))}

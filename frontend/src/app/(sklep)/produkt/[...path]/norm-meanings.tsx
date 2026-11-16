@@ -43,7 +43,7 @@ export function NormMeanings({ norms }: { norms: string[] }) {
   return (
     <ul aria-label="Normy" className="flex flex-wrap gap-1">
       {norms.map((norm) => (
-        <li key={norm} className="grow bg-paper p-2">
+        <li key={norm} className="grow chamfer-tile bg-paper p-2">
           <p className="text-title leading-none font-bold tabular-nums">{norm}</p>
           {NORM_MEANINGS.has(norm) && <p className="mt-1 text-small">{NORM_MEANINGS.get(norm)}</p>}
         </li>

@@ -21,40 +21,41 @@ export function Hero({
   ownBrandProduct: ProductSummary | undefined;
 }) {
   return (
-    <section aria-labelledby="od-stop-do-glow" className="page-width pt-3 max-md:-order-2">
-      <div className="grid gap-2 lg:grid-cols-3">
-        <div className="grid bg-ink text-paper md:grid-cols-2 lg:col-span-2">
-          <div className="flex flex-col justify-end p-5 max-md:order-last max-md:p-3">
-            <h1 id="od-stop-do-glow" className="text-title">
-              Ubierz pracownika od&nbsp;stóp do&nbsp;głów
+    <section aria-labelledby="od-stop-do-glow" className="max-md:-order-2">
+      <div className="relative flex min-h-80 items-end">
+        <Image
+          src={wordpressUrl(BANNER_PHOTO)}
+          alt="Pracownik w pomarańczowym kasku niesie rurę na budowie"
+          fill
+          preload
+          sizes="100vw"
+          className="object-cover"
+        />
+        <div className="page-width relative grid gap-x-3 lg:grid-cols-4">
+          <div className="chamfer-tile bg-ink p-3 text-paper md:chamfer-panel md:p-5 lg:col-span-2">
+            <h1 id="od-stop-do-glow" className="text-title md:text-display">
+              Od&nbsp;stóp do&nbsp;głów.
             </h1>
             <p className="mt-2">
               {productCountLabel(totalProducts)} od {brandCount} producentów dla ciebie i&nbsp;twojej firmy, z&nbsp;darmową
               dostawą od&nbsp;{company.freeShippingFrom}.
             </p>
-            <p className="mt-3 max-md:hidden">
+            <p className="mt-3">
               <Button variant="accent" onInk href="#dzialy">
                 Wybierz dział
               </Button>
             </p>
           </div>
-          <div className="relative min-h-30">
-            <Image
-              src={wordpressUrl(BANNER_PHOTO)}
-              alt="Pracownik w pomarańczowym kasku niesie rurę na budowie"
-              fill
-              preload
-              sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-              className="object-cover"
-            />
-          </div>
         </div>
-        <div className="grid gap-2 max-md:hidden md:grid-cols-2 lg:grid-cols-1">
+      </div>
+      <div aria-hidden className="hazard-tape h-1" />
+      <div className="page-width">
+        <div className="mt-3 grid gap-3 max-md:hidden md:grid-cols-2">
           <FootwearTile footwear={footwear} />
           <OwnBrandTile product={ownBrandProduct} />
         </div>
+        <Perks />
       </div>
-      <Perks />
     </section>
   );
 }
@@ -89,8 +90,8 @@ function OwnBrandTile({ product }: { product: ProductSummary | undefined }) {
 
 function TileLabel({ name, detail }: { name: string; detail: string }) {
   return (
-    <span className="relative max-w-2/3 self-start bg-ink px-2 py-1.5 text-paper">
-      <b className="block font-semibold">
+    <span className="relative max-w-2/3 chamfer-control self-start bg-ink py-1.5 pr-3 pl-2 text-paper">
+      <b className="block font-semibold tracking-control uppercase">
         <span className="link-line">{name}</span>
       </b>
       <span className="text-small">{detail}</span>
@@ -99,24 +100,29 @@ function TileLabel({ name, detail }: { name: string; detail: string }) {
 }
 
 const perks = [
-  { title: "Zakupy dla firm", detail: "Faktura VAT do\u00a0każdego zamówienia" },
-  { title: "Pomoc w\u00a0doborze", detail: `${company.phone}, odbiera osoba, która zna magazyn` },
-  { title: "Rabaty od\u00a0wartości koszyka", detail: bulkDiscountSummary() },
-  { title: "Darmowa dostawa", detail: `Od\u00a0${company.freeShippingFrom}` },
+  { figure: "Faktura VAT", detail: "Do\u00a0każdego zamówienia, zakupy na\u00a0firmę" },
+  { figure: company.phone, detail: "Pomoc w\u00a0doborze, odbiera osoba, która zna magazyn" },
+  { figure: bulkDiscountPercents(), detail: `Rabatu od\u00a0koszyka za\u00a0${bulkDiscountThresholds()}` },
+  { figure: "Dostawa 0\u00a0zł", detail: `Przy zamówieniu od\u00a0${company.freeShippingFrom}` },
 ];
 
-function bulkDiscountSummary() {
-  const thresholds = company.bulkDiscounts.map((discount) => `${discount.percent} od\u00a0${discount.from}`);
-  return thresholds.join(", ");
+function bulkDiscountPercents() {
+  const percents = company.bulkDiscounts.map((discount) => discount.percent);
+  return percents.join(" / ");
+}
+
+function bulkDiscountThresholds() {
+  const thresholds = company.bulkDiscounts.map((discount) => discount.from);
+  return thresholds.join(" i\u00a0");
 }
 
 function Perks() {
   return (
-    <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 md:grid-cols-4">
+    <dl className="mt-4 grid gap-x-3 gap-y-3 sm:grid-cols-2 lg:grid-cols-4">
       {perks.map((perk) => (
-        <div key={perk.title}>
-          <dt className="font-semibold">{perk.title}</dt>
-          <dd className="text-small text-mute">{perk.detail}</dd>
+        <div key={perk.figure} className="border-t-4 border-ink pt-2">
+          <dt className="text-figure">{perk.figure}</dt>
+          <dd>{perk.detail}</dd>
         </div>
       ))}
     </dl>

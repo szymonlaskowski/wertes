@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
+import { Barlow, Barlow_Condensed } from "next/font/google";
 import { CartDrawer } from "@/components/cart/cart-drawer";
 import { CartProvider } from "@/components/cart/cart-provider";
 import { HelpWidget } from "@/components/help-widget";
@@ -7,10 +7,16 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import "./globals.css";
 
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
+const barlow = Barlow({
+  variable: "--font-barlow",
   subsets: ["latin", "latin-ext"],
-  weight: ["300", "400", "600", "700"],
+  weight: ["400", "600", "700"],
+});
+
+const barlowCondensed = Barlow_Condensed({
+  variable: "--font-barlow-condensed",
+  subsets: ["latin", "latin-ext"],
+  weight: ["800"],
 });
 
 export const metadata: Metadata = {
@@ -45,7 +51,7 @@ const stylesWithoutJavaScript = `
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="pl" className={`${montserrat.variable} h-full antialiased`}>
+    <html lang="pl" className={`${barlow.variable} ${barlowCondensed.variable} h-full antialiased`}>
       <head>
         <noscript>
           <style>{stylesWithoutJavaScript}</style>
